@@ -1661,7 +1661,7 @@ const Home = () => {
     {
       id: 1,
       title: 'WE TURN DATA INTO DECISIONS. YOU TURN DEALS INTO RESULTS.',
-      description: 'From 409A to SPA - valuation, M&A execution, and Fractional CFO support that converts analysis into action.',
+      description: 'Corporate Valuation, Transaction Advisory, M&A execution, and Fractional CFO support that converts analysis into action.',
       bgImage: '/images/slider/slide-1.jpg'
     }
   ];
