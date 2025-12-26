@@ -958,6 +958,38 @@ const Services = () => {
         'Fair value assessments for financial reporting'
       ],
       useCases: 'M&A transactions · Financial reporting · IP monetization · Digital asset portfolios'
+    },
+    {
+      id: 9,
+      title: 'SPAC Advisory',
+      description: 'End-to-end SPAC advisory services including de-SPAC transaction support, valuation, due diligence, and capital market execution for going public via SPAC.',
+      icon: FiTrendingUp,
+      slug: 'spac-advisory',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHN0b2NrJTIwbWFya2V0fGVufDB8fHwwfHx8MA%3D%3D',
+      deliverables: [
+        'SPAC formation and IPO support',
+        'Target identification and valuation',
+        'De-SPAC transaction execution',
+        'Due diligence and regulatory compliance',
+        'Post-merger integration planning'
+      ],
+      useCases: 'SPAC sponsors · Target companies · Going public via SPAC · De-SPAC transactions'
+    },
+    {
+      id: 10,
+      title: 'Capital Market Advisory',
+      description: 'Strategic capital markets guidance including IPO readiness, equity and debt capital raising, investor relations, and market positioning for public and private companies.',
+      icon: FiBarChart,
+      slug: 'capital-market-advisory',
+      image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNhcGl0YWwlMjBtYXJrZXR8ZW58MHx8MHx8fHww',
+      deliverables: [
+        'IPO readiness assessment and planning',
+        'Equity and debt capital raising strategies',
+        'Investor relations and communications',
+        'Market positioning and valuation',
+        'Regulatory compliance and reporting'
+      ],
+      useCases: 'IPO preparation · Capital raising · Investor relations · Public company advisory'
     }
   ];
 

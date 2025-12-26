@@ -820,6 +820,58 @@ const ServiceDetail = () => {
         { icon: FiBarChart, title: 'Transparent Reporting', description: 'Clear LP communications with metrics that matter.' },
         { icon: FiShield, title: 'Compliance & Audit Ready', description: 'Robust documentation and evidence trails for audits and reviews.' }
       ]
+    },
+    'spac-advisory': {
+      id: 9,
+      title: 'SPAC Advisory',
+      category: 'Capital Markets',
+      description: 'End-to-end SPAC advisory services including de-SPAC transaction support, valuation, due diligence, and capital market execution for going public via SPAC.',
+      icon: FiTrendingUp,
+      features: [
+        'SPAC formation and IPO support',
+        'Target identification and valuation',
+        'De-SPAC transaction execution',
+        'Due diligence and regulatory compliance',
+        'Post-merger integration planning',
+        'Fairness opinions and valuation support'
+      ],
+      process: [
+        { step: 1, title: 'SPAC Formation', description: 'Support SPAC sponsors in formation, IPO structuring, and regulatory compliance.' },
+        { step: 2, title: 'Target Identification', description: 'Identify and evaluate potential target companies for de-SPAC transactions.' },
+        { step: 3, title: 'Transaction Execution', description: 'Execute de-SPAC transactions including valuation, due diligence, and deal structuring.' },
+        { step: 4, title: 'Post-Merger Support', description: 'Provide integration planning and ongoing capital markets advisory post-merger.' }
+      ],
+      benefits: [
+        { icon: FiTrendingUp, title: 'Expert SPAC Execution', description: 'Deep experience in SPAC transactions and de-SPAC processes.' },
+        { icon: FiTarget, title: 'Strategic Guidance', description: 'Comprehensive advisory from formation through post-merger integration.' },
+        { icon: FiShield, title: 'Regulatory Compliance', description: 'Ensure full compliance with SEC regulations and market requirements.' }
+      ]
+    },
+    'capital-market-advisory': {
+      id: 10,
+      title: 'Capital Market Advisory',
+      category: 'Capital Markets',
+      description: 'Strategic capital markets guidance including IPO readiness, equity and debt capital raising, investor relations, and market positioning for public and private companies.',
+      icon: FiBarChart,
+      features: [
+        'IPO readiness assessment and planning',
+        'Equity and debt capital raising strategies',
+        'Investor relations and communications',
+        'Market positioning and valuation',
+        'Regulatory compliance and reporting',
+        'Secondary offerings and follow-on transactions'
+      ],
+      process: [
+        { step: 1, title: 'Readiness Assessment', description: 'Evaluate company readiness for public markets or capital raising initiatives.' },
+        { step: 2, title: 'Strategy Development', description: 'Develop comprehensive capital markets strategy and execution roadmap.' },
+        { step: 3, title: 'Transaction Execution', description: 'Execute capital raising transactions with optimal market positioning.' },
+        { step: 4, title: 'Ongoing Advisory', description: 'Provide continuous investor relations and market positioning support.' }
+      ],
+      benefits: [
+        { icon: FiBarChart, title: 'Market Expertise', description: 'Deep understanding of capital markets and investor expectations.' },
+        { icon: FiTrendingUp, title: 'Optimal Execution', description: 'Maximize value through strategic timing and positioning.' },
+        { icon: FiShield, title: 'Regulatory Support', description: 'Navigate complex regulatory requirements with confidence.' }
+      ]
     }
   };
 

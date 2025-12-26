@@ -1661,7 +1661,7 @@ const Home = () => {
     {
       id: 1,
       title: 'WE TURN DATA INTO DECISIONS. YOU TURN DEALS INTO RESULTS.',
-      description: 'Corporate Valuation, Transaction Advisory, M&A execution, and Fractional CFO support that converts analysis into action.',
+      description: 'Corporate Valuation, Transaction Advisory, and M&A Execution, supplemented by SPAC and Capital Market Advisory and Fractional CFO support that converts complex analysis into decisive action.',
       bgImage: '/images/slider/slide-1.jpg'
     }
   ];
@@ -1716,6 +1716,22 @@ const Home = () => {
         icon: 'FiTrendingUp',
         image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
         slug: 'fundraising-support'
+      },
+      {
+        id: 7,
+        title: 'SPAC Advisory',
+        description: 'End-to-end SPAC advisory services including de-SPAC transaction support, valuation, due diligence, and capital market execution for going public via SPAC.',
+        icon: 'FiTrendingUp',
+        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHN0b2NrJTIwbWFya2V0fGVufDB8fHwwfHx8MA%3D%3D',
+        slug: 'spac-advisory'
+      },
+      {
+        id: 8,
+        title: 'Capital Market Advisory',
+        description: 'Strategic capital markets guidance including IPO readiness, equity and debt capital raising, investor relations, and market positioning for public and private companies.',
+        icon: 'FiBarChart',
+        image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNhcGl0YWwlMjBtYXJrZXR8ZW58MHx8MHx8fHww',
+        slug: 'capital-market-advisory'
       }
     ]);
     setLoading(false);
