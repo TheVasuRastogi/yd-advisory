@@ -1661,7 +1661,7 @@ const Home = () => {
     {
       id: 1,
       title: 'WE TURN DATA INTO DECISIONS. YOU TURN DEALS INTO RESULTS.',
-      description: 'Corporate Valuation, Transaction Advisory, and M&A Execution, supplemented by SPAC and Capital Market Advisory and Fractional CFO support that converts complex analysis into decisive action.',
+      description: 'From 409A and business valuations to transaction advisory, M&A, SPAC advisory, and capital market execution, we partner with businesses across their growth journey. Backed by fractional CFO expertise, we help clients structure deals, access capital, and make informed decisions that deliver long-term value.',
       bgImage: '/images/slider/slide-1.jpg'
     }
   ];
