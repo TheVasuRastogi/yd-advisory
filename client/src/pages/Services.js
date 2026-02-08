@@ -1,25 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
   FiArrowRight, 
   FiTrendingUp, 
-  FiShield, 
   FiTarget, 
   FiDollarSign, 
-  FiPieChart, 
   FiBriefcase,
   FiUsers,
   FiBarChart,
-  FiBuilding,
   FiGlobe,
-  FiAward,
-  FiFileText,
-  FiCheckCircle,
-  FiLayers,
-  FiSearch,
-  FiSettings
+  FiSearch
 } from 'react-icons/fi';
 import SEO from '../components/SEO';
 import { serviceSchema } from '../utils/structuredData';
@@ -316,47 +308,6 @@ const ServiceContent = styled.div`
     font-size: ${props => props.theme.fontSizes.base};
   flex: 1;
     letter-spacing: 0.01em;
-  }
-`;
-
-const DeliverablesSection = styled.div`
-  margin: ${props => props.theme.spacing[4]} 0;
-  
-  h4 {
-    font-size: ${props => props.theme.fontSizes.sm};
-    color: ${props => props.theme.colors.primary[700]};
-    margin-bottom: ${props => props.theme.spacing[2]};
-    font-weight: ${props => props.theme.fontWeights.semibold};
-  display: flex;
-  align-items: center;
-    gap: ${props => props.theme.spacing[2]};
-    
-    svg {
-      color: ${props => props.theme.colors.primary[600]};
-    }
-  }
-  
-  ul {
-  list-style: none;
-  padding: 0;
-    margin: 0;
-    
-    li {
-      color: ${props => props.theme.colors.gray[600]};
-      font-size: ${props => props.theme.fontSizes.xs};
-      line-height: 1.5;
-      margin-bottom: ${props => props.theme.spacing[1]};
-      padding-left: ${props => props.theme.spacing[4]};
-  position: relative;
-  
-  &::before {
-        content: '•';
-        color: ${props => props.theme.colors.primary[500]};
-        font-weight: bold;
-    position: absolute;
-    left: 0;
-      }
-    }
   }
 `;
 

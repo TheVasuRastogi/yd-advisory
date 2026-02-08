@@ -12,7 +12,6 @@ import {
   FiPieChart, 
   FiBriefcase,
   FiUsers,
-  FiClock,
   FiAward,
   FiBarChart,
   FiMail,
@@ -886,6 +885,7 @@ const ServiceDetail = () => {
     }, 500);
 
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   if (loading) {

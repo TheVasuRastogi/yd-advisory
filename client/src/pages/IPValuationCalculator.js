@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiArrowLeft, FiPieChart, FiTrendingUp, FiDollarSign, FiPercent, FiCalendar, FiMail, FiPhone, FiUser, FiShield, FiTarget, FiZap, FiX, FiCheck } from 'react-icons/fi';
+import { FiArrowLeft, FiPieChart, FiTrendingUp, FiDollarSign, FiPercent, FiMail, FiPhone, FiUser, FiShield, FiTarget, FiX, FiCheck } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 

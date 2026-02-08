@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FiPhone, FiMail, FiMapPin, FiLinkedin } from 'react-icons/fi';
@@ -137,61 +137,6 @@ const ValuationSectionHeader = styled.div`
     max-width: 600px;
     margin: 0 auto;
     line-height: 1.6;
-  }
-`;
-
-const ContactFormStyled = styled.form`
-  max-width: 800px;
-  margin: 0 auto;
-  background: ${props => props.theme.colors.white};
-  border: 1px solid ${props => props.theme.colors.gray[200]};
-  border-radius: ${props => props.theme.borderRadius.xl};
-  padding: ${props => props.theme.spacing[8]};
-  box-shadow: ${props => props.theme.shadows.sm};
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: ${props => props.theme.spacing[4]};
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    grid-template-columns: 1fr;
-    padding: ${props => props.theme.spacing[6]};
-  }
-  
-  label {
-    font-weight: 600;
-    color: ${props => props.theme.colors.gray[700]};
-    margin-bottom: ${props => props.theme.spacing[2]};
-    display: block;
-  }
-  input, textarea {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid ${props => props.theme.colors.gray[300]};
-    border-radius: 10px;
-    font-size: 1rem;
-    &.error { border-color: ${props => props.theme.colors.error || '#ef4444'}; }
-  }
-  textarea {
-    grid-column: 1 / -1;
-    min-height: 140px;
-    resize: vertical;
-  }
-  button {
-    grid-column: 1 / -1;
-    background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
-    color: ${props => props.theme.colors.white};
-    padding: 14px 20px;
-    border: none;
-    border-radius: ${props => props.theme.borderRadius.lg};
-    font-weight: 700;
-    cursor: pointer;
-  }
-  .error-text {
-    grid-column: 1 / -1;
-    color: ${props => props.theme.colors.error || '#ef4444'};
-    font-size: 0.85rem;
-    margin-top: -6px;
-    margin-bottom: 10px;
   }
 `;
 

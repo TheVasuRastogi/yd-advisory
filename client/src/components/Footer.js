@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { openMailto, openTel, handleInteractiveLink } from '../utils/linkHelpers';
-import { FiArrowRight, FiPhone, FiMail, FiMapPin, FiClock, FiLinkedin, FiCheck, FiX } from 'react-icons/fi';
+import { FiArrowRight, FiPhone, FiMail, FiMapPin, FiLinkedin, FiCheck, FiX } from 'react-icons/fi';
 import { newsletterService } from '../services/api';
 
 const FooterContainer = styled.footer`

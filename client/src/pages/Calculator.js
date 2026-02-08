@@ -1,27 +1,16 @@
+/* eslint-disable default-case */
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { 
-  FiDollarSign, 
-  FiTrendingUp, 
   FiTarget, 
-  FiShield, 
-  FiBarChart, 
   FiArrowRight, 
   FiArrowLeft,
   FiCheck,
-  FiGlobe,
-  FiBuilding,
-  FiUsers,
-  FiAward,
   FiMail,
-  FiPhone,
-  FiClock,
-  FiPrinter,
-  FiLinkedin
+  FiClock
 } from 'react-icons/fi';
 import SEO from '../components/SEO';
-import ValuationRequestForm from '../components/ValuationRequestForm';
 
 const CalculatorContainer = styled.div`
   padding-top: 120px;
@@ -147,30 +136,6 @@ const BenefitItem = styled.li`
       color: ${props => props.theme.colors.primary[800]};
       font-weight: 600;
     }
-  }
-`;
-
-const StatRow = styled.div`
-  display: none;
-`;
-
-const StatBox = styled.div`
-  background: ${props => props.theme.colors.white};
-  border: 1px solid ${props => props.theme.colors.primary[200]};
-  border-radius: 12px;
-  padding: ${props => props.theme.spacing[5]};
-  text-align: left;
-  box-shadow: 0 6px 18px rgba(20, 184, 166, 0.08);
-  
-  .value {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: ${props => props.theme.colors.primary[700]};
-    margin-bottom: ${props => props.theme.spacing[1]};
-  }
-  .label {
-    font-size: 0.85rem;
-    color: ${props => props.theme.colors.gray[600]};
   }
 `;
 
@@ -511,138 +476,6 @@ const Button = styled.button`
     min-height: 48px;
     font-size: 0.95rem;
     padding: 12px 20px;
-  }
-`;
-
-const ResultsSection = styled.div`
-  text-align: center;
-  padding: ${props => props.theme.spacing[8]} 0;
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    padding: ${props => props.theme.spacing[6]} 0;
-  }
-  
-  h2 {
-    font-size: 2.5rem;
-  font-weight: 800;
-    color: ${props => props.theme.colors.primary[800]};
-    margin-bottom: ${props => props.theme.spacing[4]};
-    
-    @media (max-width: ${props => props.theme.breakpoints.sm}) {
-      font-size: 2rem;
-      line-height: 1.2;
-    }
-  }
-  
-  .valuation-amount {
-    font-size: 4rem;
-    font-weight: 900;
-    background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  margin-bottom: ${props => props.theme.spacing[6]};
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-      font-size: 3rem;
-      line-height: 1.1;
-    }
-  }
-  
-  p {
-    font-size: 1.125rem;
-    color: ${props => props.theme.colors.gray[600]};
-    margin-bottom: ${props => props.theme.spacing[8]};
-    line-height: 1.6;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-      font-size: 1rem;
-      line-height: 1.5;
-      margin-bottom: ${props => props.theme.spacing[6]};
-    }
-  }
-`;
-
-const ContactSection = styled.div`
-  background: ${props => props.theme.colors.primary[50]};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  border: 1px solid ${props => props.theme.colors.primary[200]};
-`;
-
-const ContactTitle = styled.h3`
-  font-size: ${props => props.theme.fontSizes.xl};
-  color: ${props => props.theme.colors.primary[800]};
-  margin-bottom: ${props => props.theme.spacing[4]};
-  text-align: center;
-  font-weight: 700;
-`;
-
-const ContactDescription = styled.p`
-  color: ${props => props.theme.colors.gray[600]};
-  text-align: center;
-  margin-bottom: ${props => props.theme.spacing[6]};
-  line-height: 1.6;
-`;
-
-const ContactForm = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: ${props => props.theme.spacing[4]};
-  margin-bottom: ${props => props.theme.spacing[6]};
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    grid-template-columns: 1fr;
-  }
-  
-  textarea {
-    grid-column: 1 / -1;
-  }
-`;
-
-const ContactInfo = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: ${props => props.theme.spacing[4]};
-  margin-bottom: ${props => props.theme.spacing[6]};
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const ContactItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing[3]};
-  padding: ${props => props.theme.spacing[4]};
-  background: ${props => props.theme.colors.white};
-  border-radius: ${props => props.theme.borderRadius.md};
-  border: 1px solid ${props => props.theme.colors.gray[200]};
-  
-  svg {
-    font-size: ${props => props.theme.fontSizes.lg};
-    color: ${props => props.theme.colors.primary[600]};
-    flex-shrink: 0;
-  }
-  
-  div {
-    display: flex;
-    flex-direction: column;
-    gap: ${props => props.theme.spacing[1]};
-    
-    strong {
-      font-size: ${props => props.theme.fontSizes.sm};
-      color: ${props => props.theme.colors.primary[700]};
-      font-weight: 600;
-    }
-    
-    span {
-      font-size: ${props => props.theme.fontSizes.sm};
-      color: ${props => props.theme.colors.gray[600]};
-    }
   }
 `;
 
@@ -1026,7 +859,7 @@ const Calculator = () => {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isCalculating, setIsCalculating] = useState(false);
+  const [, setIsCalculating] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [valuationRange, setValuationRange] = useState({ min: 0, max: 0 });
   const [rating, setRating] = useState(0);
@@ -1114,6 +947,7 @@ const Calculator = () => {
       const calculatedRange = calculateValuationRange();
       setValuationRange(calculatedRange);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showReport, valuationRange.min, valuationRange.max]);
 
   const steps = [
@@ -1282,8 +1116,6 @@ const Calculator = () => {
       legal: '',
       regulatory: '',
       economic: '',
-      technology: '',
-      market: '',
       financial: '',
       strategic: '',
       operational: '',

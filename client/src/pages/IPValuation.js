@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiCheck, FiArrowRight, FiTrendingUp, FiShield, FiTarget, FiZap, FiX, FiClock } from 'react-icons/fi';
+import { FiArrowRight, FiTarget, FiZap, FiX, FiClock } from 'react-icons/fi';
 import SEO from '../components/SEO';
 
 const IPValuationContainer = styled.div`
@@ -341,6 +341,7 @@ const ModalButton = styled.button`
 `;
 
 const IPValuation = () => {
+  // eslint-disable-next-line no-unused-vars
   const [selectedTool, setSelectedTool] = useState(null);
   const [showComingSoon, setShowComingSoon] = useState(false);
 

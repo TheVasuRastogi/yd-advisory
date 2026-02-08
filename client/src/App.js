@@ -4,7 +4,6 @@ import { ThemeProvider } from 'styled-components';
 import { HelmetProvider } from 'react-helmet-async';
 import theme from './styles/theme';
 import GlobalStyle from './styles/GlobalStyle';
-import SEO from './components/SEO';
 
 // Components
 import Header from './components/Header';
@@ -22,7 +21,6 @@ import TeamMemberDetail from './pages/TeamMemberDetail';
 import Contact from './pages/Contact';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
-import BlogPost from './pages/BlogPost';
 import Calculator from './pages/Calculator';
 import ValuationCalculator from './pages/ValuationCalculator';
 import IPValuation from './pages/IPValuation';

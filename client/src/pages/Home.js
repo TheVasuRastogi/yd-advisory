@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FiArrowRight, FiCheckCircle, FiTrendingUp, FiShield, FiUsers, FiAward, FiTarget, FiDollarSign, FiPieChart, FiBriefcase, FiMail, FiPhone, FiMapPin, FiClock, FiBarChart, FiDownload } from 'react-icons/fi';
-import { servicesService } from '../services/api';
+import { FiArrowRight, FiCheckCircle, FiTrendingUp, FiShield, FiUsers, FiTarget, FiDollarSign, FiPieChart, FiBriefcase, FiMail, FiPhone, FiMapPin, FiBarChart, FiDownload } from 'react-icons/fi';
 import SEO from '../components/SEO';
 import { organizationSchema, websiteSchema, localBusinessSchema } from '../utils/structuredData';
 import BrochureDownloadModal from '../components/BrochureDownloadModal';
@@ -803,46 +802,6 @@ const MissionCtaButton = styled(Link)`
   }
 `;
 
-const StatsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: ${props => props.theme.spacing[8]};
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 ${props => props.theme.spacing[4]};
-  
-  @media (max-width: ${props => props.theme.breakpoints.lg}) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const StatCard = styled.div`
-  text-align: center;
-  padding: ${props => props.theme.spacing[6]};
-  
-  svg {
-    font-size: ${props => props.theme.fontSizes['4xl']};
-    color: ${props => props.theme.colors.primary[600]};
-    margin-bottom: ${props => props.theme.spacing[4]};
-  }
-  
-  h3 {
-    font-size: ${props => props.theme.fontSizes['3xl']};
-    font-weight: ${props => props.theme.fontWeights.bold};
-    color: ${props => props.theme.colors.primary[700]};
-    margin-bottom: ${props => props.theme.spacing[2]};
-  }
-  
-  p {
-    color: ${props => props.theme.colors.gray[600]};
-    font-weight: ${props => props.theme.fontWeights.medium};
-  }
-`;
-
 const ServicesSection = styled.section`
   padding: ${props => props.theme.spacing[16]} 0;
   background: ${props => props.theme.colors.gray[50]};
@@ -1200,49 +1159,6 @@ const TeamShowcaseContent = styled.div`
   }
 `;
 
-const TeamMemberCard = styled.div`
-  background: ${props => props.theme.colors.white};
-  border-radius: ${props => props.theme.borderRadius.xl};
-  padding: ${props => props.theme.spacing[8]};
-  text-align: center;
-  box-shadow: ${props => props.theme.shadows.lg};
-  border: 1px solid ${props => props.theme.colors.gray[200]};
-  transition: all ${props => props.theme.transitions.base};
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: ${props => props.theme.shadows.xl};
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    padding: ${props => props.theme.spacing[6]};
-    max-width: 100%;
-  }
-`;
-
-const TeamMemberImage = styled.div.attrs(props => ({
-  style: {
-    backgroundImage: `url(${props.image})`
-  }
-}))`
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background-size: cover;
-  background-position: center;
-  margin: 0 auto ${props => props.theme.spacing[4]};
-  border: 4px solid ${props => props.theme.colors.primary[200]};
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto ${props => props.theme.spacing[3]};
-  }
-`;
-
 const TeamMemberImageSquare = styled.div.attrs(props => ({
   style: {
     backgroundImage: `url(${props.image})`
@@ -1273,25 +1189,6 @@ const TeamMemberImageSquare = styled.div.attrs(props => ({
     width: 280px;
     height: 280px;
   }
-`;
-
-const TeamMemberName = styled.h3`
-  font-size: ${props => props.theme.fontSizes.xl};
-  color: ${props => props.theme.colors.primary[800]};
-  margin-bottom: ${props => props.theme.spacing[2]};
-  font-weight: 600;
-`;
-
-const TeamMemberPosition = styled.p`
-  color: ${props => props.theme.colors.primary[600]};
-  font-weight: 500;
-  margin-bottom: ${props => props.theme.spacing[4]};
-`;
-
-const TeamMemberBio = styled.p`
-  color: ${props => props.theme.colors.gray[600]};
-  line-height: 1.6;
-  font-size: ${props => props.theme.fontSizes.sm};
 `;
 
 // Calculator Showcase Section
@@ -1387,62 +1284,6 @@ const CalculatorStepsButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 1.5rem;
-`;
-
-const CalculatorShowcaseContent = styled.div`
-  h2 {
-    font-size: ${props => props.theme.fontSizes['4xl']};
-    color: ${props => props.theme.colors.primary[800]};
-    margin-bottom: ${props => props.theme.spacing[6]};
-    font-weight: 800;
-    
-    @media (max-width: ${props => props.theme.breakpoints.sm}) {
-      font-size: ${props => props.theme.fontSizes['3xl']};
-    }
-  }
-  
-  p {
-    font-size: ${props => props.theme.fontSizes.lg};
-    color: ${props => props.theme.colors.gray[600]};
-    line-height: 1.6;
-    margin-bottom: ${props => props.theme.spacing[8]};
-  }
-`;
-
-const CalculatorPreview = styled.div`
-  background: ${props => props.theme.colors.white};
-  border-radius: ${props => props.theme.borderRadius.xl};
-  padding: ${props => props.theme.spacing[8]};
-  box-shadow: ${props => props.theme.shadows.lg};
-  border: 1px solid ${props => props.theme.colors.gray[200]};
-`;
-
-const CalculatorIcon = styled.div`
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary[500]}, ${props => props.theme.colors.primary[600]});
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto ${props => props.theme.spacing[4]};
-  color: ${props => props.theme.colors.white};
-  font-size: ${props => props.theme.fontSizes['3xl']};
-`;
-
-const CalculatorTitle = styled.h3`
-  font-size: ${props => props.theme.fontSizes.xl};
-  color: ${props => props.theme.colors.primary[800]};
-  margin-bottom: ${props => props.theme.spacing[3]};
-  text-align: center;
-  font-weight: 600;
-`;
-
-const CalculatorDescription = styled.p`
-  color: ${props => props.theme.colors.gray[600]};
-  text-align: center;
-  line-height: 1.6;
-  margin-bottom: ${props => props.theme.spacing[6]};
 `;
 
 // Contact Preview Section

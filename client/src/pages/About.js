@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FiCheckCircle, FiTrendingUp, FiShield, FiUsers, FiAward, FiTarget, FiBriefcase, FiGlobe, FiDollarSign, FiBarChart, FiClock, FiStar } from 'react-icons/fi';
+import { FiShield, FiUsers, FiTarget, FiBriefcase, FiDollarSign, FiBarChart, FiClock, FiStar } from 'react-icons/fi';
 import SEO from '../components/SEO';
 import { organizationSchema, personSchema } from '../utils/structuredData';
 
@@ -38,11 +38,6 @@ const HeroContent = styled.div`
   }
 `;
 
-const AboutSection = styled.section`
-  padding: ${props => props.theme.spacing[16]} 0;
-  background: ${props => props.theme.colors.white};
-`;
-
 const SectionContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
@@ -59,21 +54,6 @@ const TwoColumnGrid = styled.div`
   @media (max-width: ${props => props.theme.breakpoints.lg}) {
     grid-template-columns: 1fr;
     gap: ${props => props.theme.spacing[8]};
-  }
-`;
-
-const TextContent = styled.div`
-  h2 {
-    font-size: ${props => props.theme.fontSizes['4xl']};
-    color: ${props => props.theme.colors.primary[800]};
-    margin-bottom: ${props => props.theme.spacing[6]};
-  }
-  
-  p {
-    font-size: ${props => props.theme.fontSizes.lg};
-    color: ${props => props.theme.colors.gray[600]};
-    line-height: 1.7;
-    margin-bottom: ${props => props.theme.spacing[6]};
   }
 `;
 
@@ -211,33 +191,6 @@ const FounderContent = styled.div`
   padding: 0 ${props => props.theme.spacing[4]};
 `;
 
-const FounderHeader = styled.div`
-  text-align: center;
-  margin-bottom: ${props => props.theme.spacing[12]};
-  
-  h2 {
-    font-size: ${props => props.theme.fontSizes['4xl']};
-    color: ${props => props.theme.colors.primary[800]};
-    margin-bottom: ${props => props.theme.spacing[4]};
-  }
-  
-  h3 {
-    font-size: ${props => props.theme.fontSizes['2xl']};
-    color: ${props => props.theme.colors.primary[600]};
-    margin-bottom: ${props => props.theme.spacing[6]};
-    font-weight: ${props => props.theme.fontWeights.medium};
-  }
-  
-  p {
-    font-size: ${props => props.theme.fontSizes.lg};
-    color: ${props => props.theme.colors.gray[600]};
-    line-height: 1.7;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-`;
-
-
 const WhatSheDoesSection = styled.section`
   padding: ${props => props.theme.spacing[16]} 0;
   background: ${props => props.theme.colors.gray[50]};
@@ -293,79 +246,6 @@ const ServiceCard = styled.div`
   }
 `;
 
-const TrackRecordSection = styled.section`
-  padding: ${props => props.theme.spacing[16]} 0;
-  background: ${props => props.theme.colors.white};
-`;
-
-const TrackRecordContent = styled.div`
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 ${props => props.theme.spacing[4]};
-`;
-
-const StatsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: ${props => props.theme.spacing[8]};
-  margin-bottom: ${props => props.theme.spacing[12]};
-  
-  @media (max-width: ${props => props.theme.breakpoints.lg}) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const StatCard = styled.div`
-  text-align: center;
-  padding: ${props => props.theme.spacing[6]};
-  background: ${props => props.theme.colors.primary[50]};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  border: 1px solid ${props => props.theme.colors.primary[200]};
-  
-  h3 {
-    font-size: ${props => props.theme.fontSizes['3xl']};
-    color: ${props => props.theme.colors.primary[700]};
-    margin-bottom: ${props => props.theme.spacing[2]};
-    font-weight: ${props => props.theme.fontWeights.bold};
-  }
-  
-  p {
-    color: ${props => props.theme.colors.gray[600]};
-    font-size: ${props => props.theme.fontSizes.sm};
-    margin: 0;
-    font-weight: ${props => props.theme.fontWeights.medium};
-  }
-`;
-
-const OutcomesSection = styled.div`
-  margin-top: ${props => props.theme.spacing[12]};
-`;
-
-const OutcomeCard = styled.div`
-  background: ${props => props.theme.colors.gray[50]};
-  border: 1px solid ${props => props.theme.colors.gray[200]};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing[6]};
-  margin-bottom: ${props => props.theme.spacing[6]};
-  
-  h4 {
-    font-size: ${props => props.theme.fontSizes.lg};
-    color: ${props => props.theme.colors.primary[800]};
-    margin-bottom: ${props => props.theme.spacing[3]};
-    font-weight: ${props => props.theme.fontWeights.semibold};
-  }
-  
-  p {
-    color: ${props => props.theme.colors.gray[600]};
-    line-height: 1.6;
-    margin: 0;
-  }
-`;
-
 const HowSheWorksSection = styled.section`
   padding: ${props => props.theme.spacing[16]} 0;
   background: ${props => props.theme.colors.gray[50]};
@@ -405,141 +285,6 @@ const PrincipleCard = styled.div`
     color: ${props => props.theme.colors.gray[600]};
     line-height: 1.6;
     margin: 0;
-  }
-`;
-
-const CareerTimelineSection = styled.section`
-  padding: ${props => props.theme.spacing[16]} 0;
-  background: ${props => props.theme.colors.white};
-`;
-
-const CareerTimelineContent = styled.div`
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 ${props => props.theme.spacing[4]};
-`;
-
-const TimelineContainer = styled.div`
-  position: relative;
-  padding-left: ${props => props.theme.spacing[8]};
-  
-  &::before {
-    content: '';
-    position: absolute;
-    left: 30px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(180deg, ${props => props.theme.colors.primary[300]}, ${props => props.theme.colors.primary[500]});
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    padding-left: ${props => props.theme.spacing[6]};
-    
-    &::before {
-      left: 20px;
-    }
-  }
-`;
-
-const TimelineItem = styled.div`
-  position: relative;
-  margin-bottom: ${props => props.theme.spacing[12]};
-  padding-left: ${props => props.theme.spacing[8]};
-  
-  &:last-child {
-    margin-bottom: 0;
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    padding-left: ${props => props.theme.spacing[6]};
-    margin-bottom: ${props => props.theme.spacing[8]};
-  }
-`;
-
-const TimelineIcon = styled.div`
-  position: absolute;
-  left: -30px;
-  top: 0;
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: ${props => props.theme.shadows.lg};
-  border: 4px solid ${props => props.theme.colors.white};
-  z-index: 2;
-  
-  svg {
-    color: ${props => props.theme.colors.white};
-    font-size: ${props => props.theme.fontSizes.xl};
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    left: -20px;
-    width: 40px;
-    height: 40px;
-    
-    svg {
-      font-size: ${props => props.theme.fontSizes.lg};
-    }
-  }
-`;
-
-const TimelineContent = styled.div`
-  background: ${props => props.theme.colors.white};
-  border: 1px solid ${props => props.theme.colors.gray[200]};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing[6]};
-  box-shadow: ${props => props.theme.shadows.sm};
-  transition: all ${props => props.theme.transitions.base};
-  
-  &:hover {
-    box-shadow: ${props => props.theme.shadows.md};
-    transform: translateY(-2px);
-    border-color: ${props => props.theme.colors.primary[300]};
-  }
-  
-  h3 {
-    font-size: ${props => props.theme.fontSizes.xl};
-    color: ${props => props.theme.colors.primary[800]};
-    margin-bottom: ${props => props.theme.spacing[2]};
-    font-weight: ${props => props.theme.fontWeights.semibold};
-    line-height: 1.3;
-  }
-  
-  h4 {
-    font-size: ${props => props.theme.fontSizes.lg};
-    color: ${props => props.theme.colors.primary[600]};
-    margin-bottom: ${props => props.theme.spacing[3]};
-    font-weight: ${props => props.theme.fontWeights.medium};
-    display: inline-block;
-    background: ${props => props.theme.colors.primary[50]};
-    padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[3]};
-    border-radius: ${props => props.theme.borderRadius.md};
-    border: 1px solid ${props => props.theme.colors.primary[200]};
-  }
-  
-  p {
-    color: ${props => props.theme.colors.gray[600]};
-    line-height: 1.6;
-    margin: 0;
-    font-size: ${props => props.theme.fontSizes.base};
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    padding: ${props => props.theme.spacing[4]};
-    
-    h3 {
-      font-size: ${props => props.theme.fontSizes.lg};
-    }
-    
-    h4 {
-      font-size: ${props => props.theme.fontSizes.base};
-      padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[2]};
-    }
   }
 `;
 

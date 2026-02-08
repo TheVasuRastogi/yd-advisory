@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { FiSend, FiCheckCircle } from 'react-icons/fi';
 

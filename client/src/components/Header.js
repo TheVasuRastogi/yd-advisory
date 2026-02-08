@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { openMailto, openTel, handleInteractiveLink } from '../utils/linkHelpers';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiMenu, FiX, FiPhone, FiMail, FiClock, FiLinkedin, FiChevronDown } from 'react-icons/fi';
+import { FiMenu, FiX, FiPhone, FiMail, FiLinkedin, FiChevronDown } from 'react-icons/fi';
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -142,33 +142,6 @@ const Logo = styled(Link)`
     
     img {
       height: 40px;
-    }
-  }
-`;
-
-const LogoText = styled.div`
-  h1 {
-    font-size: ${props => props.theme.fontSizes['2xl']};
-    font-weight: ${props => props.theme.fontWeights.bold};
-    color: ${props => props.theme.colors.primary[700]};
-    margin: 0;
-    line-height: 1;
-  }
-  
-  p {
-    font-size: ${props => props.theme.fontSizes.sm};
-    color: ${props => props.theme.colors.gray[600]};
-    margin: 0;
-    font-weight: ${props => props.theme.fontWeights.medium};
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    h1 {
-      font-size: ${props => props.theme.fontSizes.xl};
-    }
-    
-    p {
-      font-size: ${props => props.theme.fontSizes.xs};
     }
   }
 `;
