@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FiLinkedin, FiFacebook, FiMail } from 'react-icons/fi';
+import { FiLinkedin, FiMail } from 'react-icons/fi';
 
 const TeamContainer = styled.div`
   padding-top: 120px;
@@ -178,43 +178,6 @@ const TeamTagline = styled.p`
   font-size: ${props => props.theme.fontSizes.sm};
   margin-bottom: ${props => props.theme.spacing[4]};
   font-weight: 400;
-`;
-
-const TeamBio = styled.p`
-  color: ${props => props.theme.colors.gray[600]};
-  line-height: 1.6;
-  margin-bottom: ${props => props.theme.spacing[4]};
-  font-size: ${props => props.theme.fontSizes.sm};
-  text-align: center;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-`;
-
-const SocialLinks = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: ${props => props.theme.spacing[3]};
-`;
-
-const SocialLink = styled.a`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: ${props => props.theme.colors.primary[100]};
-  color: ${props => props.theme.colors.primary[600]};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  transition: all ${props => props.theme.transitions.fast};
-  
-  &:hover {
-    background: ${props => props.theme.colors.primary[600]};
-    color: ${props => props.theme.colors.white};
-    transform: translateY(-2px);
-  }
 `;
 
 const QuickContactButton = styled.a`

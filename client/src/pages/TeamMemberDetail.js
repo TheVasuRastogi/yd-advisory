@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { FiArrowLeft, FiLinkedin, FiFacebook, FiMail, FiPhone } from 'react-icons/fi';
+import { FiArrowLeft, FiLinkedin, FiFacebook, FiMail } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 
 const Container = styled.div`

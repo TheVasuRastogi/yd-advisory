@@ -360,31 +360,6 @@ const DeliverablesSection = styled.div`
   }
 `;
 
-const UseCasesSection = styled.div`
-  margin: ${props => props.theme.spacing[4]} 0;
-  
-  h4 {
-    font-size: ${props => props.theme.fontSizes.sm};
-    color: ${props => props.theme.colors.primary[700]};
-    margin-bottom: ${props => props.theme.spacing[2]};
-    font-weight: ${props => props.theme.fontWeights.semibold};
-  display: flex;
-  align-items: center;
-    gap: ${props => props.theme.spacing[2]};
-    
-    svg {
-      color: ${props => props.theme.colors.primary[600]};
-    }
-  }
-  
-  p {
-    color: ${props => props.theme.colors.gray[600]};
-    font-size: ${props => props.theme.fontSizes.xs};
-    line-height: 1.5;
-    margin: 0;
-  }
-`;
-
 const ToolsSection = styled.section`
   padding: ${props => props.theme.spacing[16]} 0;
   background: ${props => props.theme.colors.gray[50]};

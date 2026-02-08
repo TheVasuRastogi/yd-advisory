@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FiHome, FiUser, FiBriefcase, FiFileText, FiPieChart, FiMail, FiShield, FiBook, FiMap } from 'react-icons/fi';
+import { FiHome, FiUser, FiBriefcase, FiFileText, FiPieChart, FiMail, FiMap } from 'react-icons/fi';
 import SEO from '../components/SEO';
 
 const SitemapContainer = styled.div`
