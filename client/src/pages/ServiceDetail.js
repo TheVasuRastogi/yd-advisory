@@ -823,12 +823,12 @@ const ServiceDetail = () => {
     },
     'spac-advisory': {
       id: 9,
-      title: 'SPAC Advisory',
+      title: 'SPAC Merger & Advisory',
       category: 'Capital Markets',
-      description: 'End-to-end SPAC advisory services including de-SPAC transaction support, valuation, due diligence, and capital market execution for going public via SPAC.',
+      description: 'End-to-end SPAC merger & advisory services including de-SPAC transaction support, valuation, due diligence, and capital market execution for going public via SPAC.',
       icon: FiTrendingUp,
       features: [
-        'SPAC formation and IPO support',
+        'SPAC formation, merger & IPO support',
         'Target identification and valuation',
         'De-SPAC transaction execution',
         'Due diligence and regulatory compliance',

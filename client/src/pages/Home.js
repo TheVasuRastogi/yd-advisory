@@ -1661,7 +1661,7 @@ const Home = () => {
     {
       id: 1,
       title: 'WE TURN DATA INTO DECISIONS. YOU TURN DEALS INTO RESULTS.',
-      description: 'From 409A and business valuations to transaction advisory, M&A, SPAC advisory, and capital market execution, we partner with businesses across their growth journey. Backed by fractional CFO expertise, we help clients structure deals, access capital, and make informed decisions that deliver long-term value.',
+      description: 'From 409A and business valuations to transaction advisory, M&A, SPAC merger & advisory, and capital market execution, we partner with businesses across their growth journey. Backed by fractional CFO expertise, we help clients structure deals, access capital, and make informed decisions that deliver long-term value.',
       bgImage: '/images/slider/slide-1.jpg'
     }
   ];
@@ -1719,8 +1719,8 @@ const Home = () => {
       },
       {
         id: 7,
-        title: 'SPAC Advisory',
-        description: 'End-to-end SPAC advisory services including de-SPAC transaction support, valuation, due diligence, and capital market execution for going public via SPAC.',
+        title: 'SPAC Merger & Advisory',
+        description: 'End-to-end SPAC merger & advisory services including de-SPAC transaction support, valuation, due diligence, and capital market execution for going public via SPAC.',
         icon: 'FiTrendingUp',
         image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHN0b2NrJTIwbWFya2V0fGVufDB8fHwwfHx8MA%3D%3D',
         slug: 'spac-advisory'

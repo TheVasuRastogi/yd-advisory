@@ -961,13 +961,13 @@ const Services = () => {
     },
     {
       id: 9,
-      title: 'SPAC Advisory',
-      description: 'End-to-end SPAC advisory services including de-SPAC transaction support, valuation, due diligence, and capital market execution for going public via SPAC.',
+      title: 'SPAC Merger & Advisory',
+      description: 'End-to-end SPAC merger & advisory services including de-SPAC transaction support, valuation, due diligence, and capital market execution for going public via SPAC.',
       icon: FiTrendingUp,
       slug: 'spac-advisory',
       image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHN0b2NrJTIwbWFya2V0fGVufDB8fHwwfHx8MA%3D%3D',
       deliverables: [
-        'SPAC formation and IPO support',
+        'SPAC formation, merger & IPO support',
         'Target identification and valuation',
         'De-SPAC transaction execution',
         'Due diligence and regulatory compliance',
