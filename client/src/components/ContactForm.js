@@ -450,7 +450,7 @@ const ContactForm = () => {
             <Label htmlFor="serviceInterest">Service Interest</Label>
             <Select id="serviceInterest" {...register('serviceInterest')}>
               <option value="">Select a service</option>
-              <option value="business-valuations-409a">Business & Complex Valuations (incl. 409A)</option>
+              <option value="business-valuations-409a">409A Valuation</option>
               <option value="financial-modelling-forecasting">Financial Modelling & Forecasting</option>
               <option value="ma-advisory">M&A Advisory (Buy- & Sell-Side)</option>
               <option value="transaction-advisory-due-diligence">Transaction Advisory & Due Diligence</option>

@@ -186,7 +186,12 @@ const DownloadButton = styled.a`
   }
 `;
 
-const BrochureDownloadModal = ({ isOpen, onClose, brochureUrl }) => {
+const DEFAULT_BROCHURE_URL = '/documents/YD-Advisory-Brochure.pdf';
+const DEFAULT_BROCHURE_FILENAME = 'YD-Advisory-Brochure.pdf';
+
+const BrochureDownloadModal = ({ isOpen, onClose, brochureUrl = DEFAULT_BROCHURE_URL, brochureTitle = 'Our Brochure' }) => {
+  const url = brochureUrl || DEFAULT_BROCHURE_URL;
+  const downloadFilename = url.split('/').pop() || DEFAULT_BROCHURE_FILENAME;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [submitMessage, setSubmitMessage] = useState('');
@@ -232,16 +237,13 @@ const BrochureDownloadModal = ({ isOpen, onClose, brochureUrl }) => {
   };
 
   const handleDownload = () => {
-    // Create a temporary link to download the brochure
     const link = document.createElement('a');
-    link.href = '/documents/YD-Advisory-Brochure.pdf'; // Your actual PDF file
-    link.download = 'YD-Advisory-Brochure.pdf';
-    link.target = '_blank'; // Open in new tab as fallback
+    link.href = url;
+    link.download = downloadFilename;
+    link.target = '_blank';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    
-    // Close modal after download
     setTimeout(() => {
       onClose();
       setShowDownload(false);
@@ -277,10 +279,11 @@ const BrochureDownloadModal = ({ isOpen, onClose, brochureUrl }) => {
             </CloseButton>
 
             <ModalHeader>
-              <h2>Download Our Brochure</h2>
+              <h2>Download {brochureTitle}</h2>
               <p>
-                Get our comprehensive brochure with detailed information about our services, 
-                team, and how we can help your business grow.
+                {brochureTitle === 'Our Brochure'
+                  ? 'Get our comprehensive brochure with detailed information about our services, team, and how we can help your business grow.'
+                  : `Get our ${brochureTitle.toLowerCase()} with detailed information and how we can help you.`}
               </p>
             </ModalHeader>
 

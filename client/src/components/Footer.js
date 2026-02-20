@@ -383,7 +383,7 @@ const Footer = () => {
           <FooterSection>
             <h3>Services</h3>
             <FooterLinks style={{ maxWidth: '280px' }}>
-              <li><Link to="/services/business-valuations-409a">Business & Complex Valuations (incl. 409A)</Link></li>
+              <li><Link to="/services/business-valuations-409a">409A Valuation</Link></li>
               <li><Link to="/services/financial-modelling-forecasting">Financial Modelling & Forecasting</Link></li>
               <li><Link to="/services/ma-advisory">M&A Advisory (Buy- & Sell-Side)</Link></li>
               <li><Link to="/services/transaction-advisory-due-diligence">Transaction Advisory & Due Diligence</Link></li>

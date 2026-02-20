@@ -758,8 +758,8 @@ const Services = () => {
   const services = [
     {
       id: 1,
-      title: 'Business & Complex Valuations (incl. 409A)',
-      description: 'Independent, audit-ready valuations for fundraises, ESOPs, and compliance. Clear reports for investors and regulators.',
+      title: '409A Valuation',
+      description: 'Independent, audit-ready valuations for fundraises, ESOPs, and compliance.',
       icon: FiDollarSign,
       slug: 'business-valuations-409a',
       image: 'https://images.unsplash.com/photo-1590650516494-0c8e4a4dd67e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGNvcnBvcmF0ZXxlbnwwfHwwfHx8MA%3D%3D',
@@ -916,18 +916,33 @@ const Services = () => {
         'Regulatory compliance and reporting'
       ],
       useCases: 'IPO preparation · Capital raising · Investor relations · Public company advisory'
+    },
+    {
+      id: 11,
+      title: 'Comprehensive Business Valuation & Advisory Services',
+      description: 'End-to-end business valuation and strategic advisory - from fairness opinions and M&A support to restructuring and dispute resolution, with clear, defensible reports.',
+      icon: FiDollarSign,
+      slug: 'comprehensive-business-valuation-advisory',
+      image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&auto=format&fit=crop&q=60',
+      deliverables: [
+        'Fairness opinions and valuation reports',
+        'M&A and restructuring advisory',
+        'Dispute resolution and litigation support',
+        'Strategic value assessment and recommendations'
+      ],
+      useCases: 'M&A · Restructuring · Disputes · Strategic planning · Board decisions'
     }
   ];
 
-  // Priority: Business & Complex Valuations, Financial Modeling & Forecasting, Fractional CFO & Board Support, M&A Advisory
+  // Priority: 409A Valuation, Financial Modeling & Forecasting, Fractional CFO & Board Support, M&A Advisory
   const priorityOrder = [
-    'business & complex valuations (incl. 409a)',
+    '409a valuation',
     'financial modeling & forecasting',
     'fractional cfo & board support',
     'm&a advisory'
   ];
   const titleAliases = {
-    'business & complex valuations (incl. 409a)': 'business & complex valuations (incl. 409a)',
+    '409a valuation': '409a valuation',
     'specialized valuation': 'business valuation',
     'financial modelling & forecasting': 'financial modeling & forecasting',
     'fractional cfo & board support': 'fractional cfo & board support',
@@ -948,7 +963,7 @@ const Services = () => {
     <ServicesContainer>
       <SEO
         title="Financial Services - YD Advisory Dubai"
-        description="Comprehensive financial services including Business & Complex Valuations (incl. 409A), Financial Modelling & Forecasting, M&A Advisory, Transaction Advisory & Due Diligence, Fractional CFO & Board Support, Corporate Finance & Cross-Border Structuring, Feasibility & Option Papers, and Specialized Valuation. Expert guidance across UAE, India, Singapore, and more."
+        description="Comprehensive financial services including 409A Valuation, Financial Modelling & Forecasting, M&A Advisory, Transaction Advisory & Due Diligence, Fractional CFO & Board Support, Corporate Finance & Cross-Border Structuring, Feasibility & Option Papers, and Specialized Valuation. Expert guidance across UAE, India, Singapore, and more."
         keywords="business valuation Dubai, 409A valuation UAE, financial services Dubai, financial modeling Dubai, M&A advisory Dubai, transaction advisory UAE, fractional CFO Dubai, corporate finance UAE, feasibility studies Dubai, specialized valuation UAE"
         url="https://ydadvisory.ae/services"
         structuredData={services.map(service => serviceSchema(service))}

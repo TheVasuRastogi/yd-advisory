@@ -466,54 +466,89 @@ const MobileDropdownButton = styled.button`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  min-height: 48px;
   padding: ${props => props.theme.spacing[3]} 0;
+  padding-right: ${props => props.theme.spacing[2]};
   border-bottom: 1px solid ${props => props.theme.colors.primary[700]};
-  transition: all ${props => props.theme.transitions.fast};
+  transition: color 0.3s ease, background 0.3s ease;
   cursor: pointer;
+  text-align: left;
   
   &:hover {
     color: ${props => props.theme.colors.primary[300]};
-    padding-left: ${props => props.theme.spacing[2]};
+    background: rgba(255, 255, 255, 0.05);
   }
   
   svg {
-    transition: transform ${props => props.theme.transitions.fast};
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
     transform: ${props => props.$isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
   }
   
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     font-size: ${props => props.theme.fontSizes.base};
     padding: ${props => props.theme.spacing[2]} 0;
+    min-height: 44px;
   }
 `;
 
-const MobileDropdownMenu = styled(motion.div)`
-  background: ${props => props.theme.colors.primary[800]};
+const MobileDropdownPanel = styled.div`
+  overflow: hidden;
+  max-height: ${props => props.$isOpen ? '500px' : '0'};
+  transition: max-height 0.3s ease;
   padding-left: ${props => props.theme.spacing[4]};
+  background: ${props => props.theme.colors.primary[800]};
+`;
+
+const MobileDropdownMenu = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+  
+  li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 `;
 
 const MobileDropdownItem = styled(Link)`
+  padding-left: ${props => props.theme.spacing[4]};
+  margin: 0 -${props => props.theme.spacing[4]};
+  padding-left: ${props => props.theme.spacing[4]};
   color: ${props => props.theme.colors.primary[200]};
   font-size: ${props => props.theme.fontSizes.base};
   font-weight: ${props => props.theme.fontWeights.medium};
   text-decoration: none;
-  display: block;
-  padding: ${props => props.theme.spacing[2]} 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  padding: ${props => props.theme.spacing[3]} ${props => props.theme.spacing[4]};
   border-bottom: 1px solid ${props => props.theme.colors.primary[700]};
-  transition: all ${props => props.theme.transitions.fast};
+  transition: color 0.3s ease, background 0.3s ease;
+  box-sizing: border-box;
+  
+  &:last-child {
+    border-bottom: none;
+  }
   
   &:hover {
     color: ${props => props.theme.colors.primary[300]};
-    padding-left: ${props => props.theme.spacing[2]};
+    background: rgba(255, 255, 255, 0.05);
   }
   
   &.active {
     color: ${props => props.theme.colors.primary[300]};
+    background: rgba(255, 255, 255, 0.08);
   }
   
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     font-size: ${props => props.theme.fontSizes.sm};
-    padding: ${props => props.theme.spacing[1]} 0;
+    min-height: 44px;
+    padding: ${props => props.theme.spacing[2]} ${props => props.theme.spacing[4]};
   }
 `;
 
@@ -818,69 +853,85 @@ const Header = () => {
               <MobileNavItem>
                 <MobileNavLink to="/services">Services</MobileNavLink>
               </MobileNavItem>
-              <MobileNavItem>
+              <MobileNavItem style={{ position: 'relative', zIndex: 1 }}>
                 <MobileDropdownButton 
+                  type="button"
                   onClick={toggleMobileResourcesDropdown}
                   $isOpen={isMobileResourcesDropdownOpen}
+                  aria-expanded={isMobileResourcesDropdownOpen}
+                  aria-controls="mobile-resources-panel"
+                  id="mobile-resources-toggle"
                 >
                   Resources
-                  <FiChevronDown />
+                  <FiChevronDown aria-hidden="true" />
                 </MobileDropdownButton>
-                <AnimatePresence>
-                  {isMobileResourcesDropdownOpen && (
-                    <MobileDropdownMenu
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
+                <MobileDropdownPanel 
+                  $isOpen={isMobileResourcesDropdownOpen}
+                  id="mobile-resources-panel"
+                  role="region"
+                  aria-labelledby="mobile-resources-toggle"
+                >
+                  <MobileDropdownMenu>
+                    <li>
                       <MobileDropdownItem 
                         to="/blog" 
                         className={location.pathname.startsWith('/blog') ? 'active' : ''}
+                        onClick={() => setIsMobileMenuOpen(false)}
                       >
                         Blog
                       </MobileDropdownItem>
+                    </li>
+                    <li>
                       <MobileDropdownItem 
                         to="/templates" 
                         className={location.pathname.startsWith('/templates') ? 'active' : ''}
+                        onClick={() => setIsMobileMenuOpen(false)}
                       >
                         Financial Templates
                       </MobileDropdownItem>
-                    </MobileDropdownMenu>
-                  )}
-                </AnimatePresence>
+                    </li>
+                  </MobileDropdownMenu>
+                </MobileDropdownPanel>
               </MobileNavItem>
-              <MobileNavItem>
+              <MobileNavItem style={{ position: 'relative', zIndex: 1 }}>
                 <MobileDropdownButton 
+                  type="button"
                   onClick={toggleMobileValuatorDropdown}
                   $isOpen={isMobileValuatorDropdownOpen}
+                  aria-expanded={isMobileValuatorDropdownOpen}
+                  aria-controls="mobile-valuator-panel"
+                  id="mobile-valuator-toggle"
                 >
                   YD Valuator
-                  <FiChevronDown />
+                  <FiChevronDown aria-hidden="true" />
                 </MobileDropdownButton>
-                <AnimatePresence>
-                  {isMobileValuatorDropdownOpen && (
-                    <MobileDropdownMenu
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
+                <MobileDropdownPanel 
+                  $isOpen={isMobileValuatorDropdownOpen}
+                  id="mobile-valuator-panel"
+                  role="region"
+                  aria-labelledby="mobile-valuator-toggle"
+                >
+                  <MobileDropdownMenu>
+                    <li>
                       <MobileDropdownItem 
                         to="/calculator" 
                         className={location.pathname.startsWith('/calculator') ? 'active' : ''}
+                        onClick={() => setIsMobileMenuOpen(false)}
                       >
                         Business Valuation Tool
                       </MobileDropdownItem>
+                    </li>
+                    <li>
                       <MobileDropdownItem 
                         to="/ip-valuation" 
                         className={location.pathname.startsWith('/ip-valuation') ? 'active' : ''}
+                        onClick={() => setIsMobileMenuOpen(false)}
                       >
                         IP Valuation Tool
                       </MobileDropdownItem>
-                    </MobileDropdownMenu>
-                  )}
-                </AnimatePresence>
+                    </li>
+                  </MobileDropdownMenu>
+                </MobileDropdownPanel>
               </MobileNavItem>
               <MobileNavItem>
                 <MobileNavLink to="/transparency">Transparency</MobileNavLink>

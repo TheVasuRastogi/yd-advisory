@@ -1512,7 +1512,7 @@ const Home = () => {
     setFeaturedServices([
       {
         id: 1,
-        title: 'Business & Complex Valuations (incl. 409A)',
+        title: '409A Valuation',
         description: 'Independent, defensible valuations for fundraises, ESOPs, compliance, and strategic decisions - using DCF, comparables, and precedent transactions.',
         icon: 'FiDollarSign',
         image: 'https://images.unsplash.com/photo-1590650516494-0c8e4a4dd67e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGNvcnBvcmF0ZXxlbnwwfHwwfHx8MA%3D%3D',

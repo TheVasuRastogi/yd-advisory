@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { getSubServicesList, PARENT_SLUG } from '../data/comprehensiveBusinessValuationSubServices';
 import { 
   FiArrowRight, 
   FiCheckCircle, 
@@ -17,8 +18,10 @@ import {
   FiMail,
   FiPhone,
   FiCalendar,
-  FiGlobe
+  FiGlobe,
+  FiDownload
 } from 'react-icons/fi';
+import BrochureDownloadModal from '../components/BrochureDownloadModal';
 
 const PageContainer = styled.div`
   padding-top: 120px;
@@ -377,20 +380,230 @@ const ContactItem = styled.div`
   }
 `;
 
+const SubServicesSection = styled.section`
+  padding: ${props => props.theme.spacing[16]} 0;
+  background: linear-gradient(180deg, ${props => props.theme.colors.primary[50]} 0%, ${props => props.theme.colors.white} 100%);
+  border-top: 1px solid ${props => props.theme.colors.primary[100]};
+`;
+
+const SubServicesSectionHeader = styled.div`
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto ${props => props.theme.spacing[12]};
+  padding: 0 ${props => props.theme.spacing[4]};
+  
+  h2 {
+    font-size: ${props => props.theme.fontSizes['3xl']};
+    color: ${props => props.theme.colors.primary[800]};
+    margin-bottom: ${props => props.theme.spacing[4]};
+    font-weight: ${props => props.theme.fontWeights.bold};
+    letter-spacing: -0.02em;
+  }
+  
+  p {
+    font-size: ${props => props.theme.fontSizes.lg};
+    color: ${props => props.theme.colors.gray[600]};
+    line-height: 1.6;
+  }
+`;
+
+const SubServicesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: ${props => props.theme.spacing[6]};
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 ${props => props.theme.spacing[4]};
+  
+  @media (max-width: ${props => props.theme.breakpoints.xl}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    grid-template-columns: 1fr;
+    gap: ${props => props.theme.spacing[4]};
+  }
+`;
+
+const SubServiceCardLink = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+  padding: 0;
+  background: ${props => props.theme.colors.white};
+  border-radius: 12px;
+  border: 1px solid ${props => props.theme.colors.gray[200]};
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  position: relative;
+  
+  &:hover {
+    border-color: ${props => props.theme.colors.primary[200]};
+    box-shadow: 0 12px 24px rgba(20, 184, 166, 0.12);
+    transform: translateY(-4px);
+    
+    .sub-service-arrow {
+      transform: translateX(4px);
+    }
+    
+    .sub-service-title {
+      color: ${props => props.theme.colors.primary[700]};
+    }
+  }
+`;
+
+const SubServiceCardContent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: ${props => props.theme.spacing[6]} ${props => props.theme.spacing[6]} ${props => props.theme.spacing[4]};
+`;
+
+const SubServiceTitle = styled.h3`
+  font-size: 1.0625rem;
+  color: ${props => props.theme.colors.primary[800]};
+  margin-bottom: ${props => props.theme.spacing[3]};
+  font-weight: ${props => props.theme.fontWeights.semibold};
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.25s ease;
+`;
+
+const SubServiceDesc = styled.p`
+  font-size: 0.875rem;
+  color: ${props => props.theme.colors.gray[600]};
+  line-height: 1.5;
+  margin: 0;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+
+const SubServiceCardFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${props => props.theme.spacing[2]};
+  padding: ${props => props.theme.spacing[4]} ${props => props.theme.spacing[6]};
+  border-top: 1px solid ${props => props.theme.colors.primary[200]};
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
+  color: ${props => props.theme.colors.white};
+`;
+
+const SubServiceLearnMore = styled.span`
+  font-size: 0.8125rem;
+  color: ${props => props.theme.colors.white};
+  font-weight: 600;
+  transition: opacity 0.25s ease;
+  
+  ${SubServiceCardLink}:hover & {
+    opacity: 0.95;
+  }
+`;
+
+const SubServiceArrow = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  color: ${props => props.theme.colors.white};
+  transition: transform 0.25s ease, background 0.25s ease;
+  
+  svg {
+    font-size: 1.125rem;
+  }
+  
+  ${SubServiceCardLink}:hover & {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateX(4px);
+  }
+`;
+
+const BrochureDownloadSection = styled.section`
+  padding: ${props => props.theme.spacing[10]} 0;
+  background: ${props => props.theme.colors.primary[50]};
+  border-top: 1px solid ${props => props.theme.colors.primary[200]};
+`;
+
+const BrochureCard = styled.div`
+  max-width: 700px;
+  margin: 0 auto;
+  padding: ${props => props.theme.spacing[8]};
+  background: ${props => props.theme.colors.white};
+  border-radius: ${props => props.theme.borderRadius.xl};
+  border: 1px solid ${props => props.theme.colors.primary[200]};
+  box-shadow: ${props => props.theme.shadows.md};
+  text-align: center;
+  
+  h3 {
+    font-size: ${props => props.theme.fontSizes['2xl']};
+    color: ${props => props.theme.colors.primary[800]};
+    margin-bottom: ${props => props.theme.spacing[3]};
+  }
+  
+  p {
+    font-size: ${props => props.theme.fontSizes.lg};
+    color: ${props => props.theme.colors.gray[600]};
+    line-height: 1.6;
+    margin-bottom: ${props => props.theme.spacing[6]};
+  }
+`;
+
+const BrochureButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing[2]};
+  padding: ${props => props.theme.spacing[4]} ${props => props.theme.spacing[8]};
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
+  color: ${props => props.theme.colors.white};
+  border: none;
+  border-radius: ${props => props.theme.borderRadius.lg};
+  font-size: ${props => props.theme.fontSizes.lg};
+  font-weight: ${props => props.theme.fontWeights.semibold};
+  cursor: pointer;
+  transition: all ${props => props.theme.transitions.base};
+  box-shadow: ${props => props.theme.shadows.md};
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${props => props.theme.shadows.lg};
+    background: linear-gradient(135deg, ${props => props.theme.colors.primary[700]}, ${props => props.theme.colors.primary[800]});
+  }
+  
+  svg {
+    font-size: ${props => props.theme.fontSizes.xl};
+  }
+`;
+
 const ServiceDetail = () => {
   const { slug } = useParams();
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isBrochureModalOpen, setIsBrochureModalOpen] = useState(false);
 
   // Service data - in a real app, this would come from an API
   const servicesData = {
     // FOR COMPANIES SERVICES
     'business-valuations-409a': {
       id: 1,
-      title: 'Business Valuations & 409A Valuation',
+      title: '409A Valuation',
       category: 'For Companies',
-      description: 'Independent, audit-ready valuations built for fundraises, ESOPs, and compliance.',
+      description: 'Independent, audit-ready valuations for fundraises, ESOPs, and compliance.',
       icon: FiDollarSign,
+      brochureUrl: '/documents/409a-valuation-brochure-YD.pdf',
+      brochureTitle: '409A Valuation Brochure',
       features: [
         'Independent audit-ready valuations',
         '409A compliance valuations',
@@ -871,6 +1084,32 @@ const ServiceDetail = () => {
         { icon: FiTrendingUp, title: 'Optimal Execution', description: 'Maximize value through strategic timing and positioning.' },
         { icon: FiShield, title: 'Regulatory Support', description: 'Navigate complex regulatory requirements with confidence.' }
       ]
+    },
+    'comprehensive-business-valuation-advisory': {
+      id: 17,
+      title: 'Comprehensive Business Valuation & Advisory Services',
+      category: 'For Companies',
+      description: 'End-to-end business valuation and strategic advisory - from fairness opinions and M&A support to restructuring and dispute resolution, with clear, defensible reports.',
+      icon: FiDollarSign,
+      features: [
+        'Fairness opinions and independent valuation reports',
+        'M&A valuation and deal structuring advisory',
+        'Restructuring and turnaround valuation',
+        'Dispute resolution and litigation support',
+        'Strategic value assessment for board decisions',
+        'IVSC-aligned methodologies and audit-ready documentation'
+      ],
+      process: [
+        { step: 1, title: 'Scope & Engagement', description: 'Define valuation purpose, scope, and deliverables aligned with your transaction or decision.' },
+        { step: 2, title: 'Analysis & Modeling', description: 'Apply appropriate methodologies (DCF, market, precedent) with clear assumptions and sensitivities.' },
+        { step: 3, title: 'Report & Opinion', description: 'Deliver comprehensive valuation report and fairness opinion where required.' },
+        { step: 4, title: 'Advisory Support', description: 'Support negotiations, board presentations, and ongoing strategic decisions.' }
+      ],
+      benefits: [
+        { icon: FiDollarSign, title: 'Defensible Valuations', description: 'Clear, audit-ready valuations that hold up in boardrooms and negotiations.' },
+        { icon: FiShield, title: 'Independent Advice', description: 'Unbiased fairness opinions and strategic guidance when it matters most.' },
+        { icon: FiTarget, title: 'End-to-End Support', description: 'From initial assessment through transaction or dispute resolution.' }
+      ]
     }
   };
 
@@ -949,7 +1188,7 @@ const ServiceDetail = () => {
               <ContentBlock>
                 <h2>What We Offer</h2>
                 <p>
-                  Our {service.title.toLowerCase()} service provides comprehensive solutions 
+                  Our {service.title} service provides comprehensive solutions 
                   tailored to your unique financial situation and goals. We combine 
                   industry expertise with personalized attention to deliver results 
                   that matter to you.
@@ -984,6 +1223,31 @@ const ServiceDetail = () => {
           </TwoColumnGrid>
         </ContentContainer>
       </ContentSection>
+
+      {/* Brochure Download - only when service has brochureUrl */}
+      {service.brochureUrl && (
+        <BrochureDownloadSection>
+          <ContentContainer>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <BrochureCard>
+                <h3>Download {service.brochureTitle || 'Brochure'}</h3>
+                <p>
+                  Get our {service.brochureTitle?.toLowerCase() || 'brochure'} with detailed information about this service and how we can help you.
+                </p>
+                <BrochureButton type="button" onClick={() => setIsBrochureModalOpen(true)}>
+                  <FiDownload />
+                  Download {service.brochureTitle || 'Brochure'}
+                </BrochureButton>
+              </BrochureCard>
+            </motion.div>
+          </ContentContainer>
+        </BrochureDownloadSection>
+      )}
 
       {/* Process Section */}
       <ProcessSection>
@@ -1064,6 +1328,51 @@ const ServiceDetail = () => {
         </ContentContainer>
       </BenefitsSection>
 
+      {/* Sub-Services Section - only for Comprehensive Business Valuation & Advisory */}
+      {slug === PARENT_SLUG && (
+        <SubServicesSection>
+          <ContentContainer>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <SubServicesSectionHeader>
+                <h2>Our Sub-Services</h2>
+                <p>
+                  Under Comprehensive Business Valuation & Advisory, we offer specialized expertise across the following areas. Click any service to learn more.
+                </p>
+              </SubServicesSectionHeader>
+              <SubServicesGrid>
+                {getSubServicesList().map((sub, index) => (
+                  <motion.div
+                    key={sub.slug}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.03 }}
+                    viewport={{ once: true }}
+                  >
+                    <SubServiceCardLink to={`/services/${PARENT_SLUG}/${sub.slug}`}>
+                      <SubServiceCardContent>
+                        <SubServiceTitle className="sub-service-title">{sub.title}</SubServiceTitle>
+                        <SubServiceDesc>{sub.shortDescription}</SubServiceDesc>
+                      </SubServiceCardContent>
+                      <SubServiceCardFooter>
+                        <SubServiceLearnMore>Learn more</SubServiceLearnMore>
+                        <SubServiceArrow className="sub-service-arrow">
+                          <FiArrowRight />
+                        </SubServiceArrow>
+                      </SubServiceCardFooter>
+                    </SubServiceCardLink>
+                  </motion.div>
+                ))}
+              </SubServicesGrid>
+            </motion.div>
+          </ContentContainer>
+        </SubServicesSection>
+      )}
+
       {/* CTA Section */}
       <CtaSection>
         <CtaContent>
@@ -1077,7 +1386,7 @@ const ServiceDetail = () => {
             <p>
               Take the first step towards achieving your financial goals. 
               Contact us today for a free consultation and discover how our 
-              {service.title.toLowerCase()} service can help you succeed.
+              {service.title} service can help you succeed.
             </p>
             <CtaButtons>
               <PrimaryButton to="/contact">
@@ -1104,6 +1413,15 @@ const ServiceDetail = () => {
           </motion.div>
         </CtaContent>
       </CtaSection>
+
+      {service.brochureUrl && (
+        <BrochureDownloadModal
+          isOpen={isBrochureModalOpen}
+          onClose={() => setIsBrochureModalOpen(false)}
+          brochureUrl={service.brochureUrl}
+          brochureTitle={service.brochureTitle || 'Brochure'}
+        />
+      )}
     </PageContainer>
   );
 };
