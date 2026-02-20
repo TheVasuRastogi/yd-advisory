@@ -5,9 +5,6 @@ import { motion } from 'framer-motion';
 import {
   FiArrowRight,
   FiCheckCircle,
-  FiShield,
-  FiTarget,
-  FiDollarSign,
   FiChevronRight,
   FiMail,
   FiPhone,

@@ -11,7 +11,6 @@ import {
   FiUsers,
   FiBarChart,
   FiBriefcase,
-  FiPieChart,
   FiAward,
 } from 'react-icons/fi';
 
