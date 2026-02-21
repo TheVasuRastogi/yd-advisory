@@ -263,17 +263,6 @@ const ServiceImage = styled.div`
     z-index: 1;
   }
 
-  svg {
-    position: relative;
-    z-index: 2;
-    font-size: 2.5rem;
-    color: ${props => props.theme.colors.white};
-    background: rgba(20, 184, 166, 0.18);
-    border-radius: 50%;
-    padding: 0.5rem;
-    box-shadow: 0 2px 8px rgba(20, 184, 166, 0.10);
-  }
-
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     aspect-ratio: unset;
     min-height: unset;
@@ -1021,9 +1010,7 @@ const Services = () => {
                   viewport={{ once: true }}
               >
                 <ServiceCard>
-                  <ServiceImage image={service.image}>
-                    <service.icon />
-                  </ServiceImage>
+                  <ServiceImage image={service.image} />
                   <ServiceContent>
                     <h3>{service.title}</h3>
                     <p>{service.description}</p>

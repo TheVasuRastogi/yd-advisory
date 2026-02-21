@@ -902,13 +902,6 @@ const ServiceImage = styled.div.attrs(props => ({
     bottom: 0;
     background: linear-gradient(135deg, rgba(20, 184, 166, 0.4), rgba(15, 118, 110, 0.5));
   }
-  
-  svg {
-    position: relative;
-    z-index: 2;
-    font-size: ${props => props.theme.fontSizes['4xl']};
-    color: ${props => props.theme.colors.white};
-  }
 `;
 
 const ServiceContent = styled.div`
@@ -1579,16 +1572,6 @@ const Home = () => {
   }, []);
 
 
-  const iconMap = {
-    FiTrendingUp,
-    FiTarget,
-    FiShield,
-    FiDollarSign,
-    FiPieChart,
-    FiBriefcase,
-    FiBarChart
-  };
-
   return (
     <HomeContainer>
       <SEO
@@ -1727,9 +1710,7 @@ const Home = () => {
                 const base = featuredServices.slice(0, 3);
                 const cfo = featuredServices.find(s => s.slug === 'fractional-cfo');
                 const list = cfo ? [...base, cfo] : featuredServices.slice(0, 4);
-                return list.map((service, index) => {
-                const IconComponent = iconMap[service.icon] || FiTrendingUp;
-                return (
+                return list.map((service, index) => (
                   <motion.div
                     key={service.id}
                     initial={{ opacity: 0, y: 30 }}
@@ -1738,9 +1719,7 @@ const Home = () => {
                     viewport={{ once: true }}
                   >
                     <ServiceCard>
-                      <ServiceImage image={service.image}>
-                        <IconComponent />
-                      </ServiceImage>
+                      <ServiceImage image={service.image} />
                       <ServiceContent>
                         <h3>{service.title}</h3>
                         <p>{service.description}</p>
@@ -1750,8 +1729,7 @@ const Home = () => {
                       </ServiceContent>
                     </ServiceCard>
                   </motion.div>
-                );
-              });
+                ));
             })()
             )}
           </ServicesGrid>

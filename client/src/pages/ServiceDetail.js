@@ -59,23 +59,6 @@ const HeroContent = styled.div`
   }
 `;
 
-const ServiceIcon = styled.div`
-  width: 100px;
-  height: 100px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto ${props => props.theme.spacing[6]};
-  backdrop-filter: blur(10px);
-  
-  svg {
-    font-size: ${props => props.theme.fontSizes['4xl']};
-    color: ${props => props.theme.colors.white};
-  }
-`;
-
 const CategoryBadge = styled.div`
   display: inline-block;
   background: rgba(255, 255, 255, 0.2);
@@ -1153,8 +1136,6 @@ const ServiceDetail = () => {
     );
   }
 
-  const IconComponent = service.icon;
-
   return (
     <PageContainer>
       {/* Hero Section */}
@@ -1165,9 +1146,6 @@ const ServiceDetail = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <ServiceIcon>
-              <IconComponent />
-            </ServiceIcon>
             <CategoryBadge>{service.category}</CategoryBadge>
             <h1>{service.title}</h1>
             <p>{service.description}</p>
