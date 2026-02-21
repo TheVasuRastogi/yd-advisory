@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FiArrowRight, FiCheckCircle, FiTrendingUp, FiShield, FiUsers, FiTarget, FiDollarSign, FiPieChart, FiBriefcase, FiMail, FiPhone, FiMapPin, FiBarChart, FiDownload } from 'react-icons/fi';
+import { FiArrowRight, FiCheckCircle, FiUsers, FiMail, FiPhone, FiMapPin, FiBarChart, FiDownload } from 'react-icons/fi';
 import SEO from '../components/SEO';
 import { organizationSchema, websiteSchema, localBusinessSchema } from '../utils/structuredData';
 import BrochureDownloadModal from '../components/BrochureDownloadModal';
