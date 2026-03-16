@@ -32,6 +32,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
 import Sitemap from './pages/Sitemap';
+import Careers from './pages/Careers';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
                 <Route path="/terms" element={<TermsOfService />} />
                 <Route path="/cookies" element={<CookiePolicy />} />
                 <Route path="/sitemap" element={<Sitemap />} />
+                <Route path="/careers" element={<Careers />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

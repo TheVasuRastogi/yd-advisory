@@ -810,6 +810,11 @@ const Header = () => {
                 </NavLink>
               </NavItem>
               <NavItem>
+                <NavLink to="/careers" className={location.pathname === '/careers' ? 'active' : ''}>
+                  Careers
+                </NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink to="/contact" className={location.pathname === '/contact' ? 'active' : ''}>
                   Contact
                 </NavLink>
@@ -935,6 +940,9 @@ const Header = () => {
               </MobileNavItem>
               <MobileNavItem>
                 <MobileNavLink to="/transparency">Transparency</MobileNavLink>
+              </MobileNavItem>
+              <MobileNavItem>
+                <MobileNavLink to="/careers">Careers</MobileNavLink>
               </MobileNavItem>
               <MobileNavItem>
                 <MobileNavLink to="/contact">Contact</MobileNavLink>
