@@ -546,60 +546,6 @@ const InfoCardFooter = styled.div`
   background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(15, 118, 110, 0.03));
 `;
 
-const EmailRow = styled.div`
-  display: inline-flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing[2]};
-  color: ${props => props.theme.colors.gray[700]};
-  flex-wrap: wrap;
-
-  a {
-    color: ${props => props.theme.colors.primary[700]};
-    font-weight: ${props => props.theme.fontWeights.semibold};
-    text-decoration: none;
-    overflow-wrap: anywhere;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-`;
-
-const ContactList = styled.div`
-  position: relative;
-  display: grid;
-  gap: ${props => props.theme.spacing[4]};
-  margin-top: ${props => props.theme.spacing[2]};
-`;
-
-const ContactRow = styled.div`
-  display: grid;
-  grid-template-columns: 1.1fr 1.2fr 1.7fr;
-  gap: ${props => props.theme.spacing[4]};
-  padding: ${props => props.theme.spacing[4]};
-  border-radius: ${props => props.theme.borderRadius.xl};
-  border: 1px solid ${props => props.theme.colors.gray[200]};
-  background: ${props => props.theme.colors.gray[50]};
-
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const ContactLabel = styled.div`
-  font-weight: ${props => props.theme.fontWeights.semibold};
-  color: ${props => props.theme.colors.gray[800]};
-`;
-
-const ContactValue = styled.div`
-  color: ${props => props.theme.colors.gray[700]};
-`;
-
-const ContactNote = styled.div`
-  color: ${props => props.theme.colors.gray[600]};
-  line-height: 1.65;
-`;
-
 const CTAButton = styled(Link)`
   position: relative;
   display: inline-flex;
