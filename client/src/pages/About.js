@@ -286,10 +286,6 @@ const TeamMemberPhoto = styled.img`
   }
 `;
 
-const TeamMemberHeaderText = styled.div`
-  min-width: 0;
-`;
-
 const TeamMemberName = styled.h3`
   margin: 0;
   font-size: ${props => props.theme.fontSizes['3xl']};
