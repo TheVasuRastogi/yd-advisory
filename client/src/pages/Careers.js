@@ -203,14 +203,13 @@ const CareersText = styled.p`
 `;
 
 const JobTableWrapper = styled.div`
-  /* Full-bleed table (edge-to-edge) while other content stays centered */
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  /* Keep table contained to avoid layout overflow artifacts */
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
   position: relative;
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
-  scrollbar-gutter: stable both-edges;
   overscroll-behavior-x: contain;
   touch-action: pan-x;
   border-radius: ${props => props.theme.borderRadius.lg};
@@ -225,43 +224,11 @@ const JobTableWrapper = styled.div`
   scrollbar-width: auto;
   scrollbar-color: ${props => props.theme.colors.gray[400]} ${props => props.theme.colors.gray[100]};
 
-  /* Edge fades to hint horizontal scroll */
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 22px;
-    pointer-events: none;
-    z-index: 2;
-    opacity: 1;
-    transition: opacity ${props => props.theme.transitions.fast};
-  }
-
-  &::before {
-    left: 0;
-    background: linear-gradient(to right, ${props => props.theme.colors.white}, rgba(255, 255, 255, 0));
-  }
-
-  &::after {
-    right: 0;
-    background: linear-gradient(to left, ${props => props.theme.colors.white}, rgba(255, 255, 255, 0));
-  }
-
   /* Desktop: fit content without horizontal scroll */
   @media (min-width: ${props => props.theme.breakpoints.lg}) {
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
     overflow-x: visible;
     padding-left: 0;
     padding-right: 0;
-
-    &::before,
-    &::after {
-      opacity: 0;
-    }
   }
 
   /* Custom scrollbar for mobile friendliness */
