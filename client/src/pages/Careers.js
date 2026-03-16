@@ -401,6 +401,10 @@ const InfoCardHeader = styled.div`
     radial-gradient(circle at 15% 0%, rgba(20, 184, 166, 0.18) 0%, rgba(20, 184, 166, 0.05) 35%, transparent 65%),
     linear-gradient(180deg, rgba(15, 118, 110, 0.08), rgba(255, 255, 255, 0));
   border-bottom: 1px solid ${props => props.theme.colors.gray[200]};
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: ${props => props.theme.spacing[5]} ${props => props.theme.spacing[5]} ${props => props.theme.spacing[3]};
+  }
 `;
 
 const InfoCardHeaderRow = styled.div`
@@ -408,6 +412,14 @@ const InfoCardHeaderRow = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: ${props => props.theme.spacing[4]};
+  min-width: 0;
+
+  /* Mobile: allow badge to wrap under title */
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    row-gap: ${props => props.theme.spacing[3]};
+  }
 `;
 
 const InfoCardTitleWrap = styled.div`
@@ -452,6 +464,10 @@ const InfoCardBadge = styled.div`
   padding: 6px 10px;
   border-radius: 999px;
   white-space: nowrap;
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    margin-left: auto;
+  }
 `;
 
 const InfoCardBody = styled.div`
@@ -467,6 +483,11 @@ const InfoCardBody = styled.div`
     line-height: 1.7;
     margin: 0;
     max-width: 54ch;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: ${props => props.theme.spacing[4]} ${props => props.theme.spacing[5]} ${props => props.theme.spacing[4]};
+    gap: ${props => props.theme.spacing[3]};
   }
 `;
 
@@ -544,6 +565,10 @@ const InfoCardFooter = styled.div`
   padding: ${props => props.theme.spacing[4]} ${props => props.theme.spacing[6]} ${props => props.theme.spacing[6]};
   border-top: 1px solid ${props => props.theme.colors.gray[200]};
   background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(15, 118, 110, 0.03));
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: ${props => props.theme.spacing[4]} ${props => props.theme.spacing[5]} ${props => props.theme.spacing[5]};
+  }
 `;
 
 const CTAButton = styled(Link)`
