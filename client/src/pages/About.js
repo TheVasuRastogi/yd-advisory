@@ -273,16 +273,17 @@ const TeamMemberPhoto = styled.img`
   z-index: 1;
 
   @media (max-width: ${props => props.theme.breakpoints.md}) {
-    /* On stacked/mobile layout, use a consistent banner ratio */
-    height: auto;
+    /* On stacked/mobile layout, show a larger, fully-visible portrait */
+    height: clamp(340px, 44vh, 520px);
     min-height: 0;
-    aspect-ratio: 16 / 9;
-    object-position: 50% 22%;
+    object-fit: contain;
+    object-position: center;
+    background: rgba(15, 118, 110, 0.06);
   }
 
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    aspect-ratio: 4 / 3;
-    object-position: 50% 20%;
+    /* Bigger still on small phones */
+    height: clamp(380px, 52vh, 640px);
   }
 `;
 
