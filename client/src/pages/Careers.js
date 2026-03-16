@@ -353,7 +353,8 @@ const JobTable = styled.table`
 `;
 
 const AfterTableCardsSection = styled.section`
-  margin-top: ${props => props.theme.spacing[10]};
+  /* Standalone section (not visually tied to the table) */
+  margin-top: ${props => props.theme.spacing[14]};
 `;
 
 const AfterTableCardsGrid = styled.div`
@@ -832,143 +833,147 @@ const Careers = () => {
                 </tbody>
               </JobTable>
             </JobTableWrapper>
-
-            <AfterTableCardsSection>
-              <AfterTableCardsGrid>
-                <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }} viewport={{ once: true }}>
-                  <InfoCardHeader>
-                    <InfoCardHeaderRow>
-                      <InfoCardTitleWrap>
-                        <InfoCardIcon aria-hidden="true">
-                          <FiSend />
-                        </InfoCardIcon>
-                        <InfoCardTitle>How to Apply</InfoCardTitle>
-                      </InfoCardTitleWrap>
-                      <InfoCardBadge>Fast track</InfoCardBadge>
-                    </InfoCardHeaderRow>
-                  </InfoCardHeader>
-                  <InfoCardBody>
-                    <p>Share your CV plus a short note on why YD Advisory. If relevant, include examples of models, decks or writing you’re proud of.</p>
-                    <ContactHighlight>
-                      <ContactHighlightLabel>Careers email</ContactHighlightLabel>
-                      <ContactHighlightRow>
-                        <FiMail aria-hidden="true" />
-                        <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
-                      </ContactHighlightRow>
-                    </ContactHighlight>
-                  </InfoCardBody>
-                  <InfoCardFooter>
-                    <CTAButton to="/contact">
-                      Talk to our team <FiArrowRight />
-                    </CTAButton>
-                  </InfoCardFooter>
-                </InfoCard>
-
-                <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.05 }} viewport={{ once: true }}>
-                  <InfoCardHeader>
-                    <InfoCardHeaderRow>
-                      <InfoCardTitleWrap>
-                        <InfoCardIcon aria-hidden="true">
-                          <FiUsers />
-                        </InfoCardIcon>
-                        <InfoCardTitle>Campus &amp; Early Careers</InfoCardTitle>
-                      </InfoCardTitleWrap>
-                      <InfoCardBadge>Internships</InfoCardBadge>
-                    </InfoCardHeaderRow>
-                  </InfoCardHeader>
-                  <InfoCardBody>
-                    <p>We partner with leading universities for internships and analyst roles. For campus programs, reach out to the careers desk.</p>
-                    <ContactHighlight>
-                      <ContactHighlightLabel>Campus contact</ContactHighlightLabel>
-                      <ContactHighlightRow>
-                        <FiMail aria-hidden="true" />
-                        <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
-                      </ContactHighlightRow>
-                    </ContactHighlight>
-                  </InfoCardBody>
-                  <InfoCardFooter>
-                    <CTAButton to="/contact">
-                      Explore early roles <FiArrowRight />
-                    </CTAButton>
-                  </InfoCardFooter>
-                </InfoCard>
-
-                <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.1 }} viewport={{ once: true }}>
-                  <InfoCardHeader>
-                    <InfoCardHeaderRow>
-                      <InfoCardTitleWrap>
-                        <InfoCardIcon aria-hidden="true">
-                          <FiBriefcase />
-                        </InfoCardIcon>
-                        <InfoCardTitle>Experienced Hires</InfoCardTitle>
-                      </InfoCardTitleWrap>
-                      <InfoCardBadge>Always open</InfoCardBadge>
-                    </InfoCardHeaderRow>
-                  </InfoCardHeader>
-                  <InfoCardBody>
-                    <p>If you have experience in valuations, investment banking, transaction advisory, Big‑4 deals or high‑growth finance teams, we’d love to hear from you.</p>
-                    <ContactHighlight>
-                      <ContactHighlightLabel>Send your profile</ContactHighlightLabel>
-                      <ContactHighlightRow>
-                        <FiMail aria-hidden="true" />
-                        <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
-                      </ContactHighlightRow>
-                      <CompactContactNote>Include a short note on the work you enjoy plus your latest CV (or deal sheet).</CompactContactNote>
-                    </ContactHighlight>
-                  </InfoCardBody>
-                  <InfoCardFooter>
-                    <CTAButton to="/contact">
-                      Connect with us <FiArrowRight />
-                    </CTAButton>
-                  </InfoCardFooter>
-                </InfoCard>
-
-                <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.15 }} viewport={{ once: true }}>
-                  <InfoCardHeader>
-                    <InfoCardHeaderRow>
-                      <InfoCardTitleWrap>
-                        <InfoCardIcon aria-hidden="true">
-                          <FiMapPin />
-                        </InfoCardIcon>
-                        <InfoCardTitle>Careers Contact Overview</InfoCardTitle>
-                      </InfoCardTitleWrap>
-                      <InfoCardBadge>Get routed</InfoCardBadge>
-                    </InfoCardHeaderRow>
-                  </InfoCardHeader>
-                  <InfoCardBody>
-                    <p>Not sure which role fits you best? Reach out and we’ll route your profile to the right opportunity.</p>
-                    <ContactHighlight>
-                      <ContactHighlightLabel>Contacts</ContactHighlightLabel>
-                      <CompactContactList>
-                        <CompactContactItem>
-                          <CompactContactTitle>General careers &amp; experienced hires</CompactContactTitle>
-                          <ContactHighlightRow>
-                            <FiMail aria-hidden="true" />
-                            <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
-                          </ContactHighlightRow>
-                          <CompactContactNote>Full‑time roles across valuation, transaction advisory, modelling and operations.</CompactContactNote>
-                        </CompactContactItem>
-                        <CompactContactItem>
-                          <CompactContactTitle>Campus &amp; early careers</CompactContactTitle>
-                          <ContactHighlightRow>
-                            <FiMail aria-hidden="true" />
-                            <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
-                          </ContactHighlightRow>
-                          <CompactContactNote>Internships, analyst programs and campus partnerships.</CompactContactNote>
-                        </CompactContactItem>
-                      </CompactContactList>
-                    </ContactHighlight>
-                  </InfoCardBody>
-                  <InfoCardFooter>
-                    <CTAButton to="/contact">
-                      Contact careers team <FiArrowRight />
-                    </CTAButton>
-                  </InfoCardFooter>
-                </InfoCard>
-              </AfterTableCardsGrid>
-            </AfterTableCardsSection>
           </CareersColumn>
         </CareersLayout>
+
+        <AfterTableCardsSection>
+          <CareersSectionTitle>Careers Contact & Applications</CareersSectionTitle>
+          <CareersText>
+            Apply in minutes, or reach out directly and we’ll route your profile to the right opportunity.
+          </CareersText>
+          <AfterTableCardsGrid>
+            <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }} viewport={{ once: true }}>
+              <InfoCardHeader>
+                <InfoCardHeaderRow>
+                  <InfoCardTitleWrap>
+                    <InfoCardIcon aria-hidden="true">
+                      <FiSend />
+                    </InfoCardIcon>
+                    <InfoCardTitle>How to Apply</InfoCardTitle>
+                  </InfoCardTitleWrap>
+                  <InfoCardBadge>Fast track</InfoCardBadge>
+                </InfoCardHeaderRow>
+              </InfoCardHeader>
+              <InfoCardBody>
+                <p>Share your CV plus a short note on why YD Advisory. If relevant, include examples of models, decks or writing you’re proud of.</p>
+                <ContactHighlight>
+                  <ContactHighlightLabel>Careers email</ContactHighlightLabel>
+                  <ContactHighlightRow>
+                    <FiMail aria-hidden="true" />
+                    <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
+                  </ContactHighlightRow>
+                </ContactHighlight>
+              </InfoCardBody>
+              <InfoCardFooter>
+                <CTAButton to="/contact">
+                  Talk to our team <FiArrowRight />
+                </CTAButton>
+              </InfoCardFooter>
+            </InfoCard>
+
+            <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.05 }} viewport={{ once: true }}>
+              <InfoCardHeader>
+                <InfoCardHeaderRow>
+                  <InfoCardTitleWrap>
+                    <InfoCardIcon aria-hidden="true">
+                      <FiUsers />
+                    </InfoCardIcon>
+                    <InfoCardTitle>Campus &amp; Early Careers</InfoCardTitle>
+                  </InfoCardTitleWrap>
+                  <InfoCardBadge>Internships</InfoCardBadge>
+                </InfoCardHeaderRow>
+              </InfoCardHeader>
+              <InfoCardBody>
+                <p>We partner with leading universities for internships and analyst roles. For campus programs, reach out to the careers desk.</p>
+                <ContactHighlight>
+                  <ContactHighlightLabel>Campus contact</ContactHighlightLabel>
+                  <ContactHighlightRow>
+                    <FiMail aria-hidden="true" />
+                    <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
+                  </ContactHighlightRow>
+                </ContactHighlight>
+              </InfoCardBody>
+              <InfoCardFooter>
+                <CTAButton to="/contact">
+                  Explore early roles <FiArrowRight />
+                </CTAButton>
+              </InfoCardFooter>
+            </InfoCard>
+
+            <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.1 }} viewport={{ once: true }}>
+              <InfoCardHeader>
+                <InfoCardHeaderRow>
+                  <InfoCardTitleWrap>
+                    <InfoCardIcon aria-hidden="true">
+                      <FiBriefcase />
+                    </InfoCardIcon>
+                    <InfoCardTitle>Experienced Hires</InfoCardTitle>
+                  </InfoCardTitleWrap>
+                  <InfoCardBadge>Always open</InfoCardBadge>
+                </InfoCardHeaderRow>
+              </InfoCardHeader>
+              <InfoCardBody>
+                <p>If you have experience in valuations, investment banking, transaction advisory, Big‑4 deals or high‑growth finance teams, we’d love to hear from you.</p>
+                <ContactHighlight>
+                  <ContactHighlightLabel>Send your profile</ContactHighlightLabel>
+                  <ContactHighlightRow>
+                    <FiMail aria-hidden="true" />
+                    <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
+                  </ContactHighlightRow>
+                  <CompactContactNote>Include a short note on the work you enjoy plus your latest CV (or deal sheet).</CompactContactNote>
+                </ContactHighlight>
+              </InfoCardBody>
+              <InfoCardFooter>
+                <CTAButton to="/contact">
+                  Connect with us <FiArrowRight />
+                </CTAButton>
+              </InfoCardFooter>
+            </InfoCard>
+
+            <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.15 }} viewport={{ once: true }}>
+              <InfoCardHeader>
+                <InfoCardHeaderRow>
+                  <InfoCardTitleWrap>
+                    <InfoCardIcon aria-hidden="true">
+                      <FiMapPin />
+                    </InfoCardIcon>
+                    <InfoCardTitle>Careers Contact Overview</InfoCardTitle>
+                  </InfoCardTitleWrap>
+                  <InfoCardBadge>Get routed</InfoCardBadge>
+                </InfoCardHeaderRow>
+              </InfoCardHeader>
+              <InfoCardBody>
+                <p>Not sure which role fits you best? Reach out and we’ll route your profile to the right opportunity.</p>
+                <ContactHighlight>
+                  <ContactHighlightLabel>Contacts</ContactHighlightLabel>
+                  <CompactContactList>
+                    <CompactContactItem>
+                      <CompactContactTitle>General careers &amp; experienced hires</CompactContactTitle>
+                      <ContactHighlightRow>
+                        <FiMail aria-hidden="true" />
+                        <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
+                      </ContactHighlightRow>
+                      <CompactContactNote>Full‑time roles across valuation, transaction advisory, modelling and operations.</CompactContactNote>
+                    </CompactContactItem>
+                    <CompactContactItem>
+                      <CompactContactTitle>Campus &amp; early careers</CompactContactTitle>
+                      <ContactHighlightRow>
+                        <FiMail aria-hidden="true" />
+                        <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
+                      </ContactHighlightRow>
+                      <CompactContactNote>Internships, analyst programs and campus partnerships.</CompactContactNote>
+                    </CompactContactItem>
+                  </CompactContactList>
+                </ContactHighlight>
+              </InfoCardBody>
+              <InfoCardFooter>
+                <CTAButton to="/contact">
+                  Contact careers team <FiArrowRight />
+                </CTAButton>
+              </InfoCardFooter>
+            </InfoCard>
+          </AfterTableCardsGrid>
+        </AfterTableCardsSection>
       </ContentSection>
     </PageContainer>
   );
