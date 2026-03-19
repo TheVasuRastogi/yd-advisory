@@ -2,374 +2,843 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FiLinkedin, FiMail } from 'react-icons/fi';
+import {
+  FiLinkedin, FiMail, FiArrowRight,
+  FiShield, FiTarget, FiClock,
+  FiBriefcase, FiGlobe, FiAward, FiUsers,
+} from 'react-icons/fi';
+import SEO from '../components/SEO';
 
-const TeamContainer = styled.div`
+/* ════════════════════════════════════════════════════════════════
+   PAGE WRAPPER
+════════════════════════════════════════════════════════════════ */
+
+const Page = styled.div`
   padding-top: 120px;
   min-height: 100vh;
 `;
 
+/* ════════════════════════════════════════════════════════════════
+   HERO
+════════════════════════════════════════════════════════════════ */
+
 const HeroSection = styled.section`
-  background: linear-gradient(135deg, rgba(20, 184, 166, 0.6) 0%, rgba(15, 118, 110, 0.7) 100%), 
-              url('/images/pg-title-bg.jpg') center/cover;
-  color: ${props => props.theme.colors.white};
-  padding: ${props => props.theme.spacing[20]} 0;
+  background: linear-gradient(
+    135deg,
+    ${p => p.theme.colors.primary[800]} 0%,
+    ${p => p.theme.colors.primary[900]} 60%,
+    #0a2a2a 100%
+  );
+  padding: ${p => p.theme.spacing[20]} 0 ${p => p.theme.spacing[16]};
   text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  /* subtle radial glow */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(20, 184, 166, 0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* decorative arc at bottom */
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: ${p => p.theme.colors.gray[50]};
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
 `;
 
-const HeroContent = styled.div`
-  max-width: 800px;
+const HeroInner = styled.div`
+  max-width: 760px;
   margin: 0 auto;
-  padding: 0 ${props => props.theme.spacing[4]};
-  width: 100%;
-  box-sizing: border-box;
-  
+  padding: 0 ${p => p.theme.spacing[4]};
+  position: relative;
+  z-index: 1;
+
   h1 {
     font-size: 3rem;
-    margin-bottom: ${props => props.theme.spacing[6]};
-    color: ${props => props.theme.colors.white};
-    font-weight: 800;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    
-    @media (max-width: ${props => props.theme.breakpoints.md}) {
-      font-size: 2.5rem;
+    font-weight: ${p => p.theme.fontWeights.extrabold};
+    color: ${p => p.theme.colors.white};
+    margin-bottom: ${p => p.theme.spacing[5]};
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    font-family: ${p => p.theme.fonts.secondary};
+
+    @media (max-width: ${p => p.theme.breakpoints.md}) {
+      font-size: 2.4rem;
     }
-    
-    @media (max-width: ${props => props.theme.breakpoints.sm}) {
-      font-size: 2rem;
-      margin-bottom: ${props => props.theme.spacing[4]};
+
+    @media (max-width: ${p => p.theme.breakpoints.sm}) {
+      font-size: ${p => p.theme.fontSizes['3xl']};
     }
   }
-  
+
   p {
-    font-size: 1.25rem;
-    color: ${props => props.theme.colors.gray[200]};
-    line-height: 1.6;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    
-    @media (max-width: ${props => props.theme.breakpoints.sm}) {
-      font-size: 1rem;
+    font-size: ${p => p.theme.fontSizes.lg};
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.7;
+    max-width: 580px;
+    margin: 0 auto;
+
+    @media (max-width: ${p => p.theme.breakpoints.sm}) {
+      font-size: ${p => p.theme.fontSizes.base};
     }
   }
 `;
+
+const Eyebrow = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: ${p => p.theme.fontSizes.xs};
+  font-weight: ${p => p.theme.fontWeights.semibold};
+  color: ${p => p.theme.colors.primary[300]};
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: ${p => p.theme.spacing[5]};
+  background: rgba(20, 184, 166, 0.12);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  padding: 6px 16px;
+  border-radius: 999px;
+`;
+
+const HeroDivider = styled.div`
+  width: 52px;
+  height: 3px;
+  background: linear-gradient(90deg, ${p => p.theme.colors.primary[400]}, ${p => p.theme.colors.primary[600]});
+  border-radius: 2px;
+  margin: ${p => p.theme.spacing[6]} auto 0;
+`;
+
+/* ════════════════════════════════════════════════════════════════
+   STATS STRIP — dark band showing firm credentials
+════════════════════════════════════════════════════════════════ */
+
+const StatsStrip = styled.div`
+  background: transparent;
+  padding: ${p => p.theme.spacing[6]} 0 ${p => p.theme.spacing[14]};
+`;
+
+const StatsInner = styled.div`
+  max-width: 980px;
+  margin: 0 auto;
+  padding: ${p => p.theme.spacing[8]} ${p => p.theme.spacing[8]};
+  background: ${p => p.theme.colors.white};
+  border: 1px solid ${p => p.theme.colors.gray[200]};
+  border-radius: ${p => p.theme.borderRadius['2xl']};
+  box-shadow: 0 14px 45px rgba(20, 184, 166, 0.10);
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  align-items: center;
+  gap: ${p => p.theme.spacing[8]};
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    grid-template-columns: 1fr;
+    gap: ${p => p.theme.spacing[5]};
+    padding: ${p => p.theme.spacing[6]} ${p => p.theme.spacing[4]};
+  }
+`;
+
+const StatCell = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${p => p.theme.spacing[2]};
+  padding: 0;
+  border-right: none;
+`;
+
+const StatIcon = styled.div`
+  display: none;
+`;
+
+const StatNumber = styled.span`
+  font-size: ${p => p.theme.fontSizes['3xl']};
+  font-weight: ${p => p.theme.fontWeights.extrabold};
+  color: ${p => p.theme.colors.primary[600]};
+  line-height: 1;
+`;
+
+const StatLabel = styled.span`
+  font-size: ${p => p.theme.fontSizes.xs};
+  font-weight: ${p => p.theme.fontWeights.medium};
+  color: ${p => p.theme.colors.gray[600]};
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  text-align: center;
+`;
+
+const SupportDescription = styled.p`
+  margin: 0;
+  font-size: ${p => p.theme.fontSizes.base};
+  color: ${p => p.theme.colors.gray[700]};
+  line-height: 1.8;
+
+  strong {
+    color: ${p => p.theme.colors.primary[800]};
+    font-weight: ${p => p.theme.fontWeights.semibold};
+  }
+`;
+
+/* ════════════════════════════════════════════════════════════════
+   TEAM SECTION — vertical profile cards in centered grid
+════════════════════════════════════════════════════════════════ */
 
 const TeamSection = styled.section`
-  padding: ${props => props.theme.spacing[16]} 0;
-  background: ${props => props.theme.colors.white};
+  padding: ${p => p.theme.spacing[10]} 0 ${p => p.theme.spacing[6]};
+  background: ${p => p.theme.colors.gray[50]};
 `;
 
-const SectionContent = styled.div`
-  max-width: 1200px;
+const Container = styled.div`
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 0 ${props => props.theme.spacing[4]};
-  width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    padding: 0 ${props => props.theme.spacing[3]};
-  }
+  padding: 0 ${p => p.theme.spacing[4]};
 `;
 
-const SectionHeader = styled.div`
+/* Section heading — mirrors About.js SectionHeader */
+const SectionHead = styled.div`
+  display: none;
   text-align: center;
-  margin-bottom: ${props => props.theme.spacing[12]};
-  
+  margin-bottom: ${p => p.theme.spacing[12]};
+
   h2 {
-    font-size: ${props => props.theme.fontSizes['4xl']};
-    color: ${props => props.theme.colors.primary[800]};
-    margin-bottom: ${props => props.theme.spacing[4]};
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    
-    @media (max-width: ${props => props.theme.breakpoints.sm}) {
-      font-size: ${props => props.theme.fontSizes['2xl']};
-      margin-bottom: ${props => props.theme.spacing[3]};
+    font-size: ${p => p.theme.fontSizes['4xl']};
+    font-weight: ${p => p.theme.fontWeights.bold};
+    color: ${p => p.theme.colors.primary[800]};
+    margin-bottom: ${p => p.theme.spacing[4]};
+
+    @media (max-width: ${p => p.theme.breakpoints.sm}) {
+      font-size: ${p => p.theme.fontSizes['2xl']};
     }
   }
-  
+
   p {
-    font-size: ${props => props.theme.fontSizes.xl};
-    color: ${props => props.theme.colors.gray[600]};
+    font-size: ${p => p.theme.fontSizes.xl};
+    color: ${p => p.theme.colors.gray[600]};
     max-width: 600px;
     margin: 0 auto;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    
-    @media (max-width: ${props => props.theme.breakpoints.sm}) {
-      font-size: ${props => props.theme.fontSizes.base};
+    line-height: 1.6;
+
+    @media (max-width: ${p => p.theme.breakpoints.sm}) {
+      font-size: ${p => p.theme.fontSizes.base};
     }
   }
 `;
 
-const TeamGrid = styled.div`
+/* Centered grid: 2 equal columns, centered if fewer cards than columns */
+const CardsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: ${props => props.theme.spacing[8]};
+  grid-template-columns: repeat(2, 1fr);
+  gap: ${p => p.theme.spacing[6]};
   justify-items: center;
-  max-width: 400px;
+  max-width: 980px;
   margin: 0 auto;
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+  padding-top: 110px;
+
+  @media (max-width: ${p => p.theme.breakpoints.md}) {
     grid-template-columns: 1fr;
-    max-width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
   }
 `;
 
-const TeamCard = styled.div`
-  background: ${props => props.theme.colors.white};
-  border-radius: ${props => props.theme.borderRadius.xl};
-  padding: ${props => props.theme.spacing[8]};
-  text-align: center;
-  transition: all ${props => props.theme.transitions.base};
-  box-shadow: ${props => props.theme.shadows.sm};
-  border: 1px solid ${props => props.theme.colors.gray[200]};
-  max-width: 450px;
+/* ─── Card ─────────────────────────────────────────────────── */
+
+const Card = styled.div`
   width: 100%;
-  
+  background: ${p => p.theme.colors.white};
+  border: 1px solid ${p => p.theme.colors.gray[200]};
+  border-radius: ${p => p.theme.borderRadius['2xl']};
+  box-shadow: 0 10px 30px rgba(20, 184, 166, 0.08);
+  overflow: visible;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 120px;
+  transition: box-shadow ${p => p.theme.transitions.base},
+              transform ${p => p.theme.transitions.base};
+
   &:hover {
-    transform: translateY(-8px);
-    box-shadow: ${props => props.theme.shadows.xl};
-    border-color: ${props => props.theme.colors.primary[300]};
+    box-shadow: ${p => p.theme.shadows.xl};
+    transform: translateY(-6px);
   }
 `;
 
-const TeamImage = styled.div.attrs(props => ({
-  style: {
-    backgroundImage: `url(${props.image})`
-  }
-}))`
-  width: 300px;
-  height: 300px;
-  border-radius: ${props => props.theme.borderRadius.lg};
-  background-size: cover;
-  background-position: center;
-  margin: 0 auto ${props => props.theme.spacing[6]};
-  border: 4px solid ${props => props.theme.colors.primary[200]};
-  transition: all ${props => props.theme.transitions.base};
-  filter: brightness(1.05) contrast(1.1);
-  box-shadow: ${props => props.theme.shadows.lg};
-  
-  ${TeamCard}:hover & {
-    border-color: ${props => props.theme.colors.primary[400]};
-    transform: scale(1.02);
-    filter: brightness(1.1) contrast(1.15);
-    box-shadow: ${props => props.theme.shadows.xl};
-  }
-`;
-
-const TeamName = styled.h3`
-  font-size: ${props => props.theme.fontSizes.xl};
-  color: ${props => props.theme.colors.primary[800]};
-  margin-bottom: ${props => props.theme.spacing[2]};
-  font-weight: 600;
-`;
-
-const TeamPosition = styled.p`
-  color: ${props => props.theme.colors.primary[600]};
-  font-weight: 500;
-  margin-bottom: ${props => props.theme.spacing[2]};
-`;
-
-const TeamTagline = styled.p`
-  color: ${props => props.theme.colors.gray[600]};
-  font-style: italic;
-  font-size: ${props => props.theme.fontSizes.sm};
-  margin-bottom: ${props => props.theme.spacing[4]};
-  font-weight: 400;
-`;
-
-const QuickContactButton = styled.a`
+/* avatar — circular badge */
+const PhotoWrap = styled.div`
+  width: 200px;
+  height: 200px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 4px solid ${p => p.theme.colors.primary[200]};
+  box-shadow: 0 4px 20px rgba(20, 184, 166, 0.15);
   display: flex;
   align-items: center;
-  gap: ${props => props.theme.spacing[2]};
-  background: ${props => props.theme.colors.primary[50]};
-  color: ${props => props.theme.colors.primary[700]};
-  padding: ${props => props.theme.spacing[3]} ${props => props.theme.spacing[4]};
-  border: 2px solid ${props => props.theme.colors.primary[200]};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  text-decoration: none;
-  font-weight: ${props => props.theme.fontWeights.semibold};
-  font-size: ${props => props.theme.fontSizes.sm};
-  transition: all ${props => props.theme.transitions.base};
-  
-  &:hover {
-    background: ${props => props.theme.colors.primary[100]};
-    border-color: ${props => props.theme.colors.primary[400]};
-    transform: translateY(-2px);
-    box-shadow: ${props => props.theme.shadows.md};
+  justify-content: center;
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  z-index: 2;
+`;
+
+const Photo = styled.img`
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 2;
+`;
+
+const PhotoGradient = styled.div`
+  display: none;
+`;
+
+const AvatarInitials = styled.div`
+  position: relative;
+  z-index: 1;
+  color: ${p => p.theme.colors.white};
+  font-family: ${p => p.theme.fonts.display};
+  font-size: ${p => p.theme.fontSizes['2xl']};
+  font-weight: ${p => p.theme.fontWeights.extrabold};
+  letter-spacing: -0.02em;
+  display: none;
+`;
+
+/* card content */
+const CardBody = styled.div`
+  padding: ${p => p.theme.spacing[3]} ${p => p.theme.spacing[6]} ${p => p.theme.spacing[8]};
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  text-align: center;
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    padding: ${p => p.theme.spacing[6]} ${p => p.theme.spacing[6]};
   }
 `;
 
-const ConnectButton = styled.button`
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
-  color: ${props => props.theme.colors.white};
-  padding: ${props => props.theme.spacing[3]} ${props => props.theme.spacing[6]};
+const RoleBadge = styled.span`
+  display: inline-block;
+  font-size: ${p => p.theme.fontSizes.xs};
+  font-weight: ${p => p.theme.fontWeights.semibold};
+  color: ${p => p.theme.colors.primary[700]};
+  background: none;
   border: none;
-  border-radius: ${props => props.theme.borderRadius.lg};
-  font-size: ${props => props.theme.fontSizes.base};
-  font-weight: ${props => props.theme.fontWeights.semibold};
-  cursor: pointer;
-  transition: all ${props => props.theme.transitions.base};
-  box-shadow: ${props => props.theme.shadows.md};
-  margin: ${props => props.theme.spacing[2]} ${props => props.theme.spacing[2]} 0 0;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${props => props.theme.shadows.lg};
-    background: linear-gradient(135deg, ${props => props.theme.colors.primary[700]}, ${props => props.theme.colors.primary[800]});
+  border-radius: ${p => p.theme.borderRadius.full};
+  padding: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: ${p => p.theme.spacing[3]};
+`;
+
+const Name = styled.h3`
+  font-size: ${p => p.theme.fontSizes.xl};
+  font-weight: ${p => p.theme.fontWeights.bold};
+  color: ${p => p.theme.colors.primary[900]};
+  line-height: 1.2;
+  margin-bottom: ${p => p.theme.spacing[1]};
+  font-family: ${p => p.theme.fonts.secondary};
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    font-size: ${p => p.theme.fontSizes.xl};
   }
 `;
 
-const ReadMoreButton = styled.button`
+const Tagline = styled.p`
+  font-size: ${p => p.theme.fontSizes.sm};
+  color: ${p => p.theme.colors.gray[500]};
+  font-style: italic;
+  margin-bottom: ${p => p.theme.spacing[5]};
+  display: none;
+`;
+
+const CardDivider = styled.hr`
+  display: none;
+`;
+
+const Bio = styled.p`
+  font-size: ${p => p.theme.fontSizes.sm};
+  color: ${p => p.theme.colors.gray[600]};
+  line-height: 1.75;
+  margin-bottom: ${p => p.theme.spacing[4]};
+  flex: 1;
+  max-width: 340px;
+`;
+
+const Credentials = styled.ul`
+  display: none;
+  padding-left: ${p => p.theme.spacing[4]};
+  margin: 0 0 ${p => p.theme.spacing[5]} 0;
+  color: ${p => p.theme.colors.gray[600]};
+  font-size: ${p => p.theme.fontSizes.xs};
+  line-height: 1.7;
+
+  li + li {
+    margin-top: 4px;
+  }
+`;
+
+/* card footer with social/action buttons */
+const CardFooter = styled.div`
+  display: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${p => p.theme.spacing[2]};
+  align-items: center;
+  padding-top: ${p => p.theme.spacing[5]};
+  border-top: 1px solid ${p => p.theme.colors.gray[100]};
+  margin-top: auto;
+`;
+
+const IconBtn = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: ${p => p.theme.borderRadius.lg};
+  background: ${p => p.theme.colors.primary[50]};
+  border: 1px solid ${p => p.theme.colors.primary[200]};
+  color: ${p => p.theme.colors.primary[600]};
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all ${p => p.theme.transitions.base};
+  flex-shrink: 0;
+
+  &:hover {
+    background: ${p => p.theme.colors.primary[600]};
+    border-color: ${p => p.theme.colors.primary[600]};
+    color: ${p => p.theme.colors.white};
+    transform: translateY(-2px);
+    box-shadow: ${p => p.theme.shadows.md};
+  }
+`;
+
+const ProfileBtn = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
   background: transparent;
-  color: ${props => props.theme.colors.primary[600]};
-  padding: ${props => props.theme.spacing[3]} ${props => props.theme.spacing[6]};
-  border: 2px solid ${props => props.theme.colors.primary[200]};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  font-size: ${props => props.theme.fontSizes.base};
-  font-weight: ${props => props.theme.fontWeights.semibold};
+  border: none;
+  color: ${p => p.theme.colors.primary[600]};
+  font-size: ${p => p.theme.fontSizes.sm};
+  font-weight: ${p => p.theme.fontWeights.semibold};
   cursor: pointer;
-  transition: all ${props => props.theme.transitions.base};
-  margin: ${props => props.theme.spacing[2]} 0 0 ${props => props.theme.spacing[2]};
-  
+  padding: 0;
+  transition: all ${p => p.theme.transitions.base};
+
+  svg {
+    font-size: 0.8rem;
+    transition: transform ${p => p.theme.transitions.fast};
+  }
+
   &:hover {
-    background: ${props => props.theme.colors.primary[50]};
-    border-color: ${props => props.theme.colors.primary[400]};
-    transform: translateY(-2px);
+    color: ${p => p.theme.colors.primary[800]};
+
+    svg { transform: translateX(3px); }
   }
 `;
 
-const MainButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: ${props => props.theme.spacing[3]};
-  margin: ${props => props.theme.spacing[6]} 0 ${props => props.theme.spacing[4]} 0;
+/* ════════════════════════════════════════════════════════════════
+   HOW WE WORK — white bg, mirrors About.js PrincipleCard
+════════════════════════════════════════════════════════════════ */
+
+const WorkSection = styled.section`
+  padding: ${p => p.theme.spacing[16]} 0;
+  background: ${p => p.theme.colors.white};
 `;
 
-const QuickContactContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: ${props => props.theme.spacing[3]};
-  margin-top: ${props => props.theme.spacing[4]};
-  padding-top: ${props => props.theme.spacing[4]};
-  border-top: 1px solid ${props => props.theme.colors.gray[200]};
+const WorkGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: ${p => p.theme.spacing[6]};
+
+  @media (max-width: ${p => p.theme.breakpoints.lg}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    grid-template-columns: 1fr;
+  }
 `;
+
+/* exact copy of About.js PrincipleCard */
+const WorkCard = styled.div`
+  background: ${p => p.theme.colors.white};
+  border: 1px solid ${p => p.theme.colors.gray[200]};
+  border-radius: ${p => p.theme.borderRadius.lg};
+  padding: ${p => p.theme.spacing[6]};
+  box-shadow: ${p => p.theme.shadows.sm};
+  display: flex;
+  flex-direction: column;
+  gap: ${p => p.theme.spacing[3]};
+  transition: box-shadow ${p => p.theme.transitions.base},
+              transform ${p => p.theme.transitions.base};
+
+  &:hover {
+    box-shadow: ${p => p.theme.shadows.md};
+    transform: translateY(-2px);
+  }
+
+  svg {
+    font-size: 1.75rem;
+    color: ${p => p.theme.colors.primary[600]};
+  }
+
+  h3 {
+    font-size: ${p => p.theme.fontSizes.lg};
+    font-weight: ${p => p.theme.fontWeights.semibold};
+    color: ${p => p.theme.colors.primary[800]};
+    margin: 0;
+  }
+
+  p {
+    font-size: ${p => p.theme.fontSizes.base};
+    color: ${p => p.theme.colors.gray[600]};
+    line-height: 1.65;
+    margin: 0;
+  }
+`;
+
+/* ════════════════════════════════════════════════════════════════
+   CTA — exact match to About.js
+════════════════════════════════════════════════════════════════ */
+
+const CtaSection = styled.section`
+  background: linear-gradient(
+    135deg,
+    ${p => p.theme.colors.primary[700]},
+    ${p => p.theme.colors.primary[800]}
+  );
+  color: ${p => p.theme.colors.white};
+  padding: ${p => p.theme.spacing[16]} 0;
+  text-align: center;
+`;
+
+const CtaInner = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 ${p => p.theme.spacing[4]};
+
+  h2 {
+    font-size: ${p => p.theme.fontSizes['4xl']};
+    font-weight: ${p => p.theme.fontWeights.bold};
+    color: ${p => p.theme.colors.white};
+    margin-bottom: ${p => p.theme.spacing[6]};
+
+    @media (max-width: ${p => p.theme.breakpoints.sm}) {
+      font-size: ${p => p.theme.fontSizes['2xl']};
+    }
+  }
+
+  p {
+    font-size: ${p => p.theme.fontSizes.xl};
+    color: ${p => p.theme.colors.gray[200]};
+    margin-bottom: ${p => p.theme.spacing[8]};
+    line-height: 1.6;
+
+    @media (max-width: ${p => p.theme.breakpoints.sm}) {
+      font-size: ${p => p.theme.fontSizes.base};
+    }
+  }
+`;
+
+const CtaButton = styled.button`
+  background: linear-gradient(
+    135deg,
+    ${p => p.theme.colors.primary[600]},
+    ${p => p.theme.colors.primary[700]}
+  );
+  color: ${p => p.theme.colors.white};
+  padding: ${p => p.theme.spacing[4]} ${p => p.theme.spacing[8]};
+  border: none;
+  border-radius: ${p => p.theme.borderRadius.lg};
+  font-size: ${p => p.theme.fontSizes.lg};
+  font-weight: ${p => p.theme.fontWeights.semibold};
+  cursor: pointer;
+  transition: all ${p => p.theme.transitions.base};
+  box-shadow: ${p => p.theme.shadows.lg};
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${p => p.theme.shadows.xl};
+    background: linear-gradient(
+      135deg,
+      ${p => p.theme.colors.primary[700]},
+      ${p => p.theme.colors.primary[800]}
+    );
+  }
+`;
+
+/* ════════════════════════════════════════════════════════════════
+   DATA
+════════════════════════════════════════════════════════════════ */
+
+const stats = [
+  {
+    icon: <FiUsers />,
+    value: '5+',
+    label: 'Professionals',
+    body: 'Beyond our named principals, YD Advisory is supported by 5+ seasoned professionals spanning financial due diligence, valuation, legal structuring, and capital markets — each embedded in deals from day one.',
+  },
+];
+
+const principles = [
+  {
+    icon: <FiTarget />,
+    title: 'Founder-led & Hands-on',
+    body:  'No hand-offs. Senior attention and accountability from day one through to final delivery.',
+  },
+  {
+    icon: <FiClock />,
+    title: 'Quality with Boutique Speed',
+    body:  'Institutional-grade models and frameworks — without the overhead, delays, or extra layers.',
+  },
+  {
+    icon: <FiShield />,
+    title: 'Tailored, Not Templated',
+    body:  'Every valuation, model, and memo is built around the specific business, deal, and decision.',
+  },
+];
+
+/* ════════════════════════════════════════════════════════════════
+   COMPONENT
+════════════════════════════════════════════════════════════════ */
 
 const Team = () => {
   const navigate = useNavigate();
-  
-  const teamMembers = [
-    {
-      id: 1,
-      name: 'Yashaswi Das',
-      position: 'CEO & Founder',
-      tagline: 'Bespoke Transaction & Valuation Advisory',
-      bio: 'After 8 years of frontline deal work with JPMorgan, Dubai Holding and other buy-and sell-side roles, I launched YD Advisory to give founders, family offices and investors the kind of investment-bank-grade analytics with boutique agility without extra overhead.',
-      image: '/images/team/Yashaswi-Das.jpg',
-      social: {
-        linkedin: 'https://www.linkedin.com/in/yashaswi-das/',
-        facebook: 'https://facebook.com/yashaswi.das'
-      }
-    }
-  ];
-
-  const handleConnect = () => {
-    navigate('/contact');
-  };
-
-  const handleReadMore = (memberId) => {
-    navigate(`/team/${memberId}`);
-  };
 
   return (
-    <TeamContainer>
-      {/* Hero Section */}
+    <Page>
+      <SEO
+        title="Our Team — YD Advisory"
+        description="Meet the team behind YD Advisory — a lean, founder-led practice delivering investment-bank-grade advisory with boutique execution across valuation, M&A, and transactions."
+        keywords="YD Advisory team, Yashaswi Das, Heewon Lee, valuation advisory Dubai, boutique advisory UAE"
+        url="https://ydadvisory.ae/team"
+      />
+
+      {/* ── Hero ─────────────────────────────────────────────────── */}
       <HeroSection>
-        <HeroContent>
+        <HeroInner>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Eyebrow>Our People</Eyebrow>
+          </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
           >
-            Meet Our Founder
+            The Minds Behind the Mandate
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.25 }}
           >
-            Yashaswi Das, our founder and CEO, brings over 9+ years of experience 
-            in financial planning and is dedicated to helping you achieve your 
-            financial goals with personalized strategies and expert guidance.
+            Institutional-grade thinking with founder-led execution — every
+            valuation and transaction decision stays crisp, defensible, and
+            deal-ready.
           </motion.p>
-        </HeroContent>
+          <motion.div
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <HeroDivider />
+          </motion.div>
+        </HeroInner>
       </HeroSection>
 
-      {/* Team Section */}
+      {/* ── Team cards ───────────────────────────────────────────── */}
       <TeamSection>
-        <SectionContent>
-          <SectionHeader>
+        <Container>
+          <SectionHead>
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              Our Financial Expert
+              Meet the People Behind YD Advisory
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
               viewport={{ once: true }}
             >
-              Meet the professional who will guide you on your financial journey
+              Every mandate is handled with senior attention — from origination
+              through delivery.
             </motion.p>
-          </SectionHeader>
+          </SectionHead>
 
-          <TeamGrid>
-            {teamMembers.map((member, index) => (
-              <motion.div
-                key={member.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <TeamCard>
-                  <TeamImage image={member.image} />
-                  <TeamName>{member.name}</TeamName>
-                  <TeamPosition>{member.position}</TeamPosition>
-                  <TeamTagline>{member.tagline}</TeamTagline>
-                  
-                  <MainButtonContainer>
-                    <ConnectButton onClick={handleConnect}>
-                      Connect
-                    </ConnectButton>
-                    <ReadMoreButton onClick={() => handleReadMore(member.id)}>
-                      Read More
-                    </ReadMoreButton>
-                  </MainButtonContainer>
+          <CardsGrid>
+            {/* ── Yashaswi Das ─────────────────────────────── */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              style={{ width: '100%' }}
+            >
+              <Card>
+                <PhotoWrap>
+                  <Photo
+                    src="/images/team/yashaswi_das.png"
+                    alt="Yashaswi Das — Founder & Principal"
+                  />
+                  <PhotoGradient />
+                  <AvatarInitials>YD</AvatarInitials>
+                </PhotoWrap>
 
-                  <QuickContactContainer>
-                    <QuickContactButton href={member.social.linkedin} target="_blank" rel="noopener noreferrer">
+                <CardBody>
+                  <RoleBadge>FOUNDER &amp; PRINCIPAL</RoleBadge>
+                  <Name>Yashaswi D.</Name>
+                  <Tagline>Bespoke transaction &amp; valuation advisory</Tagline>
+                  <CardDivider />
+
+                  <Bio>
+                    Leads all M&amp;A advisory, valuations, IPO readiness, and
+                    capital-raise mandates — delivering Big-4 rigour at boutique
+                    speed across the Gulf, South Asia &amp; the US.
+                  </Bio>
+
+                  <Credentials>
+                    <li>8+ years — JPMorgan, Dubai Holding, and leading advisory mandates</li>
+                    <li>50+ clients across 10+ geographies and 15+ sectors</li>
+                    <li>$100M+ in value raised, structured, or unlocked</li>
+                    <li>Licensed practice based in Dubai, UAE</li>
+                  </Credentials>
+
+                  <CardFooter>
+                    <IconBtn
+                      href="https://www.linkedin.com/in/yashaswi-das/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="LinkedIn"
+                    >
                       <FiLinkedin />
-                      LinkedIn
-                    </QuickContactButton>
-                    <QuickContactButton href={`mailto:${member.name.toLowerCase().replace(' ', '.')}@ydadvisory.com?subject=Business Inquiry - YD Advisory`} target="_blank" rel="noopener noreferrer">
+                    </IconBtn>
+                    <IconBtn
+                      href="mailto:Yashaswi.das@ydadvisory.ae?subject=Business Inquiry — YD Advisory"
+                      title="Email"
+                    >
                       <FiMail />
-                      Email
-                    </QuickContactButton>
-                  </QuickContactContainer>
-                </TeamCard>
-              </motion.div>
-            ))}
-          </TeamGrid>
-        </SectionContent>
+                    </IconBtn>
+                    <ProfileBtn onClick={() => navigate('/team/1')}>
+                      Full Profile <FiArrowRight />
+                    </ProfileBtn>
+                  </CardFooter>
+                </CardBody>
+              </Card>
+            </motion.div>
+
+            {/* ── Heewon Lee ───────────────────────────────── */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              viewport={{ once: true }}
+              style={{ width: '100%' }}
+            >
+              <Card>
+                <PhotoWrap>
+                  <Photo
+                    src="/images/howlee.png"
+                    alt="Heewon Lee — Promotions, Distribution & Client Relationship"
+                  />
+                  <PhotoGradient />
+                  <AvatarInitials>HL</AvatarInitials>
+                </PhotoWrap>
+
+                <CardBody>
+                  <RoleBadge>BUSINESS DEVELOPMENT</RoleBadge>
+                  <Name>Heewon Lee</Name>
+                  <Tagline>Business Development &amp; Operations</Tagline>
+                  <CardDivider />
+
+                  <Bio>
+                    Drives strategic relationships and deal origination across the
+                    GCC — connecting YD Advisory mandates with the right capital,
+                    counterparties &amp; investors.
+                  </Bio>
+
+                  <CardFooter>
+                    <IconBtn
+                      href="mailto:info@ydadvisory.com?subject=Business Inquiry — YD Advisory"
+                      title="Email"
+                    >
+                      <FiMail />
+                    </IconBtn>
+                    <ProfileBtn onClick={() => navigate('/team/2')}>
+                      Full Profile <FiArrowRight />
+                    </ProfileBtn>
+                  </CardFooter>
+                </CardBody>
+              </Card>
+            </motion.div>
+          </CardsGrid>
+        </Container>
       </TeamSection>
-    </TeamContainer>
+
+      {/* ── CTA ──────────────────────────────────────────────────── */}
+      <CtaSection>
+        <CtaInner>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            Ready to Work with YD Advisory?
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            Whether you need a valuation, transaction support, or a trusted
+            advisory partner — we are ready to engage.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            <CtaButton onClick={() => navigate('/contact')}>
+              Get in Touch
+            </CtaButton>
+          </motion.div>
+        </CtaInner>
+      </CtaSection>
+    </Page>
   );
 };
 

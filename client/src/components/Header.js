@@ -586,6 +586,8 @@ const Header = () => {
   const [isMobileResourcesDropdownOpen, setIsMobileResourcesDropdownOpen] = useState(false);
   const [isValuatorDropdownOpen, setIsValuatorDropdownOpen] = useState(false);
   const [isMobileValuatorDropdownOpen, setIsMobileValuatorDropdownOpen] = useState(false);
+  const [isJoinUsDropdownOpen, setIsJoinUsDropdownOpen] = useState(false);
+  const [isMobileJoinUsDropdownOpen, setIsMobileJoinUsDropdownOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -605,11 +607,14 @@ const Header = () => {
       if (isValuatorDropdownOpen && !event.target.closest('[data-dropdown-container]')) {
         setIsValuatorDropdownOpen(false);
       }
+      if (isJoinUsDropdownOpen && !event.target.closest('[data-dropdown-container]')) {
+        setIsJoinUsDropdownOpen(false);
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isResourcesDropdownOpen, isValuatorDropdownOpen]);
+  }, [isResourcesDropdownOpen, isValuatorDropdownOpen, isJoinUsDropdownOpen]);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -617,6 +622,8 @@ const Header = () => {
     setIsMobileResourcesDropdownOpen(false);
     setIsValuatorDropdownOpen(false);
     setIsMobileValuatorDropdownOpen(false);
+    setIsJoinUsDropdownOpen(false);
+    setIsMobileJoinUsDropdownOpen(false);
   }, [location]);
 
   const toggleMobileMenu = () => {
@@ -629,6 +636,10 @@ const Header = () => {
 
   const toggleValuatorDropdown = () => {
     setIsValuatorDropdownOpen(!isValuatorDropdownOpen);
+  };
+
+  const toggleJoinUsDropdown = () => {
+    setIsJoinUsDropdownOpen(!isJoinUsDropdownOpen);
   };
 
   // Open on hover (desktop)
@@ -663,6 +674,23 @@ const Header = () => {
   };
 
   const isResourcesActive = location.pathname.startsWith('/blog') || location.pathname.startsWith('/templates');
+  const isJoinUsActive = location.pathname.startsWith('/careers');
+
+  // Open on hover (desktop)
+  const openJoinUs = () => setIsJoinUsDropdownOpen(true);
+  const closeJoinUs = (e) => {
+    const nextTarget = e?.relatedTarget;
+    const container = e?.currentTarget;
+    const isNode = typeof Node !== 'undefined' && nextTarget instanceof Node;
+    if (container && isNode && typeof container.contains === 'function' && container.contains(nextTarget)) {
+      return;
+    }
+    setIsJoinUsDropdownOpen(false);
+  };
+
+  const toggleMobileJoinUsDropdown = () => {
+    setIsMobileJoinUsDropdownOpen(!isMobileJoinUsDropdownOpen);
+  };
 
   return (
     <HeaderContainer scrolled={isScrolled}>
@@ -726,7 +754,7 @@ const Header = () => {
               </NavItem>
               <NavItem>
                 <NavLink to="/about" className={location.pathname === '/about' ? 'active' : ''}>
-                  About
+                  About Us
                 </NavLink>
               </NavItem>
               <NavItem>
@@ -805,14 +833,53 @@ const Header = () => {
                 </DropdownContainer>
               </NavItem>
               <NavItem>
+                <NavLink to="/team" className={location.pathname.startsWith('/team') ? 'active' : ''}>
+                  Our team
+                </NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink to="/transparency" className={location.pathname === '/transparency' ? 'active' : ''}>
                   Transparency
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to="/careers" className={location.pathname === '/careers' ? 'active' : ''}>
-                  Careers
-                </NavLink>
+                <DropdownContainer
+                  data-dropdown-container
+                  onMouseEnter={openJoinUs}
+                  onMouseLeave={closeJoinUs}
+                >
+                  <DropdownButton
+                    onClick={toggleJoinUsDropdown}
+                    $isOpen={isJoinUsDropdownOpen}
+                    className={isJoinUsActive ? 'active' : ''}
+                  >
+                    Join Us
+                    <FiChevronDown />
+                  </DropdownButton>
+                  <AnimatePresence>
+                    {isJoinUsDropdownOpen && (
+                      <DropdownMenu
+                        initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                        transition={{ duration: 0.18, ease: 'easeOut' }}
+                      >
+                        <DropdownItem
+                          to="/careers"
+                          className={location.pathname === '/careers' ? 'active' : ''}
+                        >
+                          Job
+                        </DropdownItem>
+                        <DropdownItem
+                          to="/careers/partnership"
+                          className={location.pathname.startsWith('/careers/partnership') ? 'active' : ''}
+                        >
+                          Partnership
+                        </DropdownItem>
+                      </DropdownMenu>
+                    )}
+                  </AnimatePresence>
+                </DropdownContainer>
               </NavItem>
               <NavItem>
                 <NavLink to="/contact" className={location.pathname === '/contact' ? 'active' : ''}>
@@ -853,13 +920,13 @@ const Header = () => {
                 <MobileNavLink to="/">Home</MobileNavLink>
               </MobileNavItem>
               <MobileNavItem>
-                <MobileNavLink to="/about">About</MobileNavLink>
+                <MobileNavLink to="/about">About Us</MobileNavLink>
               </MobileNavItem>
               <MobileNavItem>
                 <MobileNavLink to="/services">Services</MobileNavLink>
               </MobileNavItem>
               <MobileNavItem style={{ position: 'relative', zIndex: 1 }}>
-                <MobileDropdownButton 
+                <MobileDropdownButton
                   type="button"
                   onClick={toggleMobileResourcesDropdown}
                   $isOpen={isMobileResourcesDropdownOpen}
@@ -870,7 +937,7 @@ const Header = () => {
                   Resources
                   <FiChevronDown aria-hidden="true" />
                 </MobileDropdownButton>
-                <MobileDropdownPanel 
+                <MobileDropdownPanel
                   $isOpen={isMobileResourcesDropdownOpen}
                   id="mobile-resources-panel"
                   role="region"
@@ -878,8 +945,8 @@ const Header = () => {
                 >
                   <MobileDropdownMenu>
                     <li>
-                      <MobileDropdownItem 
-                        to="/blog" 
+                      <MobileDropdownItem
+                        to="/blog"
                         className={location.pathname.startsWith('/blog') ? 'active' : ''}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
@@ -887,8 +954,8 @@ const Header = () => {
                       </MobileDropdownItem>
                     </li>
                     <li>
-                      <MobileDropdownItem 
-                        to="/templates" 
+                      <MobileDropdownItem
+                        to="/templates"
                         className={location.pathname.startsWith('/templates') ? 'active' : ''}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
@@ -899,7 +966,7 @@ const Header = () => {
                 </MobileDropdownPanel>
               </MobileNavItem>
               <MobileNavItem style={{ position: 'relative', zIndex: 1 }}>
-                <MobileDropdownButton 
+                <MobileDropdownButton
                   type="button"
                   onClick={toggleMobileValuatorDropdown}
                   $isOpen={isMobileValuatorDropdownOpen}
@@ -910,7 +977,7 @@ const Header = () => {
                   YD Valuator
                   <FiChevronDown aria-hidden="true" />
                 </MobileDropdownButton>
-                <MobileDropdownPanel 
+                <MobileDropdownPanel
                   $isOpen={isMobileValuatorDropdownOpen}
                   id="mobile-valuator-panel"
                   role="region"
@@ -918,8 +985,8 @@ const Header = () => {
                 >
                   <MobileDropdownMenu>
                     <li>
-                      <MobileDropdownItem 
-                        to="/calculator" 
+                      <MobileDropdownItem
+                        to="/calculator"
                         className={location.pathname.startsWith('/calculator') ? 'active' : ''}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
@@ -927,8 +994,8 @@ const Header = () => {
                       </MobileDropdownItem>
                     </li>
                     <li>
-                      <MobileDropdownItem 
-                        to="/ip-valuation" 
+                      <MobileDropdownItem
+                        to="/ip-valuation"
                         className={location.pathname.startsWith('/ip-valuation') ? 'active' : ''}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
@@ -939,10 +1006,50 @@ const Header = () => {
                 </MobileDropdownPanel>
               </MobileNavItem>
               <MobileNavItem>
-                <MobileNavLink to="/transparency">Transparency</MobileNavLink>
+                <MobileNavLink to="/team">Our team</MobileNavLink>
               </MobileNavItem>
               <MobileNavItem>
-                <MobileNavLink to="/careers">Careers</MobileNavLink>
+                <MobileNavLink to="/transparency">Transparency</MobileNavLink>
+              </MobileNavItem>
+              <MobileNavItem style={{ position: 'relative', zIndex: 1 }}>
+                <MobileDropdownButton
+                  type="button"
+                  onClick={toggleMobileJoinUsDropdown}
+                  $isOpen={isMobileJoinUsDropdownOpen}
+                  aria-expanded={isMobileJoinUsDropdownOpen}
+                  aria-controls="mobile-joinus-panel"
+                  id="mobile-joinus-toggle"
+                >
+                  Join Us
+                  <FiChevronDown aria-hidden="true" />
+                </MobileDropdownButton>
+                <MobileDropdownPanel
+                  $isOpen={isMobileJoinUsDropdownOpen}
+                  id="mobile-joinus-panel"
+                  role="region"
+                  aria-labelledby="mobile-joinus-toggle"
+                >
+                  <MobileDropdownMenu>
+                    <li>
+                      <MobileDropdownItem
+                        to="/careers"
+                        className={location.pathname === '/careers' ? 'active' : ''}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Job
+                      </MobileDropdownItem>
+                    </li>
+                    <li>
+                      <MobileDropdownItem
+                        to="/careers/partnership"
+                        className={location.pathname.startsWith('/careers/partnership') ? 'active' : ''}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Partnership
+                      </MobileDropdownItem>
+                    </li>
+                  </MobileDropdownMenu>
+                </MobileDropdownPanel>
               </MobileNavItem>
               <MobileNavItem>
                 <MobileNavLink to="/contact">Contact</MobileNavLink>

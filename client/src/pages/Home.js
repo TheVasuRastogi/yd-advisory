@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FiArrowRight, FiCheckCircle, FiUsers, FiMail, FiPhone, FiMapPin, FiBarChart, FiDownload } from 'react-icons/fi';
+import { FiArrowRight, FiCheckCircle, FiUsers, FiMail, FiPhone, FiMapPin, FiBarChart, FiDownload, FiGlobe, FiTarget } from 'react-icons/fi';
 import SEO from '../components/SEO';
 import { organizationSchema, websiteSchema, localBusinessSchema } from '../utils/structuredData';
 import BrochureDownloadModal from '../components/BrochureDownloadModal';
@@ -91,6 +91,8 @@ const HeroContent = styled.div`
   justify-content: center;
   min-height: 100vh;
   overflow-x: hidden;
+  /* Move hero text slightly down while keeping it centered */
+  transform: translateY(24px);
   
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     padding: ${props => props.theme.spacing[6]} ${props => props.theme.spacing[3]};
@@ -98,6 +100,7 @@ const HeroContent = styled.div`
     justify-content: center;
     align-items: center;
     padding-top: 0;
+    transform: translateY(12px);
   }
   
   h1 {
@@ -185,7 +188,7 @@ const CtaButtons = styled.div`
 const PrimaryButton = styled(Link)`
   font-family: ${props => props.theme.fonts.primary};
   background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
-  color: ${props => props.theme.colors.white};
+  color: #ffffff;
   padding: 16px 32px;
   border-radius: 12px;
   text-decoration: none;
@@ -203,28 +206,36 @@ const PrimaryButton = styled(Link)`
   position: relative;
   overflow: hidden;
   letter-spacing: 0.01em;
-  backdrop-filter: blur(10px);
-  
+  isolation: isolate;
+
+  /* shimmer sweep */
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform 0.55s ease;
+    z-index: 0;
+    pointer-events: none;
   }
-  
+
+  /* keep all real content above the shimmer */
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
+
   &:hover {
+    color: #ffffff;
     transform: translateY(-2px);
-    box-shadow: 0 12px 25px rgba(20, 184, 166, 0.5);
+    box-shadow: 0 12px 28px rgba(20, 184, 166, 0.5);
     background: linear-gradient(135deg, ${props => props.theme.colors.primary[700]}, ${props => props.theme.colors.primary[800]});
     scale: 1.02;
     border-color: rgba(255, 255, 255, 0.3);
-    
+
     &::before {
-      left: 100%;
+      transform: translateX(100%);
     }
   }
   
@@ -311,18 +322,22 @@ const PromoGrid = styled.div`
   width: 100%;
   max-width: 1200px;
   padding: 0 ${props => props.theme.spacing[4]};
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: ${props => props.theme.spacing[10]};
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  text-align: center;
+  gap: ${props => props.theme.spacing[8]};
   
   @media (max-width: ${props => props.theme.breakpoints.lg}) {
-    grid-template-columns: 1fr;
     gap: ${props => props.theme.spacing[6]};
   }
 `;
 
 const PromoLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   h2 {
     font-family: ${props => props.theme.fonts.display};
     font-size: 2.4rem;
@@ -330,12 +345,14 @@ const PromoLeft = styled.div`
     font-weight: 800;
     line-height: 1.15;
     margin-bottom: ${props => props.theme.spacing[4]};
+    text-align: center;
   }
   p {
     font-size: 1.125rem;
     color: ${props => props.theme.colors.gray[600]};
     line-height: 1.7;
     max-width: 640px;
+    text-align: center;
   }
 `;
 
@@ -348,9 +365,9 @@ const PromoCard = styled.div`
   border-radius: 24px;
   padding: ${props => props.theme.spacing[8]} ${props => props.theme.spacing[6]};
   text-align: center;
-  max-width: 400px;
+  max-width: 420px;
   width: 100%;
-  margin: 0 ${props => props.theme.spacing[4]};
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -360,27 +377,10 @@ const PromoCard = styled.div`
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(135deg, ${props => props.theme.colors.primary[500]}, ${props => props.theme.colors.primary[600]});
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 0.3s ease;
-  }
-
   &:hover {
     transform: translateY(-8px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
     border-color: ${props => props.theme.colors.primary[200]};
-    
-    &::before {
-      transform: scaleX(1);
-    }
   }
   
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
@@ -553,10 +553,47 @@ const PromoButton = styled(Link)`
   }
 `;
 
+const ToolMenu = styled.div`
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto ${props => props.theme.spacing[6]};
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid ${props => props.theme.colors.gray[100]};
+  border-radius: 18px;
+  padding: ${props => props.theme.spacing[2]};
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing[2]};
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    max-width: 100%;
+    margin-bottom: ${props => props.theme.spacing[5]};
+  }
+`;
+
+const ToolMenuButton = styled.button`
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: ${props => (props.$active ? props.theme.colors.primary[50] : 'transparent')};
+  color: ${props => (props.$active ? props.theme.colors.primary[800] : props.theme.colors.gray[700])};
+  padding: ${props => props.theme.spacing[4]} ${props => props.theme.spacing[4]};
+  font-weight: ${props => props.theme.fontWeights.bold};
+  font-family: ${props => props.theme.fonts.primary};
+  cursor: pointer;
+  text-align: left;
+  transition: all ${props => props.theme.transitions.fast};
+
+  &:hover {
+    background: ${props => props.theme.colors.primary[50]};
+    border-color: ${props => props.theme.colors.primary[200]};
+  }
+`;
+
 // Mission Section
 const MissionSection = styled.section`
   padding: ${props => props.theme.spacing[16]} 0;
-  background: ${props => props.theme.colors.white};
+  background: ${props => props.theme.colors.primary[50]};
   position: relative;
   overflow: hidden;
   
@@ -568,6 +605,7 @@ const MissionSection = styled.section`
     right: 0;
     bottom: 0;
     background: linear-gradient(135deg, ${props => props.theme.colors.primary[50]} 0%, ${props => props.theme.colors.gray[50]} 100%);
+    opacity: 0.9;
     z-index: 0;
   }
   
@@ -596,17 +634,17 @@ const MissionContent = styled.div`
 `;
 
 const MissionIcon = styled.div`
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   background: linear-gradient(135deg, ${props => props.theme.colors.primary[500]}, ${props => props.theme.colors.primary[600]});
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto ${props => props.theme.spacing[6]};
+  margin: 0 auto ${props => props.theme.spacing[5]};
   color: ${props => props.theme.colors.white};
-  font-size: ${props => props.theme.fontSizes['3xl']};
-  box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3);
+  font-size: ${props => props.theme.fontSizes['2xl']};
+  box-shadow: 0 10px 28px rgba(20, 184, 166, 0.28);
   
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     width: 60px;
@@ -617,9 +655,9 @@ const MissionIcon = styled.div`
 `;
 
 const MissionTitle = styled.h2`
-  font-size: ${props => props.theme.fontSizes['4xl']};
-  color: ${props => props.theme.colors.primary[800]};
-  margin-bottom: ${props => props.theme.spacing[6]};
+  font-size: ${props => props.theme.fontSizes['3xl']};
+  color: ${props => props.theme.colors.primary[700]};
+  margin-bottom: ${props => props.theme.spacing[4]};
   font-weight: ${props => props.theme.fontWeights.bold};
   font-family: ${props => props.theme.fonts.display};
   line-height: 1.2;
@@ -635,11 +673,11 @@ const MissionTitle = styled.h2`
 `;
 
 const MissionStatement = styled.p`
-  font-size: ${props => props.theme.fontSizes.xl};
+  font-size: ${props => props.theme.fontSizes.lg};
   color: ${props => props.theme.colors.gray[700]};
   line-height: 1.7;
   font-weight: ${props => props.theme.fontWeights.medium};
-  margin-bottom: ${props => props.theme.spacing[8]};
+  margin-bottom: ${props => props.theme.spacing[6]};
   max-width: 100%;
   margin-left: 0;
   margin-right: 0;
@@ -657,17 +695,21 @@ const MissionStatement = styled.p`
 
 const MissionCarousel = styled.div`
   overflow: hidden;
-  margin-top: ${props => props.theme.spacing[10]};
-  margin-bottom: ${props => props.theme.spacing[10]};
+  margin-top: ${props => props.theme.spacing[8]};
+  margin-bottom: ${props => props.theme.spacing[8]};
+  max-width: 1040px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const MissionTrack = styled.div`
   display: flex;
-  gap: ${props => props.theme.spacing[12]};
+  gap: ${props => props.theme.spacing[6]};
   width: max-content;
-  animation: scroll-left 12s linear infinite;
+  align-items: stretch;
   will-change: transform;
-  
+  animation: scroll-left 14s linear infinite;
+
   &:hover {
     animation-play-state: paused;
   }
@@ -676,58 +718,73 @@ const MissionTrack = styled.div`
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
   }
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    gap: ${props => props.theme.spacing[4]};
+  }
 `;
 
 const MissionValue = styled.div`
   text-align: center;
-  padding: ${props => props.theme.spacing[8]} ${props => props.theme.spacing[6]};
-  background: ${props => props.theme.colors.white};
-  border-radius: ${props => props.theme.borderRadius.xl};
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-  border: 1px solid ${props => props.theme.colors.gray[100]};
+  padding: ${props => props.theme.spacing[7]} ${props => props.theme.spacing[5]};
+  background: linear-gradient(
+    180deg,
+    ${props => props.theme.colors.primary[50]} 0%,
+    ${props => props.theme.colors.primary[50]} 24%,
+    ${props => props.theme.colors.white} 70%
+  );
+  border-radius: ${props => props.theme.borderRadius['2xl']};
+  box-shadow: 0 12px 40px rgba(20, 184, 166, 0.12);
+  border: 1px solid ${props => props.theme.colors.gray[200]};
   transition: all ${props => props.theme.transitions.base};
   position: relative;
   overflow: hidden;
-  min-width: 360px;
-  max-width: 360px;
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    min-width: 280px;
-    max-width: 280px;
-  }
-  
-  &::before {
+  flex: 0 0 auto;
+  min-width: 280px;
+  max-width: 280px;
+  scroll-snap-align: start;
+
+  &::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, ${props => props.theme.colors.primary[500]}, ${props => props.theme.colors.primary[600]});
+    top: -44px;
+    right: -44px;
+    width: 110px;
+    height: 110px;
+    border-radius: 9999px;
+    background: rgba(20, 184, 166, 0.14);
+    z-index: 0;
   }
   
   &:hover {
     transform: translateY(-6px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 22px 70px rgba(20, 184, 166, 0.20);
   }
   
   h3 {
-    font-size: ${props => props.theme.fontSizes.xl};
+    font-size: ${props => props.theme.fontSizes.lg};
     color: ${props => props.theme.colors.primary[800]};
-    margin-bottom: ${props => props.theme.spacing[4]};
+    margin-bottom: ${props => props.theme.spacing[3]};
     font-weight: ${props => props.theme.fontWeights.bold};
     line-height: 1.3;
+    position: relative;
+    z-index: 1;
   }
   
   p {
     font-size: ${props => props.theme.fontSizes.base};
     color: ${props => props.theme.colors.gray[600]};
     line-height: 1.6;
-    font-style: italic;
+    font-style: normal;
+    position: relative;
+    z-index: 1;
   }
   
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     padding: ${props => props.theme.spacing[6]} ${props => props.theme.spacing[4]};
+
+    min-width: 260px;
+    max-width: 260px;
     
     h3 {
       font-size: ${props => props.theme.fontSizes.lg};
@@ -747,11 +804,11 @@ const MissionCtaButton = styled(Link)`
   gap: ${props => props.theme.spacing[3]};
   background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
   color: ${props => props.theme.colors.white};
-  padding: ${props => props.theme.spacing[4]} ${props => props.theme.spacing[8]};
+  padding: ${props => props.theme.spacing[4]} ${props => props.theme.spacing[7]};
   border-radius: ${props => props.theme.borderRadius.xl};
   text-decoration: none;
   font-weight: ${props => props.theme.fontWeights.bold};
-  font-size: ${props => props.theme.fontSizes.lg};
+  font-size: ${props => props.theme.fontSizes.base};
   transition: all ${props => props.theme.transitions.base};
   box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3);
   border: 2px solid ${props => props.theme.colors.primary[600]};
@@ -804,7 +861,23 @@ const MissionCtaButton = styled(Link)`
 
 const ServicesSection = styled.section`
   padding: ${props => props.theme.spacing[16]} 0;
-  background: ${props => props.theme.colors.gray[50]};
+  background: ${props => props.theme.colors.white};
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(
+      180deg,
+      rgba(20, 184, 166, 0.14) 0%,
+      rgba(20, 184, 166, 0.00) 100%
+    );
+    pointer-events: none;
+  }
   
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     padding: ${props => props.theme.spacing[12]} 0;
@@ -827,6 +900,23 @@ const SectionHeader = styled.div`
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+
+  h2 {
+    position: relative;
+  }
+
+  h2::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+    width: 120px;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, ${props => props.theme.colors.primary[500]}, ${props => props.theme.colors.primary[700]});
+    opacity: 0.9;
+  }
   
   h2 {
     font-size: ${props => props.theme.fontSizes['4xl']};
@@ -845,9 +935,11 @@ const SectionHeader = styled.div`
 
 const ServicesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: ${props => props.theme.spacing[8]};
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: ${props => props.theme.spacing[6]};
   align-items: stretch;
+  position: relative;
+  z-index: 1;
   
   @media (max-width: ${props => props.theme.breakpoints.lg}) {
     grid-template-columns: repeat(2, 1fr);
@@ -860,21 +952,21 @@ const ServicesGrid = styled.div`
 
 const ServiceCard = styled.div`
   background: ${props => props.theme.colors.white};
-  border-radius: ${props => props.theme.borderRadius.xl};
+  border-radius: 20px;
   padding: 0;
-  text-align: center;
+  text-align: left;
   transition: all ${props => props.theme.transitions.base};
-  box-shadow: ${props => props.theme.shadows.sm};
-  border: 1px solid ${props => props.theme.colors.gray[200]};
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  border: 1px solid ${props => props.theme.colors.gray[100]};
   overflow: hidden;
   display: flex;
   flex-direction: column;
   height: 100%;
-  
+
   &:hover {
-    transform: translateY(-8px);
-    box-shadow: ${props => props.theme.shadows.xl};
-    border-color: ${props => props.theme.colors.primary[300]};
+    transform: translateY(-5px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.11);
+    border-color: ${props => props.theme.colors.primary[200]};
   }
 `;
 
@@ -884,14 +976,17 @@ const ServiceImage = styled.div.attrs(props => ({
   }
 }))`
   width: 100%;
-  height: 200px;
+  height: 196px;
   background-size: cover;
   background-position: center;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: brightness(1.1) contrast(1.1);
+  filter: brightness(1.0) contrast(1.05);
+  flex-shrink: 0;
+
+  transition: transform ${props => props.theme.transitions.slow};
   
   &::after {
     content: '';
@@ -900,42 +995,69 @@ const ServiceImage = styled.div.attrs(props => ({
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(20, 184, 166, 0.4), rgba(15, 118, 110, 0.5));
+    background: linear-gradient(180deg, rgba(20, 184, 166, 0.28) 0%, rgba(15, 118, 110, 0.52) 100%);
+  }
+
+  ${ServiceCard}:hover & {
+    transform: scale(1.03);
   }
 `;
 
 const ServiceContent = styled.div`
-  padding: ${props => props.theme.spacing[6]};
+  padding: 1.25rem 1.4rem 1.5rem;
   display: flex;
   flex-direction: column;
   flex: 1;
   
   h3 {
-    font-size: ${props => props.theme.fontSizes.xl};
+    font-size: 1.05rem;
     color: ${props => props.theme.colors.primary[800]};
-    margin-bottom: ${props => props.theme.spacing[4]};
+    margin-bottom: ${props => props.theme.spacing[3]};
+    font-weight: 800;
+    line-height: 1.35;
+    text-align: left;
   }
   
   p {
     color: ${props => props.theme.colors.gray[600]};
-    line-height: 1.6;
-    margin-bottom: ${props => props.theme.spacing[6]};
+    line-height: 1.65;
+    margin-bottom: ${props => props.theme.spacing[5]};
     flex: 1;
+    font-size: 0.875rem;
+    text-align: left;
   }
 `;
 
 const ServiceLink = styled(Link)`
   color: ${props => props.theme.colors.primary[600]};
-  font-weight: ${props => props.theme.fontWeights.semibold};
+  font-weight: 600;
+  font-size: 0.875rem;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: ${props => props.theme.spacing[2]};
-  transition: color ${props => props.theme.transitions.fast};
+  gap: 6px;
+  transition: all ${props => props.theme.transitions.fast};
   margin-top: auto;
+  padding: 8px 20px;
+  border-radius: 999px;
+  background: ${props => props.theme.colors.primary[50]};
+  border: 1px solid ${props => props.theme.colors.primary[100]};
+  align-self: flex-start;
+  width: fit-content;
   
+  svg {
+    font-size: 0.85rem;
+    transition: transform ${props => props.theme.transitions.fast};
+  }
+
   &:hover {
-    color: ${props => props.theme.colors.primary[700]};
+    color: ${props => props.theme.colors.white};
+    background: ${props => props.theme.colors.primary[600]};
+    border-color: ${props => props.theme.colors.primary[600]};
+
+    svg {
+      transform: translateX(3px);
+    }
   }
 `;
 
@@ -1186,111 +1308,155 @@ const TeamMemberImageSquare = styled.div.attrs(props => ({
 
 // Calculator Showcase Section
 const CalculatorShowcaseSection = styled.section`
-  padding: ${props => props.theme.spacing[16]} 0;
-  background: linear-gradient(135deg, ${props => props.theme.colors.gray[50]} 0%, ${props => props.theme.colors.gray[100]} 100%);
+  padding: ${props => props.theme.spacing[20]} 0 ${props => props.theme.spacing[16]};
+  background: #f7f9fb;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(20, 184, 166, 0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+`;
+
+const CalculatorStepsHeader = styled.div`
+  text-align: center;
+  margin-bottom: 3.5rem;
 `;
 
 const CalculatorStepsTitle = styled.h2`
   text-align: center;
   color: ${props => props.theme.colors.primary[800]};
-  font-size: 2.4rem;
+  font-size: 2.5rem;
   font-weight: 800;
-  margin-bottom: 2.5rem;
+  margin-bottom: 0.75rem;
   font-family: ${props => props.theme.fonts.display};
   
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     font-size: 2rem;
-    margin-bottom: 2rem;
   }
 `;
 
+const CalculatorStepsSubtitle = styled.p`
+  color: ${props => props.theme.colors.gray[500]};
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 520px;
+  margin: 0 auto;
+`;
+
 const CalculatorStepsGrid = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 2rem;
-  margin-bottom: 2.5rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-bottom: 3rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 52px;
+    left: calc(16.66% + 1rem);
+    right: calc(16.66% + 1rem);
+    height: 2px;
+    background: linear-gradient(90deg, ${props => props.theme.colors.primary[200]}, ${props => props.theme.colors.primary[300]}, ${props => props.theme.colors.primary[200]});
+    z-index: 0;
+  }
   
   @media (max-width: ${props => props.theme.breakpoints.md}) {
-    gap: 1.5rem;
+    gap: 1.25rem;
+
+    &::before { display: none; }
   }
   
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    max-width: 360px;
+    margin-left: auto;
+    margin-right: auto;
+
+    &::before { display: none; }
   }
 `;
 
 const CalculatorStepCard = styled.div`
   background: ${props => props.theme.colors.white};
-  border-radius: 16px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  padding: 2.2rem 2rem;
-  min-width: 260px;
-  max-width: 320px;
-  flex: 1 1 260px;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  padding: 2.5rem 2rem 2.2rem;
   text-align: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   transition: all ${props => props.theme.transitions.base};
-  border: 1px solid ${props => props.theme.colors.gray[100]};
+  border: 1.5px solid ${props => props.theme.colors.gray[100]};
+  position: relative;
+  z-index: 1;
   
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    min-width: 280px;
-    max-width: 100%;
-    padding: 2rem 1.5rem;
+    transform: translateY(-6px);
+    box-shadow: 0 16px 42px rgba(20, 184, 166, 0.13);
+    border-color: ${props => props.theme.colors.primary[200]};
   }
 `;
 
 const CalculatorStepNumber = styled.div`
-  color: ${props => props.theme.colors.primary[700]};
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin-bottom: 0.7rem;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary[500]}, ${props => props.theme.colors.primary[700]});
+  color: white;
+  font-size: 1.45rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.3rem;
+  box-shadow: 0 4px 16px rgba(20, 184, 166, 0.35);
   font-family: ${props => props.theme.fonts.display};
+  flex-shrink: 0;
 `;
 
 const CalculatorStepTitle = styled.div`
-  font-size: 1.18rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: ${props => props.theme.colors.gray[800]};
-  margin-bottom: 0.3rem;
-  line-height: 1.3;
+  margin-bottom: 0.55rem;
+  line-height: 1.35;
 `;
 
 const CalculatorStepSubtitle = styled.div`
-  font-size: 1rem;
-  color: ${props => props.theme.colors.gray[600]};
+  font-size: 0.9rem;
+  color: ${props => props.theme.colors.gray[500]};
   font-weight: 400;
-  line-height: 1.4;
-  font-style: italic;
+  line-height: 1.55;
 `;
 
 const CalculatorStepsButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
 `;
 
 // Contact Preview Section
 const ContactPreviewSection = styled.section`
-  padding: ${props => props.theme.spacing[16]} 0;
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary[700]}, ${props => props.theme.colors.primary[800]});
+  padding: ${props => props.theme.spacing[12]} 0;
+  background: ${props => props.theme.colors.primary[700]};
   color: ${props => props.theme.colors.white};
 `;
 
 const ContactPreviewGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1.25fr;
   gap: ${props => props.theme.spacing[12]};
-  align-items: center;
+  align-items: start;
   
   @media (max-width: ${props => props.theme.breakpoints.lg}) {
     grid-template-columns: 1fr;
@@ -1319,23 +1485,106 @@ const ContactPreviewContent = styled.div`
 `;
 
 const ContactInfo = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  /*
+    Desktop: 12 columns so we can make only the Email card wider.
+    Row 1: Email/Phone/Website
+    Row 2: UAE/Singapore
+  */
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: ${props => props.theme.spacing[4]};
+  align-items: stretch;
+  grid-auto-flow: row;
+  justify-items: center;
+
+  /* Desktop layout:
+     Row 1: Email wider, then Phone and Website
+     Row 2: UAE and Singapore side-by-side */
+  & > a:nth-child(1) {
+    grid-column: 1 / span 6;
+    grid-row: 1;
+  }
+
+  & > a:nth-child(2) {
+    grid-column: 7 / span 3;
+    grid-row: 1;
+  }
+
+  & > a:nth-child(3) {
+    grid-column: 10 / span 3;
+    grid-row: 1;
+  }
+
+  & > a:nth-child(4) {
+    grid-column: 1 / span 6;
+    grid-row: 2;
+  }
+
+  & > a:nth-child(5) {
+    grid-column: 7 / span 6;
+    grid-row: 2;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    & > a:nth-child(4),
+    & > a:nth-child(5) {
+      grid-column: auto;
+      grid-row: auto;
+    }
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
-const ContactItem = styled.div`
+const ContactItemLabel = styled.span`
+  font-size: ${props => props.theme.fontSizes.sm};
+  font-weight: ${props => props.theme.fontWeights.semibold};
+  color: ${props => props.theme.colors.primary[700]};
+`;
+
+const ContactItemValue = styled.span`
+  font-size: ${props => props.theme.fontSizes.sm};
+  font-weight: ${props => props.theme.fontWeights.semibold};
+  color: ${props => props.theme.colors.gray[700]};
+  line-height: 1.45;
+  display: block;
+  width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+`;
+
+const ContactItem = styled.a`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: ${props => props.theme.spacing[3]};
-  
+  text-align: center;
+  gap: ${props => props.theme.spacing[2]};
+
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: ${props => props.theme.borderRadius.xl};
+  padding: ${props => props.theme.spacing[5]};
+  text-decoration: none;
+  transition: transform ${props => props.theme.transitions.base}, box-shadow ${props => props.theme.transitions.base};
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+  color: ${props => props.theme.colors.gray[700]};
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
   svg {
     color: ${props => props.theme.colors.primary[600]};
-    font-size: ${props => props.theme.fontSizes.xl};
+    font-size: 1.2rem;
+    margin-bottom: ${props => props.theme.spacing[1]};
   }
-  
-  span {
-    font-size: ${props => props.theme.fontSizes.lg};
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
   }
 `;
 
@@ -1385,16 +1634,6 @@ const BrochureCard = styled.div`
   border: 1px solid ${props => props.theme.colors.gray[200]};
   position: relative;
   overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
-  }
 `;
 
 const BrochureIcon = styled.div`
@@ -1490,6 +1729,16 @@ const Home = () => {
   const [featuredServices, setFeaturedServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isBrochureModalOpen, setIsBrochureModalOpen] = useState(false);
+  const [activeValuationTool, setActiveValuationTool] = useState('business');
+
+  const contactEmail = 'Yashaswi.das@ydadvisory.ae';
+  const contactPhone = '+971-528477349';
+  const contactWebsite = 'https://ydadvisory.ae';
+  const uaeAddress = 'Level 41, Emirates Tower - DIFC, Near Trade Center - Dubai, UAE';
+  const singaporeAddress = 'Level 24, CapitaGreen, 138 Market Street, Singapore - 048946';
+
+  const uaeMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(uaeAddress)}`;
+  const singaporeMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(singaporeAddress)}`;
 
   const heroSlides = [
     {
@@ -1571,6 +1820,35 @@ const Home = () => {
     setLoading(false);
   }, []);
 
+  const valuationToolContent =
+    activeValuationTool === 'business'
+      ? {
+          icon: FiBarChart,
+          title: 'Business Valuation Calculator',
+          description:
+            'Get an instant, professional estimate of your business value using our free calculator - accurate, no strings attached.',
+          benefits: [
+            'Industry-grade methodology',
+            'Fast, audit-ready output',
+            '100% free to try',
+          ],
+          cta: { to: '/calculator', label: 'Access Free Calculator' },
+        }
+      : {
+          icon: FiTarget,
+          title: 'IP Valuation Tool',
+          description:
+            'Professional intellectual property valuation tools for patents, trademarks, and copyrights - choose the right level of detail for your needs.',
+          benefits: [
+            'Patent portfolio analysis',
+            'Basic market research',
+            'Simple valuation models',
+          ],
+          cta: { to: '/ip-valuation', label: 'Start IP Valuation' },
+        };
+
+  const ToolIcon = valuationToolContent.icon;
+
 
   return (
     <HomeContainer>
@@ -1610,7 +1888,7 @@ const Home = () => {
             >
               <CtaButtons>
                 <PrimaryButton to="/contact">
-                  Get Free Consultation <FiArrowRight />
+                  <span>Get Free Consultation</span> <FiArrowRight />
                 </PrimaryButton>
                 <SecondaryButton to="/calculator">
                   YD Valuator <FiArrowRight />
@@ -1631,37 +1909,53 @@ const Home = () => {
             viewport={{ once: true }}
           >
             <PromoLeft>
-              <h2>Business Valuation Calculator: What's Your Business Really Worth?</h2>
+              <h2>Valuation Tools for Business & IP</h2>
               <p>
-                Get an instant, professional estimate of your business value using our free YD Valuator - accurate and on-brand for boardrooms and investors.
+                Get an instant, professional estimate with our Business Valuation and IP Valuation tools. Choose the right calculator and receive boardroom-ready output.
               </p>
             </PromoLeft>
           </motion.div>
 
           <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
         >
           <PromoCard>
             <PromoIcon>
-              <FiBarChart />
+                <ToolIcon />
             </PromoIcon>
-            <PromoTitle>Business Valuation Calculator</PromoTitle>
-            <PromoDescription>
-              Get an instant, professional estimate of your business value using our free calculator - accurate, no strings attached.
-            </PromoDescription>
-            <PromoBenefits>
-              <PromoBenefit>Industry‑grade methodology</PromoBenefit>
-              <PromoBenefit>Fast, audit‑ready output</PromoBenefit>
-              <PromoBenefit>100% free to try</PromoBenefit>
-            </PromoBenefits>
-            <PromoButton to="/calculator" aria-label="Access Free Calculator">
-              <FiBarChart />
-              Access Free Calculator
-              <FiArrowRight />
-            </PromoButton>
+
+              <ToolMenu>
+                <ToolMenuButton
+                  type="button"
+                  $active={activeValuationTool === 'business'}
+                  onClick={() => setActiveValuationTool('business')}
+                >
+                  Business Valuation Tool
+                </ToolMenuButton>
+
+                <ToolMenuButton
+                  type="button"
+                  $active={activeValuationTool === 'ip'}
+                  onClick={() => setActiveValuationTool('ip')}
+                >
+                  IP Valuation Tool
+                </ToolMenuButton>
+              </ToolMenu>
+
+              <PromoTitle>{valuationToolContent.title}</PromoTitle>
+              <PromoDescription>{valuationToolContent.description}</PromoDescription>
+              <PromoBenefits>
+                {valuationToolContent.benefits.map((benefit, idx) => (
+                  <PromoBenefit key={idx}>{benefit}</PromoBenefit>
+                ))}
+              </PromoBenefits>
+
+              <PromoButton to={valuationToolContent.cta.to} aria-label={valuationToolContent.cta.label}>
+                {valuationToolContent.cta.label} <FiArrowRight />
+              </PromoButton>
           </PromoCard>
           </motion.div>
         </PromoGrid>
@@ -1837,55 +2131,39 @@ const Home = () => {
               </MissionStatement>
               <MissionCarousel>
                 <MissionTrack>
-                <MissionValue>
-                  <h3>For Founders & Entrepreneurs</h3>
-                  <p>From "what's my company worth?" to "how do we close this round?" - we turn numbers into a valuation you can defend and a story investors buy.</p>
-                </MissionValue>
-                <MissionValue>
-                  <h3>For CFOs & Finance Leaders</h3>
-                  <p>Board-ready models, KPI packs, and fair-value updates - plus a fractional lift when you need senior capacity without the full-time cost for all financial needs for a company.</p>
-                </MissionValue>
-                <MissionValue>
-                  <h3>For Investors & Family Offices</h3>
-                  <p>Buy, sell, or hold with conviction - IVSC-aligned valuations, red-flag diligence, SPA/PPA modelling, and post-deal integration support.</p>
-                </MissionValue>
-                <MissionValue>
-                  <h3>For SMEs & Boards</h3>
-                  <p>Clear options, not noise - feasibility papers, scenario analysis, working-capital reviews, and decision memos that move the agenda.</p>
-                </MissionValue>
-                <MissionValue>
-                  <h3>For Private Equity and VC Funds</h3>
-                  <p>Fast, defensible workstreams - screening, unit economics, QoE-style reviews, and complex security pricing that stands up in IC.</p>
-                </MissionValue>
-                <MissionValue>
-                  <h3>For Lenders & Credit Teams</h3>
-                  <p>Reliable covenant math and borrower models - stress tests, cash-flow forecasts, and collateral valuations that reduce surprises.</p>
-                </MissionValue>
-                {/* duplicate for seamless infinite scroll */}
-                <MissionValue>
-                  <h3>For Founders & Entrepreneurs</h3>
-                  <p>From "what's my company worth?" to "how do we close this round?" - we turn numbers into a valuation you can defend and a story investors buy.</p>
-                </MissionValue>
-                <MissionValue>
-                  <h3>For CFOs & Finance Leaders</h3>
-                  <p>Board-ready models, KPI packs, and fair-value updates - plus a fractional lift when you need senior capacity without the full-time cost for all financial needs for a company.</p>
-                </MissionValue>
-                <MissionValue>
-                  <h3>For Investors & Family Offices</h3>
-                  <p>Buy, sell, or hold with conviction - IVSC-aligned valuations, red-flag diligence, SPA/PPA modelling, and post-deal integration support.</p>
-                </MissionValue>
-                <MissionValue>
-                  <h3>For SMEs & Boards</h3>
-                  <p>Clear options, not noise - feasibility papers, scenario analysis, working-capital reviews, and decision memos that move the agenda.</p>
-                </MissionValue>
-                <MissionValue>
-                  <h3>For Private Equity and VC Funds</h3>
-                  <p>Fast, defensible workstreams - screening, unit economics, QoE-style reviews, and complex security pricing that stands up in IC.</p>
-                </MissionValue>
-                <MissionValue>
-                  <h3>For Lenders & Credit Teams</h3>
-                  <p>Reliable covenant math and borrower models - stress tests, cash-flow forecasts, and collateral valuations that reduce surprises.</p>
-                </MissionValue>
+                  <MissionValue>
+                    <h3>For Founders & Entrepreneurs</h3>
+                    <p>From "what's my company worth?" to "how do we close this round?" - we turn numbers into a valuation you can defend and a story investors buy.</p>
+                  </MissionValue>
+                  <MissionValue>
+                    <h3>For CFOs & Finance Leaders</h3>
+                    <p>Board-ready models, KPI packs, and fair-value updates - plus a fractional lift when you need senior capacity without the full-time cost for all financial needs for a company.</p>
+                  </MissionValue>
+                  <MissionValue>
+                    <h3>For Investors & Family Offices</h3>
+                    <p>Buy, sell, or hold with conviction - IVSC-aligned valuations, red-flag diligence, SPA/PPA modelling, and post-deal integration support.</p>
+                  </MissionValue>
+                  <MissionValue>
+                    <h3>For SMEs & Boards</h3>
+                    <p>Clear options, not noise - feasibility papers, scenario analysis, working-capital reviews, and decision memos that move the agenda.</p>
+                  </MissionValue>
+                  {/* duplicate for seamless horizontal looping */}
+                  <MissionValue>
+                    <h3>For Founders & Entrepreneurs</h3>
+                    <p>From "what's my company worth?" to "how do we close this round?" - we turn numbers into a valuation you can defend and a story investors buy.</p>
+                  </MissionValue>
+                  <MissionValue>
+                    <h3>For CFOs & Finance Leaders</h3>
+                    <p>Board-ready models, KPI packs, and fair-value updates - plus a fractional lift when you need senior capacity without the full-time cost for all financial needs for a company.</p>
+                  </MissionValue>
+                  <MissionValue>
+                    <h3>For Investors & Family Offices</h3>
+                    <p>Buy, sell, or hold with conviction - IVSC-aligned valuations, red-flag diligence, SPA/PPA modelling, and post-deal integration support.</p>
+                  </MissionValue>
+                  <MissionValue>
+                    <h3>For SMEs & Boards</h3>
+                    <p>Clear options, not noise - feasibility papers, scenario analysis, working-capital reviews, and decision memos that move the agenda.</p>
+                  </MissionValue>
                 </MissionTrack>
               </MissionCarousel>
               
@@ -2055,7 +2333,12 @@ const Home = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <CalculatorStepsTitle>Evaluate your startup</CalculatorStepsTitle>
+              <CalculatorStepsHeader>
+                <CalculatorStepsTitle>Evaluate your startup</CalculatorStepsTitle>
+                <CalculatorStepsSubtitle>
+                  Three simple steps to get your startup's valuation and strategic insights — instantly.
+                </CalculatorStepsSubtitle>
+              </CalculatorStepsHeader>
             </motion.div>
             
             <motion.div
@@ -2068,17 +2351,17 @@ const Home = () => {
                 <CalculatorStepCard>
                   <CalculatorStepNumber>1</CalculatorStepNumber>
                   <CalculatorStepTitle>Answer targeted questions</CalculatorStepTitle>
-                  <CalculatorStepSubtitle>Customized to your startup's stage<br/>(pre-seed, seed)</CalculatorStepSubtitle>
+                  <CalculatorStepSubtitle>Customized to your startup's stage (pre-seed, seed)</CalculatorStepSubtitle>
                 </CalculatorStepCard>
                 <CalculatorStepCard>
                   <CalculatorStepNumber>2</CalculatorStepNumber>
                   <CalculatorStepTitle>Get automatic valuation</CalculatorStepTitle>
-                  <CalculatorStepSubtitle>Based on real market data</CalculatorStepSubtitle>
+                  <CalculatorStepSubtitle>Based on real market data and industry benchmarks</CalculatorStepSubtitle>
                 </CalculatorStepCard>
                 <CalculatorStepCard>
                   <CalculatorStepNumber>3</CalculatorStepNumber>
                   <CalculatorStepTitle>Gain actionable insights</CalculatorStepTitle>
-                  <CalculatorStepSubtitle>To improve your business value</CalculatorStepSubtitle>
+                  <CalculatorStepSubtitle>To improve your business value and attract investors</CalculatorStepSubtitle>
                 </CalculatorStepCard>
               </CalculatorStepsGrid>
             </motion.div>
@@ -2090,8 +2373,8 @@ const Home = () => {
               viewport={{ once: true }}
             >
               <CalculatorStepsButtonWrapper>
-                <PrimaryButton to="/calculator" style={{ fontSize: '1.1rem', padding: '18px 40px', borderRadius: 14, fontWeight: 700 }}>
-                  Try YD Valuator <FiArrowRight />
+                <PrimaryButton to="/calculator" style={{ fontSize: '1rem', padding: '16px 38px', borderRadius: '999px', fontWeight: 700 }}>
+                  <span>Try YD Valuator</span> <FiArrowRight />
                 </PrimaryButton>
               </CalculatorStepsButtonWrapper>
             </motion.div>
@@ -2127,7 +2410,7 @@ const Home = () => {
                 viewport={{ once: true }}
               >
                 <PrimaryButton to="/contact">
-                  Contact Us Today <FiArrowRight />
+                  <span>Contact Us Today</span> <FiArrowRight />
                 </PrimaryButton>
               </motion.div>
             </ContactPreviewContent>
@@ -2138,17 +2421,63 @@ const Home = () => {
               viewport={{ once: true }}
             >
               <ContactInfo>
-                <ContactItem>
-                  <FiPhone />
-                  <span>+971-528477349</span>
+                  <ContactItem
+                    href={`mailto:${contactEmail}?subject=${encodeURIComponent('Inquiry - YD Advisory')}&body=${encodeURIComponent('Hello YD Advisory,\n\n')}`}
+                    aria-label="Email YD Advisory"
+                  >
+                    <FiMail />
+                    <ContactItemLabel>Email</ContactItemLabel>
+                    <ContactItemValue>{contactEmail}</ContactItemValue>
                 </ContactItem>
-                <ContactItem>
-                  <FiMail />
-                  <span>Yashaswi.das@ydadvisory.ae</span>
+
+                  <ContactItem
+                    href={`tel:${contactPhone.replace(/\s+/g, '')}`}
+                    aria-label="Call YD Advisory"
+                  >
+                    <FiPhone />
+                    <ContactItemLabel>Unified Phone</ContactItemLabel>
+                    <ContactItemValue>{contactPhone}</ContactItemValue>
                 </ContactItem>
-                <ContactItem>
-                  <FiMapPin />
-                  <span>Level 41, Emirates Tower - DIFC, Near Trade Center - Dubai, UAE</span>
+
+                  <ContactItem
+                    href={contactWebsite}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open YD Advisory website"
+                  >
+                    <FiGlobe />
+                    <ContactItemLabel>Website</ContactItemLabel>
+                    <ContactItemValue>ydadvisory.ae</ContactItemValue>
+                  </ContactItem>
+
+                  <ContactItem
+                    href={uaeMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="UAE address"
+                  >
+                    <FiMapPin />
+                    <ContactItemLabel>UAE</ContactItemLabel>
+                    <ContactItemValue>
+                      Level 41, Emirates Tower - DIFC,
+                      <br />
+                      Near Trade Center - Dubai, UAE
+                    </ContactItemValue>
+                  </ContactItem>
+
+                  <ContactItem
+                    href={singaporeMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Singapore address"
+                  >
+                    <FiMapPin />
+                    <ContactItemLabel>Singapore</ContactItemLabel>
+                    <ContactItemValue>
+                      Level 24, CapitaGreen,
+                      <br />
+                      138 Market Street, Singapore - 048946
+                    </ContactItemValue>
                 </ContactItem>
               </ContactInfo>
             </motion.div>

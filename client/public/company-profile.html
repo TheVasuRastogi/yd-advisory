@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YD Advisory — Company Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal-50:  #f0fdfa;
+      --teal-100: #ccfbf1;
+      --teal-200: #99f6e4;
+      --teal-300: #5eead4;
+      --teal-400: #2dd4bf;
+      --teal-500: #14b8a6;
+      --teal-600: #0d9488;
+      --teal-700: #0f766e;
+      --teal-800: #115e59;
+      --teal-900: #134e4a;
+      --white:    #ffffff;
+      --gray-50:  #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--gray-900);
+      color: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Slide wrapper ────────────────────────────────────── */
+    .slide {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide__inner {
+      width: 100%;
+      max-width: 520px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── Decorative rings ─────────────────────────────────── */
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(20,184,166,0.15);
+      pointer-events: none;
+    }
+
+    /* ── Typography helpers ───────────────────────────────── */
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal-400);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 2px;
+      background: var(--teal-500);
+      border-radius: 2px;
+    }
+
+    h1 { font-size: clamp(2.4rem, 7vw, 3.2rem); font-weight: 900; line-height: 1.05; letter-spacing: -0.03em; }
+    h2 { font-size: clamp(1.8rem, 5vw, 2.4rem); font-weight: 800; line-height: 1.1;  letter-spacing: -0.02em; }
+    h3 { font-size: 1.15rem; font-weight: 700; line-height: 1.3; }
+
+    .text-teal    { color: var(--teal-400); }
+    .text-muted   { color: var(--gray-400); font-size: 0.95rem; line-height: 1.7; }
+    .text-small   { font-size: 0.82rem; color: var(--gray-500); }
+
+    .divider {
+      width: 48px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal-500), var(--teal-700));
+      border-radius: 3px;
+      margin: 20px 0;
+    }
+
+    /* ── Teal gradient badge ──────────────────────────────── */
+    .badge {
+      display: inline-block;
+      background: rgba(20,184,166,0.15);
+      border: 1px solid rgba(20,184,166,0.3);
+      color: var(--teal-300);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+
+    /* ── Stat cards ───────────────────────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-value span { color: var(--teal-400); }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Service cards ────────────────────────────────────── */
+    .service-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 22px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .service-card:hover {
+      border-color: rgba(20,184,166,0.35);
+      background: rgba(20,184,166,0.06);
+    }
+
+    .service-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(20,184,166,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .service-icon svg { width: 20px; height: 20px; stroke: var(--teal-400); fill: none; stroke-width: 1.8; }
+
+    .service-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; color: var(--white); }
+    .service-card p  { font-size: 0.82rem; color: var(--gray-400); line-height: 1.55; margin: 0; }
+
+    /* ── Team card ────────────────────────────────────────── */
+    .team-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .team-photo {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      filter: brightness(0.9) contrast(1.05);
+    }
+
+    .team-info {
+      padding: 20px;
+    }
+
+    .team-info h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+
+    .team-role {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--teal-400);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .team-info p { font-size: 0.82rem; color: var(--gray-400); line-height: 1.6; margin: 0; }
+
+    /* ── Value pill list ──────────────────────────────────── */
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .pill {
+      background: rgba(20,184,166,0.1);
+      border: 1px solid rgba(20,184,166,0.2);
+      color: var(--teal-300);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 100px;
+    }
+
+    /* ── Contact row ──────────────────────────────────────── */
+    .contact-row {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 14px 16px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .contact-item:hover { border-color: rgba(20,184,166,0.4); }
+
+    .contact-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      background: rgba(20,184,166,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-icon svg { width: 18px; height: 18px; stroke: var(--teal-400); fill: none; stroke-width: 1.8; }
+
+    .contact-label { font-size: 11px; color: var(--gray-500); margin-bottom: 2px; font-weight: 500; }
+    .contact-value { font-size: 0.88rem; font-weight: 600; color: var(--white); }
+
+    /* ── CTA button ───────────────────────────────────────── */
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--teal-600), var(--teal-700));
+      color: var(--white);
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      margin-top: 28px;
+      box-shadow: 0 4px 20px rgba(20,184,166,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(20,184,166,0.45);
+    }
+
+    /* ── Slide-specific backgrounds ──────────────────────── */
+
+    /* 1. Cover */
+    #cover {
+      background: radial-gradient(ellipse at 30% 40%, rgba(15,118,110,0.45) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 80%, rgba(20,184,166,0.18) 0%, transparent 55%),
+                  var(--gray-900);
+      text-align: center;
+    }
+
+    #cover .slide__inner { text-align: center; }
+
+    .cover-logo {
+      width: 120px;
+      height: auto;
+      margin: 0 auto 28px;
+      display: block;
+      filter: brightness(1.1);
+    }
+
+    .cover-tagline {
+      font-size: 0.9rem;
+      color: var(--gray-400);
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+
+    .cover-divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--teal-500), var(--teal-700));
+      margin: 20px auto;
+      border-radius: 2px;
+    }
+
+    .cover-badges {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    /* 2. About */
+    #about { background: var(--gray-900); }
+
+    /* 3. Services */
+    #services {
+      background: var(--gray-900);
+    }
+
+    /* Blur + align background image */
+    #services::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('/services.png') center/cover no-repeat;
+      filter: blur(12px);
+      transform: scale(1.08); /* prevents blur edge bleed */
+      opacity: 0.9;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Keep the teal glow on top of the blurred image */
+    #services::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 20%, rgba(15,118,110,0.25) 0%, transparent 55%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 4. Why us */
+    #why {
+      background: linear-gradient(160deg, var(--teal-900) 0%, var(--gray-900) 60%);
+    }
+
+    /* 5. Team */
+    #team { background: var(--gray-900); }
+
+    /* 6. Contact */
+    #contact {
+      background: radial-gradient(ellipse at 50% 80%, rgba(15,118,110,0.3) 0%, transparent 60%),
+                  var(--gray-900);
+      text-align: center;
+    }
+
+    #contact .slide__inner { text-align: center; }
+    #contact .contact-row  { text-align: left; }
+
+    /* ── Slide nav dots ───────────────────────────────────── */
+    .nav-dots {
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 100;
+    }
+
+    .nav-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      border: none;
+      padding: 0;
+    }
+
+    .nav-dot.active {
+      background: var(--teal-400);
+      transform: scale(1.4);
+    }
+
+    /* ── Page counter ─────────────────────────────────────── */
+    .page-counter {
+      position: absolute;
+      bottom: 24px;
+      right: 32px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--gray-600);
+      letter-spacing: 0.05em;
+      z-index: 2;
+    }
+
+    /* ── Footer strip ─────────────────────────────────────── */
+    .slide-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal-700), var(--teal-500), var(--teal-700));
+      opacity: 0.5;
+    }
+
+    /* ── Credential list ──────────────────────────────────── */
+    .cred-list {
+      list-style: none;
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .cred-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: var(--gray-400);
+      line-height: 1.5;
+    }
+
+    .cred-list li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal-500);
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav dots ───────────────────────────────────────────── -->
+<nav class="nav-dots" aria-label="Slide navigation">
+  <button class="nav-dot active" onclick="scrollToSlide('cover')"  title="Cover"></button>
+  <button class="nav-dot"        onclick="scrollToSlide('about')"  title="About Us"></button>
+  <button class="nav-dot"        onclick="scrollToSlide('services')" title="Services"></button>
+  <button class="nav-dot"        onclick="scrollToSlide('why')"    title="Why Us"></button>
+  <button class="nav-dot"        onclick="scrollToSlide('team')"   title="Team"></button>
+  <button class="nav-dot"        onclick="scrollToSlide('contact')" title="Contact"></button>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 1 — COVER
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="cover">
+  <!-- decorative rings -->
+  <div class="ring" style="width:500px;height:500px;top:-150px;right:-180px;"></div>
+  <div class="ring" style="width:300px;height:300px;bottom:-80px;left:-100px;"></div>
+
+  <div class="slide__inner">
+    <img src="/images/logo/logo.png" alt="YD Advisory" class="cover-logo" />
+
+    <div class="badge">Company Profile · 2025</div>
+
+    <h1>
+      Independent<br/>
+      <span class="text-teal">Advisory</span><br/>
+      Excellence
+    </h1>
+
+    <div class="cover-divider"></div>
+
+    <p class="cover-tagline">
+      Investment-bank-grade valuation, M&amp;A, and transaction advisory<br/>
+      with speed and precision — based in Dubai, UAE.
+    </p>
+
+    <div class="cover-badges">
+      <span class="pill">Valuation</span>
+      <span class="pill">M&amp;A Advisory</span>
+      <span class="pill">Financial Modelling</span>
+      <span class="pill">Due Diligence</span>
+    </div>
+  </div>
+
+  <div class="page-counter">01 / 06</div>
+  <div class="slide-footer"></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 2 — ABOUT
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="about">
+  <div class="slide__inner">
+    <div class="eyebrow">About Us</div>
+    <h2>Who We Are</h2>
+    <div class="divider"></div>
+
+    <p class="text-muted">
+      YD Advisory is a licensed independent advisory practice headquartered in Dubai, UAE,
+      delivering institutional-quality financial advisory services to founders,
+      family offices, investors, and corporates across the Middle East and beyond.
+    </p>
+
+    <p class="text-muted" style="margin-top:14px;">
+      Founded by Yashaswi Das — a former JPMorgan and Dubai Holding professional
+      — the firm blends Wall Street rigour with the speed and personalisation
+      that only a founder-led independent practice can offer.
+    </p>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">50<span>+</span></div>
+        <div class="stat-label">Clients Served</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">$100<span>M+</span></div>
+        <div class="stat-label">Value Unlocked</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">15<span>+</span></div>
+        <div class="stat-label">Sectors Covered</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">10<span>+</span></div>
+        <div class="stat-label">Geographies</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-counter">02 / 06</div>
+  <div class="slide-footer"></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 3 — SERVICES
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="services">
+  <div class="slide__inner">
+    <div class="eyebrow">What We Do</div>
+    <h2>Our Services</h2>
+    <div class="divider"></div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <div>
+        <h3>Business &amp; IP Valuation</h3>
+        <p>409A, complex securities, IP/intangibles, and PPA — IVSC-aligned, audit-ready outputs.</p>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+      </div>
+      <div>
+        <h3>M&amp;A &amp; Transaction Advisory</h3>
+        <p>Buy-side &amp; sell-side support — target screening, red-flag diligence, SPA/PPA modelling.</p>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div>
+        <h3>Financial Modelling</h3>
+        <p>Three-statement, scenario &amp; Monte-Carlo analysis for capital raises and deal decisions.</p>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <div>
+        <h3>Fractional CFO &amp; Board Support</h3>
+        <p>KPI packs, board reporting, capital strategy — senior firepower without full-time overhead.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-counter">03 / 06</div>
+  <div class="slide-footer"></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 4 — WHY US
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="why">
+  <div class="slide__inner">
+    <div class="eyebrow">Why Choose Us</div>
+    <h2>The YD Advantage</h2>
+    <div class="divider"></div>
+
+    <p class="text-muted">
+      We give you the analytical depth of a global investment bank with the
+      responsiveness and accountability of a trusted individual advisor.
+    </p>
+
+    <ul class="cred-list" style="margin-top:28px;">
+      <li>Founder-led — senior attention on every mandate, no junior hand-offs</li>
+      <li>IVSC-aligned valuations that stand up in boardrooms and due diligence</li>
+      <li>Decision-ready models built for your specific business and deal thesis</li>
+      <li>Transparent pricing, clear scope, and no work you don't need</li>
+      <li>8+ years of frontline IB experience across JPMorgan and Dubai Holding</li>
+      <li>Licensed practice in Dubai — fully compliant and professionally indemnified</li>
+    </ul>
+
+    <div class="pill-list">
+      <span class="pill">Defensible Numbers</span>
+      <span class="pill">Speed &amp; Precision</span>
+      <span class="pill">No Hand-offs</span>
+      <span class="pill">Transparent Fees</span>
+      <span class="pill">Audit-ready Outputs</span>
+    </div>
+  </div>
+
+  <div class="page-counter">04 / 06</div>
+  <div class="slide-footer"></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 5 — TEAM
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="team">
+  <div class="slide__inner">
+    <div class="eyebrow">Our People</div>
+    <h2>The Team</h2>
+    <div class="divider"></div>
+
+    <div class="team-card">
+      <img src="/images/team/yashaswi_das.png" alt="Yashaswi Das" class="team-photo" />
+      <div class="team-info">
+        <h3>Yashaswi Das</h3>
+        <div class="team-role">Founder &amp; Principal</div>
+        <p>
+          Valuation &amp; transactions specialist. 8+ years at JPMorgan and Dubai Holding.
+          Expert in 409A, complex securities, M&amp;A execution, and financial modelling
+          across 15+ sectors and 10+ geographies.
+        </p>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <img src="/images/howlee.png" alt="Heewon Lee" class="team-photo" />
+      <div class="team-info">
+        <h3>Heewon Lee</h3>
+        <div class="team-role">Promotions, Distribution &amp; Client Relationship</div>
+        <p>
+          Drives promotions, distribution, and client relationship initiatives.
+          Focused on operational execution, project coordination, and strategic
+          outreach that strengthens client engagements.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-counter">05 / 06</div>
+  <div class="slide-footer"></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 6 — CONTACT
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="contact">
+  <div class="ring" style="width:400px;height:400px;top:-120px;left:-120px;"></div>
+  <div class="ring" style="width:280px;height:280px;bottom:-60px;right:-80px;"></div>
+
+  <div class="slide__inner">
+    <img src="/images/logo/logo.png" alt="YD Advisory" style="width:90px;height:auto;margin:0 auto 24px;display:block;filter:brightness(1.1);" />
+
+    <div class="eyebrow" style="justify-content:center;">Get In Touch</div>
+    <h2>Let's Work Together</h2>
+    <div class="divider" style="margin:20px auto;"></div>
+
+    <p class="text-muted">
+      Whether you need a valuation, transaction support, or a trusted
+      advisory partner — we are ready to engage.
+    </p>
+
+    <div class="contact-row">
+      <a href="mailto:Yashaswi.das@ydadvisory.ae" class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value">Yashaswi.das@ydadvisory.ae</div>
+        </div>
+      </a>
+
+      <a href="tel:+971528477349" class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.67 19.79 19.79 0 01.12 1.1 2 2 0 012.11 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-.45a2 2 0 012.11.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Phone</div>
+          <div class="contact-value">+971 52 847 7349</div>
+        </div>
+      </a>
+
+      <a href="https://www.linkedin.com/in/yashaswi-das/" target="_blank" rel="noopener" class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-value">linkedin.com/in/yashaswi-das</div>
+        </div>
+      </a>
+
+      <div class="contact-item" style="cursor:default;">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Location</div>
+          <div class="contact-value">Dubai, United Arab Emirates</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="https://ydadvisory.ae/contact" target="_blank" class="cta-btn">
+      Book a Consultation
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <div class="page-counter">06 / 06</div>
+  <div class="slide-footer"></div>
+</section>
+
+<!-- ── Nav dot active-state script ─────────────────────────── -->
+<script>
+  const slides = ['cover','about','services','why','team','contact'];
+  const dots   = document.querySelectorAll('.nav-dot');
+
+  function scrollToSlide(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const idx = slides.indexOf(e.target.id);
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { threshold: 0.55 });
+
+  slides.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+</script>
+</body>
+</html>

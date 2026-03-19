@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FiArrowRight, FiMail, FiUsers, FiTrendingUp, FiClock, FiMapPin, FiSend, FiBriefcase } from 'react-icons/fi';
+import { FiArrowRight, FiMail, FiUsers, FiTrendingUp, FiClock, FiMapPin, FiSend, FiBriefcase, FiChevronDown } from 'react-icons/fi';
 import SEO from '../components/SEO';
 
 const PageContainer = styled.div`
@@ -12,15 +12,35 @@ const PageContainer = styled.div`
 `;
 
 const HeroSection = styled.section`
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary[800]}, ${props => props.theme.colors.primary[700]});
+  background: url('/images/careers.jpg') center/cover no-repeat;
+  background-color: ${props => props.theme.colors.primary[900]};
   color: ${props => props.theme.colors.white};
-  padding: ${props => props.theme.spacing[16]} 0;
+  padding: ${props => props.theme.spacing[8]} 0;
+  position: relative;
+  overflow: hidden;
+
+  /* Dark overlay to keep text readable over the photo */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(10, 80, 76, 0.88) 0%,
+      rgba(10, 80, 76, 0.55) 55%,
+      rgba(17, 94, 89, 0.65) 100%
+    );
+    z-index: 0;
+    pointer-events: none;
+  }
 `;
 
 const HeroContent = styled.div`
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 ${props => props.theme.spacing[4]};
+  position: relative;
+  z-index: 1;
 
   h1 {
     font-size: ${props => props.theme.fontSizes['4xl']};
@@ -38,27 +58,85 @@ const HeroContent = styled.div`
   }
 `;
 
-const HeroMeta = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${props => props.theme.spacing[4]};
-  margin-top: ${props => props.theme.spacing[8]};
-
-  div {
-    display: inline-flex;
-    align-items: center;
-    gap: ${props => props.theme.spacing[2]};
-    font-size: ${props => props.theme.fontSizes.sm};
-    padding: ${props => props.theme.spacing[2]} ${props => props.theme.spacing[3]};
-    border-radius: 999px;
-    background: rgba(15, 118, 110, 0.4);
-  }
-`;
-
 const ContentSection = styled.section`
   max-width: 1100px;
   margin: 0 auto;
-  padding: ${props => props.theme.spacing[16]} ${props => props.theme.spacing[4]};
+  padding: ${props => props.theme.spacing[6]} ${props => props.theme.spacing[4]};
+`;
+
+const DropdownsWrapper = styled.div`
+  display: grid;
+  gap: ${props => props.theme.spacing[6]};
+`;
+
+const DropdownCard = styled.details`
+  background: ${props => props.theme.colors.white};
+  border-radius: ${props => props.theme.borderRadius.xl};
+  border: 1px solid ${props => props.theme.colors.gray[200]};
+  box-shadow: ${props => props.theme.shadows.sm};
+  overflow: hidden;
+
+  &[open] {
+    box-shadow: ${props => props.theme.shadows.md};
+  }
+`;
+
+const DropdownSummary = styled.summary`
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${props => props.theme.spacing[4]};
+  padding: ${props => props.theme.spacing[6]};
+  user-select: none;
+  background: linear-gradient(180deg, rgba(15, 118, 110, 0.04), rgba(255, 255, 255, 1));
+  color: ${props => props.theme.colors.gray[800]};
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  > div {
+    display: inline-flex;
+    align-items: center;
+    gap: ${props => props.theme.spacing[3]};
+    min-width: 0;
+  }
+
+  h3 {
+    font-size: ${props => props.theme.fontSizes.xl};
+    color: ${props => props.theme.colors.primary[800]};
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  > div svg {
+    width: 18px;
+    height: 18px;
+    color: ${props => props.theme.colors.primary[700]};
+    flex: 0 0 auto;
+  }
+
+  > svg {
+    width: 18px;
+    height: 18px;
+    color: ${props => props.theme.colors.primary[700]};
+    flex: 0 0 auto;
+    transition: transform ${props => props.theme.transitions.fast};
+  }
+
+  details[open] & > svg {
+    transform: rotate(180deg);
+  }
+`;
+
+const DropdownBody = styled.div`
+  padding: ${props => props.theme.spacing[6]};
+  border-top: 1px solid ${props => props.theme.colors.gray[200]};
+  background: linear-gradient(180deg, rgba(15, 118, 110, 0.03), rgba(255, 255, 255, 1));
 `;
 
 const SectionHeader = styled.div`
@@ -592,355 +670,355 @@ const Careers = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            Join the Team Shaping Modern Valuation & Advisory
+            Join Us
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            At YD Advisory, you work on real deals and real numbers from day one – across 409A, complex
-            valuations, transaction advisory and strategic finance projects for high‑growth companies and investors.
+            Explore roles and partnership opportunities with YD Advisory.
           </motion.p>
-
-          <HeroMeta>
-            <div>
-              <FiTrendingUp /> Steep learning curve & ownership
-            </div>
-            <div>
-              <FiUsers /> Inclusive, founder‑led culture
-            </div>
-            <div>
-              <FiClock /> Hybrid, outcomes‑driven workstyle
-            </div>
-          </HeroMeta>
         </HeroContent>
       </HeroSection>
 
       <ContentSection>
-        <SectionHeader>
-          <h2>Why Build Your Career at YD Advisory?</h2>
-          <p>
-            We are a specialist valuation and advisory boutique. That means lean teams, direct client exposure and
-            meaningful work – not time spent navigating layers of hierarchy. You will see the impact of your work on
-            real transactions, real valuations and real boardroom conversations.
-          </p>
-        </SectionHeader>
+        <DropdownsWrapper>
+          <DropdownCard open>
+            <DropdownSummary>
+              <div>
+                <FiBriefcase aria-hidden="true" />
+                <h3>Apply for a job</h3>
+              </div>
+                  <FiChevronDown aria-hidden="true" />
+            </DropdownSummary>
+            <DropdownBody>
+              <SectionHeader>
+                <h2>Why Build Your Career at YD Advisory?</h2>
+                <p>
+                  We are a specialist valuation and advisory boutique. That means lean teams, direct client exposure and
+                  meaningful work – not time spent navigating layers of hierarchy. You will see the impact of your work on
+                  real transactions, real valuations and real boardroom conversations.
+                </p>
+              </SectionHeader>
 
-        <HighlightGrid>
-          <HighlightCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} viewport={{ once: true }}>
-            <h3><FiTrendingUp /> Steep Learning Curve</h3>
-            <p>
-              Work directly with founders, CFOs and investors on live mandates. You will build models, write decks and
-              speak to clients – not just make slides in the background.
-            </p>
-          </HighlightCard>
+              <HighlightGrid>
+                <HighlightCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} viewport={{ once: true }}>
+                  <h3><FiTrendingUp /> Steep Learning Curve</h3>
+                  <p>
+                    Work directly with founders, CFOs and investors on live mandates. You will build models, write decks and
+                    speak to clients – not just make slides in the background.
+                  </p>
+                </HighlightCard>
 
-          <HighlightCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.05 }} viewport={{ once: true }}>
-            <h3><FiUsers /> Equal Opportunity</h3>
-            <p>
-              YD Advisory is committed to diversity and meritocracy. We actively support women in leadership and hire
-              purely on skills, attitude and potential.
-            </p>
-          </HighlightCard>
+                <HighlightCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.05 }} viewport={{ once: true }}>
+                  <h3><FiUsers /> Equal Opportunity</h3>
+                  <p>
+                    YD Advisory is committed to diversity and meritocracy. We actively support women in leadership and hire
+                    purely on skills, attitude and potential.
+                  </p>
+                </HighlightCard>
 
-          <HighlightCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} viewport={{ once: true }}>
-            <h3><FiMapPin /> Hybrid & Global</h3>
-            <p>
-              Our work is anchored in Dubai with clients across the GCC, India and beyond. We combine in‑person time
-              for collaboration with flexible, hybrid work.
-            </p>
-          </HighlightCard>
+                <HighlightCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} viewport={{ once: true }}>
+                  <h3><FiMapPin /> Hybrid & Global</h3>
+                  <p>
+                    Our work is anchored in Dubai with clients across the GCC, India and beyond. We combine in‑person time
+                    for collaboration with flexible, hybrid work.
+                  </p>
+                </HighlightCard>
 
-          <HighlightCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }} viewport={{ once: true }}>
-            <h3><FiArrowRight /> High Impact Work</h3>
-            <p>
-              From fund‑raises and M&A to structuring and board reporting, your analysis directly informs decisions –
-              you see your work implemented in the real world.
-            </p>
-          </HighlightCard>
+                <HighlightCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }} viewport={{ once: true }}>
+                  <h3><FiArrowRight /> High Impact Work</h3>
+                  <p>
+                    From fund‑raises and M&A to structuring and board reporting, your analysis directly informs decisions –
+                    you see your work implemented in the real world.
+                  </p>
+                </HighlightCard>
 
-          <HighlightCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} viewport={{ once: true }}>
-            <h3><FiClock /> Balance & Wellness</h3>
-            <p>
-              We believe great work happens when people are at their best. We plan workloads sensibly, respect time
-              off and encourage long‑term, sustainable careers.
-            </p>
-          </HighlightCard>
+                <HighlightCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} viewport={{ once: true }}>
+                  <h3><FiClock /> Balance & Wellness</h3>
+                  <p>
+                    We believe great work happens when people are at their best. We plan workloads sensibly, respect time
+                    off and encourage long‑term, sustainable careers.
+                  </p>
+                </HighlightCard>
 
-          <HighlightCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 }} viewport={{ once: true }}>
-            <h3><FiMail /> Direct Access to Leadership</h3>
-            <p>
-              Work closely with the founder and senior team. If you have ideas on how to improve a model, process or
-              client experience, you will be heard.
-            </p>
-          </HighlightCard>
-        </HighlightGrid>
+                <HighlightCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 }} viewport={{ once: true }}>
+                  <h3><FiMail /> Direct Access to Leadership</h3>
+                  <p>
+                    Work closely with the founder and senior team. If you have ideas on how to improve a model, process or
+                    client experience, you will be heard.
+                  </p>
+                </HighlightCard>
+              </HighlightGrid>
 
-        <CultureSection>
-          <CareersSectionTitle>Life at YD Advisory</CareersSectionTitle>
-          <CareersText>
-            Our team is built around curiosity, accountability and trust. We keep teams small so everyone in the room
-            adds value – from interns to senior managers. Offsites, team dinners and working sessions at client
-            offices are all part of how we stay connected.
-          </CareersText>
+              <CultureSection>
+                <CareersSectionTitle>Life at YD Advisory</CareersSectionTitle>
+                <CareersText>
+                  Our team is built around curiosity, accountability and trust. We keep teams small so everyone in the room
+                  adds value – from interns to senior managers. Offsites, team dinners and working sessions at client
+                  offices are all part of how we stay connected.
+                </CareersText>
 
-          <CultureGrid>
-            <CultureCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} viewport={{ once: true }}>
-              <img
-                src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=80"
-                alt="YD Advisory team collaborating in a meeting room"
-              />
-              <CultureOverlay>
-                <CultureText>
-                  <h3>Deal Room Energy</h3>
-                  <p>Whiteboards, models and strategy discussions with founders and investors.</p>
-                </CultureText>
-              </CultureOverlay>
-            </CultureCard>
+                <CultureGrid>
+                  <CultureCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} viewport={{ once: true }}>
+                    <img
+                      src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=80"
+                      alt="YD Advisory team collaborating in a meeting room"
+                    />
+                    <CultureOverlay>
+                      <CultureText>
+                        <h3>Deal Room Energy</h3>
+                        <p>Whiteboards, models and strategy discussions with founders and investors.</p>
+                      </CultureText>
+                    </CultureOverlay>
+                  </CultureCard>
 
-            <CultureCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.05 }} viewport={{ once: true }}>
-              <img
-                src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=80"
-                alt="YD Advisory hybrid work and flexible workspace"
-              />
-              <CultureOverlay>
-                <CultureText>
-                  <h3>Hybrid & Flexible</h3>
-                  <p>Structured in-office time for collaboration, flexibility for deep work and life outside work.</p>
-                </CultureText>
-              </CultureOverlay>
-            </CultureCard>
+                  <CultureCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.05 }} viewport={{ once: true }}>
+                    <img
+                      src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=80"
+                      alt="YD Advisory hybrid work and flexible workspace"
+                    />
+                    <CultureOverlay>
+                      <CultureText>
+                        <h3>Hybrid & Flexible</h3>
+                        <p>Structured in-office time for collaboration, flexibility for deep work and life outside work.</p>
+                      </CultureText>
+                    </CultureOverlay>
+                  </CultureCard>
 
-            <CultureCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} viewport={{ once: true }}>
-              <img
-                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80"
-                alt="YD Advisory team social event"
-              />
-              <CultureOverlay>
-                <CultureText>
-                  <h3>Team First</h3>
-                  <p>We celebrate wins together and support each other through tough deadlines and big milestones.</p>
-                </CultureText>
-              </CultureOverlay>
-            </CultureCard>
-          </CultureGrid>
-        </CultureSection>
+                  <CultureCard as={motion.div} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} viewport={{ once: true }}>
+                    <img
+                      src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80"
+                      alt="YD Advisory team social event"
+                    />
+                    <CultureOverlay>
+                      <CultureText>
+                        <h3>Team First</h3>
+                        <p>We celebrate wins together and support each other through tough deadlines and big milestones.</p>
+                      </CultureText>
+                    </CultureOverlay>
+                  </CultureCard>
+                </CultureGrid>
+              </CultureSection>
 
-        <CareersLayout>
-          <CareersColumn>
-            <CareersSectionTitle>Open Roles</CareersSectionTitle>
-            <CareersText>
-              We regularly hire across valuation, transaction advisory, financial modeling and operations. Below is a
-              snapshot of current roles – if you do not see an exact match, you can still write to us.
-            </CareersText>
+              <CareersLayout>
+                <CareersColumn>
+                  <CareersSectionTitle>Open Roles</CareersSectionTitle>
+                  <CareersText>
+                    We regularly hire across valuation, transaction advisory, financial modeling and operations. Below is a
+                    snapshot of current roles – if you do not see an exact match, you can still write to us.
+                  </CareersText>
 
-            <JobTableWrapper>
-              <JobTable>
-                <thead>
-                  <tr>
-                    <th>Job Title</th>
-                    <th>Duration</th>
-                    <th>Qualification</th>
-                    <th>Eligibility</th>
-                    <th>Experience</th>
-                    <th>Job Description</th>
-                    <th>CTC</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Manager – Investment Research</td>
-                    <td>Full‑time</td>
-                    <td>MBA/PGDM in Finance or Analytics</td>
-                    <td>
-                      Strong DCF/LBO fundamentals, valuation and cash‑flow analysis; advanced Excel; clear communication.
-                    </td>
-                    <td>4–7 years of relevant experience</td>
-                    <td>
-                      Lead valuations and due diligence; build LBO/DCF models; run scenarios and risk analysis; own client-ready outputs (CIMs, decks).
-                    </td>
-                    <td>Competitive, based on experience</td>
-                  </tr>
-                  <tr>
-                    <td>Project Leader – Marketing &amp; Business Development</td>
-                    <td>Full‑time</td>
-                    <td>MBA</td>
-                    <td>
-                      SEO/SEM + performance marketing; strong analytics; sales alignment; campaign ownership.
-                    </td>
-                    <td>5+ years in B2B marketing</td>
-                    <td>
-                      Drive digital growth (SEO/SEM, paid, content); track funnels; optimise CAC/ROI; handle market/competitor analysis; travel as needed.
-                    </td>
-                    <td>Competitive, with performance incentives</td>
-                  </tr>
-                  <tr>
-                    <td>Summer Interns – Remote</td>
-                    <td>2 months</td>
-                    <td>MBA Batch 2026</td>
-                    <td>MBA in Marketing, Finance or Operations</td>
-                    <td>0</td>
-                    <td>
-                      Remote 2‑month internship for MBA students. Strong performers may be considered for PPOs.
-                    </td>
-                    <td>Unpaid (with PPO consideration)</td>
-                  </tr>
-                  <tr>
-                    <td>Summer Interns – On‑site (Dubai)</td>
-                    <td>2 months</td>
-                    <td>MBA Batch 2026</td>
-                    <td>MBA in Marketing, Finance or Operations</td>
-                    <td>0</td>
-                    <td>
-                      Full‑time, on‑site internship in Dubai. Stipend/benefits depend on college ranking. PPOs for top performers.
-                    </td>
-                    <td>Stipend based on college ranking</td>
-                  </tr>
-                </tbody>
-              </JobTable>
-            </JobTableWrapper>
-          </CareersColumn>
-        </CareersLayout>
+                  <JobTableWrapper>
+                    <JobTable>
+                      <thead>
+                        <tr>
+                          <th>Job Title</th>
+                          <th>Duration</th>
+                          <th>Qualification</th>
+                          <th>Eligibility</th>
+                          <th>Experience</th>
+                          <th>Job Description</th>
+                          <th>CTC</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Manager – Investment Research</td>
+                          <td>Full‑time</td>
+                          <td>MBA/PGDM in Finance or Analytics</td>
+                          <td>
+                            Strong DCF/LBO fundamentals, valuation and cash‑flow analysis; advanced Excel; clear communication.
+                          </td>
+                          <td>4–7 years of relevant experience</td>
+                          <td>
+                            Lead valuations and due diligence; build LBO/DCF models; run scenarios and risk analysis; own client-ready outputs (CIMs, decks).
+                          </td>
+                          <td>Competitive, based on experience</td>
+                        </tr>
+                        <tr>
+                          <td>Project Leader – Marketing &amp; Business Development</td>
+                          <td>Full‑time</td>
+                          <td>MBA</td>
+                          <td>
+                            SEO/SEM + performance marketing; strong analytics; sales alignment; campaign ownership.
+                          </td>
+                          <td>5+ years in B2B marketing</td>
+                          <td>
+                            Drive digital growth (SEO/SEM, paid, content); track funnels; optimise CAC/ROI; handle market/competitor analysis; travel as needed.
+                          </td>
+                          <td>Competitive, with performance incentives</td>
+                        </tr>
+                        <tr>
+                          <td>Summer Interns – Remote</td>
+                          <td>2 months</td>
+                          <td>MBA Batch 2026</td>
+                          <td>MBA in Marketing, Finance or Operations</td>
+                          <td>0</td>
+                          <td>
+                            Remote 2‑month internship for MBA students. Strong performers may be considered for PPOs.
+                          </td>
+                          <td>Unpaid (with PPO consideration)</td>
+                        </tr>
+                        <tr>
+                          <td>Summer Interns – On‑site (Dubai)</td>
+                          <td>2 months</td>
+                          <td>MBA Batch 2026</td>
+                          <td>MBA in Marketing, Finance or Operations</td>
+                          <td>0</td>
+                          <td>
+                            Full‑time, on‑site internship in Dubai. Stipend/benefits depend on college ranking. PPOs for top performers.
+                          </td>
+                          <td>Stipend based on college ranking</td>
+                        </tr>
+                      </tbody>
+                    </JobTable>
+                  </JobTableWrapper>
+                </CareersColumn>
+              </CareersLayout>
 
-        <AfterTableCardsSection>
-          <CareersSectionTitle>Careers Contact & Applications</CareersSectionTitle>
-          <CareersText>
-            Apply in minutes, or reach out directly and we’ll route your profile to the right opportunity.
-          </CareersText>
-          <AfterTableCardsGrid>
-            <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }} viewport={{ once: true }}>
-              <InfoCardHeader>
-                <InfoCardHeaderRow>
-                  <InfoCardTitleWrap>
-                    <InfoCardIcon aria-hidden="true">
-                      <FiSend />
-                    </InfoCardIcon>
-                    <InfoCardTitle>How to Apply</InfoCardTitle>
-                  </InfoCardTitleWrap>
-                  <InfoCardBadge>Fast track</InfoCardBadge>
-                </InfoCardHeaderRow>
-              </InfoCardHeader>
-              <InfoCardBody>
-                <p>Share your CV plus a short note on why YD Advisory. If relevant, include examples of models, decks or writing you’re proud of.</p>
-                <ContactHighlight>
-                  <ContactHighlightLabel>Careers email</ContactHighlightLabel>
-                  <ContactHighlightRow>
-                    <FiMail aria-hidden="true" />
-                    <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
-                  </ContactHighlightRow>
-                </ContactHighlight>
-              </InfoCardBody>
-              <InfoCardFooter>
-                <CTAButton to="/contact">
-                  Talk to our team <FiArrowRight />
-                </CTAButton>
-              </InfoCardFooter>
-            </InfoCard>
+              <AfterTableCardsSection>
+                <CareersSectionTitle>Careers Contact & Applications</CareersSectionTitle>
+                <CareersText>
+                  Apply in minutes, or reach out directly and we’ll route your profile to the right opportunity.
+                </CareersText>
+                <AfterTableCardsGrid>
+                  <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }} viewport={{ once: true }}>
+                    <InfoCardHeader>
+                      <InfoCardHeaderRow>
+                        <InfoCardTitleWrap>
+                          <InfoCardIcon aria-hidden="true">
+                            <FiSend />
+                          </InfoCardIcon>
+                          <InfoCardTitle>How to Apply</InfoCardTitle>
+                        </InfoCardTitleWrap>
+                        <InfoCardBadge>Fast track</InfoCardBadge>
+                      </InfoCardHeaderRow>
+                    </InfoCardHeader>
+                    <InfoCardBody>
+                      <p>Share your CV plus a short note on why YD Advisory. If relevant, include examples of models, decks or writing you’re proud of.</p>
+                      <ContactHighlight>
+                        <ContactHighlightLabel>Careers email</ContactHighlightLabel>
+                        <ContactHighlightRow>
+                          <FiMail aria-hidden="true" />
+                          <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
+                        </ContactHighlightRow>
+                      </ContactHighlight>
+                    </InfoCardBody>
+                    <InfoCardFooter>
+                      <CTAButton to="/contact">
+                        Talk to our team <FiArrowRight />
+                      </CTAButton>
+                    </InfoCardFooter>
+                  </InfoCard>
 
-            <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.05 }} viewport={{ once: true }}>
-              <InfoCardHeader>
-                <InfoCardHeaderRow>
-                  <InfoCardTitleWrap>
-                    <InfoCardIcon aria-hidden="true">
-                      <FiUsers />
-                    </InfoCardIcon>
-                    <InfoCardTitle>Campus &amp; Early Careers</InfoCardTitle>
-                  </InfoCardTitleWrap>
-                  <InfoCardBadge>Internships</InfoCardBadge>
-                </InfoCardHeaderRow>
-              </InfoCardHeader>
-              <InfoCardBody>
-                <p>We partner with leading universities for internships and analyst roles. For campus programs, reach out to the careers desk.</p>
-                <ContactHighlight>
-                  <ContactHighlightLabel>Campus contact</ContactHighlightLabel>
-                  <ContactHighlightRow>
-                    <FiMail aria-hidden="true" />
-                    <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
-                  </ContactHighlightRow>
-                </ContactHighlight>
-              </InfoCardBody>
-              <InfoCardFooter>
-                <CTAButton to="/contact">
-                  Explore early roles <FiArrowRight />
-                </CTAButton>
-              </InfoCardFooter>
-            </InfoCard>
+                  <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.05 }} viewport={{ once: true }}>
+                    <InfoCardHeader>
+                      <InfoCardHeaderRow>
+                        <InfoCardTitleWrap>
+                          <InfoCardIcon aria-hidden="true">
+                            <FiUsers />
+                          </InfoCardIcon>
+                          <InfoCardTitle>Campus &amp; Early Careers</InfoCardTitle>
+                        </InfoCardTitleWrap>
+                        <InfoCardBadge>Internships</InfoCardBadge>
+                      </InfoCardHeaderRow>
+                    </InfoCardHeader>
+                    <InfoCardBody>
+                      <p>We partner with leading universities for internships and analyst roles. For campus programs, reach out to the careers desk.</p>
+                      <ContactHighlight>
+                        <ContactHighlightLabel>Campus contact</ContactHighlightLabel>
+                        <ContactHighlightRow>
+                          <FiMail aria-hidden="true" />
+                          <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
+                        </ContactHighlightRow>
+                      </ContactHighlight>
+                    </InfoCardBody>
+                    <InfoCardFooter>
+                      <CTAButton to="/contact">
+                        Explore early roles <FiArrowRight />
+                      </CTAButton>
+                    </InfoCardFooter>
+                  </InfoCard>
 
-            <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.1 }} viewport={{ once: true }}>
-              <InfoCardHeader>
-                <InfoCardHeaderRow>
-                  <InfoCardTitleWrap>
-                    <InfoCardIcon aria-hidden="true">
-                      <FiBriefcase />
-                    </InfoCardIcon>
-                    <InfoCardTitle>Experienced Hires</InfoCardTitle>
-                  </InfoCardTitleWrap>
-                  <InfoCardBadge>Always open</InfoCardBadge>
-                </InfoCardHeaderRow>
-              </InfoCardHeader>
-              <InfoCardBody>
-                <p>If you have experience in valuations, investment banking, transaction advisory, Big‑4 deals or high‑growth finance teams, we’d love to hear from you.</p>
-                <ContactHighlight>
-                  <ContactHighlightLabel>Send your profile</ContactHighlightLabel>
-                  <ContactHighlightRow>
-                    <FiMail aria-hidden="true" />
-                    <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
-                  </ContactHighlightRow>
-                  <CompactContactNote>Include a short note on the work you enjoy plus your latest CV (or deal sheet).</CompactContactNote>
-                </ContactHighlight>
-              </InfoCardBody>
-              <InfoCardFooter>
-                <CTAButton to="/contact">
-                  Connect with us <FiArrowRight />
-                </CTAButton>
-              </InfoCardFooter>
-            </InfoCard>
+                  <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.1 }} viewport={{ once: true }}>
+                    <InfoCardHeader>
+                      <InfoCardHeaderRow>
+                        <InfoCardTitleWrap>
+                          <InfoCardIcon aria-hidden="true">
+                            <FiBriefcase />
+                          </InfoCardIcon>
+                          <InfoCardTitle>Experienced Hires</InfoCardTitle>
+                        </InfoCardTitleWrap>
+                        <InfoCardBadge>Always open</InfoCardBadge>
+                      </InfoCardHeaderRow>
+                    </InfoCardHeader>
+                    <InfoCardBody>
+                      <p>If you have experience in valuations, investment banking, transaction advisory, Big‑4 deals or high‑growth finance teams, we’d love to hear from you.</p>
+                      <ContactHighlight>
+                        <ContactHighlightLabel>Send your profile</ContactHighlightLabel>
+                        <ContactHighlightRow>
+                          <FiMail aria-hidden="true" />
+                          <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
+                        </ContactHighlightRow>
+                        <CompactContactNote>Include a short note on the work you enjoy plus your latest CV (or deal sheet).</CompactContactNote>
+                      </ContactHighlight>
+                    </InfoCardBody>
+                    <InfoCardFooter>
+                      <CTAButton to="/contact">
+                        Connect with us <FiArrowRight />
+                      </CTAButton>
+                    </InfoCardFooter>
+                  </InfoCard>
 
-            <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.15 }} viewport={{ once: true }}>
-              <InfoCardHeader>
-                <InfoCardHeaderRow>
-                  <InfoCardTitleWrap>
-                    <InfoCardIcon aria-hidden="true">
-                      <FiMapPin />
-                    </InfoCardIcon>
-                    <InfoCardTitle>Careers Contact Overview</InfoCardTitle>
-                  </InfoCardTitleWrap>
-                  <InfoCardBadge>Get routed</InfoCardBadge>
-                </InfoCardHeaderRow>
-              </InfoCardHeader>
-              <InfoCardBody>
-                <p>Not sure which role fits you best? Reach out and we’ll route your profile to the right opportunity.</p>
-                <ContactHighlight>
-                  <ContactHighlightLabel>Contacts</ContactHighlightLabel>
-                  <CompactContactList>
-                    <CompactContactItem>
-                      <CompactContactTitle>General careers &amp; experienced hires</CompactContactTitle>
-                      <ContactHighlightRow>
-                        <FiMail aria-hidden="true" />
-                        <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
-                      </ContactHighlightRow>
-                      <CompactContactNote>Full‑time roles across valuation, transaction advisory, modelling and operations.</CompactContactNote>
-                    </CompactContactItem>
-                    <CompactContactItem>
-                      <CompactContactTitle>Campus &amp; early careers</CompactContactTitle>
-                      <ContactHighlightRow>
-                        <FiMail aria-hidden="true" />
-                        <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
-                      </ContactHighlightRow>
-                      <CompactContactNote>Internships, analyst programs and campus partnerships.</CompactContactNote>
-                    </CompactContactItem>
-                  </CompactContactList>
-                </ContactHighlight>
-              </InfoCardBody>
-              <InfoCardFooter>
-                <CTAButton to="/contact">
-                  Contact careers team <FiArrowRight />
-                </CTAButton>
-              </InfoCardFooter>
-            </InfoCard>
-          </AfterTableCardsGrid>
-        </AfterTableCardsSection>
+                  <InfoCard as={motion.div} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.15 }} viewport={{ once: true }}>
+                    <InfoCardHeader>
+                      <InfoCardHeaderRow>
+                        <InfoCardTitleWrap>
+                          <InfoCardIcon aria-hidden="true">
+                            <FiMapPin />
+                          </InfoCardIcon>
+                          <InfoCardTitle>Careers Contact Overview</InfoCardTitle>
+                        </InfoCardTitleWrap>
+                        <InfoCardBadge>Get routed</InfoCardBadge>
+                      </InfoCardHeaderRow>
+                    </InfoCardHeader>
+                    <InfoCardBody>
+                      <p>Not sure which role fits you best? Reach out and we’ll route your profile to the right opportunity.</p>
+                      <ContactHighlight>
+                        <ContactHighlightLabel>Contacts</ContactHighlightLabel>
+                        <CompactContactList>
+                          <CompactContactItem>
+                            <CompactContactTitle>General careers &amp; experienced hires</CompactContactTitle>
+                            <ContactHighlightRow>
+                              <FiMail aria-hidden="true" />
+                              <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
+                            </ContactHighlightRow>
+                            <CompactContactNote>Full‑time roles across valuation, transaction advisory, modelling and operations.</CompactContactNote>
+                          </CompactContactItem>
+                          <CompactContactItem>
+                            <CompactContactTitle>Campus &amp; early careers</CompactContactTitle>
+                            <ContactHighlightRow>
+                              <FiMail aria-hidden="true" />
+                              <EmailLink href={`mailto:${careersEmail}`}>{careersEmail}</EmailLink>
+                            </ContactHighlightRow>
+                            <CompactContactNote>Internships, analyst programs and campus partnerships.</CompactContactNote>
+                          </CompactContactItem>
+                        </CompactContactList>
+                      </ContactHighlight>
+                    </InfoCardBody>
+                    <InfoCardFooter>
+                      <CTAButton to="/contact">
+                        Contact careers team <FiArrowRight />
+                      </CTAButton>
+                    </InfoCardFooter>
+                  </InfoCard>
+                </AfterTableCardsGrid>
+              </AfterTableCardsSection>
+            </DropdownBody>
+          </DropdownCard>
+        </DropdownsWrapper>
       </ContentSection>
     </PageContainer>
   );

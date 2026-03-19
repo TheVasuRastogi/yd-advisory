@@ -23,7 +23,7 @@ const ServicesContainer = styled.div`
 `;
 
 const HeroSection = styled.section`
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary[800]} 0%, ${props => props.theme.colors.primary[900]} 100%);
+  background-color: ${props => props.theme.colors.primary[900]};
   color: ${props => props.theme.colors.white};
   padding: ${props => props.theme.spacing[24]} 0;
   text-align: center;
@@ -37,10 +37,10 @@ const HeroSection = styled.section`
     left: 0;
     right: 0;
     bottom: 0;
-    background: 
-      radial-gradient(circle at 20% 20%, rgba(20, 184, 166, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 40% 60%, rgba(20, 184, 166, 0.08) 0%, transparent 50%);
+    background: url('/services.png') center/cover no-repeat;
+    filter: blur(12px);
+    transform: scale(1.08); /* keeps edges covered after blur */
+    opacity: 0.9;
     z-index: 0;
   }
   
@@ -51,7 +51,11 @@ const HeroSection = styled.section`
     left: 0;
     right: 0;
     bottom: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background:
+      radial-gradient(circle at 20% 20%, rgba(20, 184, 166, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 60%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     z-index: 0;
   }
 `;
@@ -102,18 +106,6 @@ const CategorySection = styled.section`
   padding: ${props => props.theme.spacing[20]} 0;
   background: ${props => props.isEven ? props.theme.colors.gray[50] : props.theme.colors.white};
   position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 120px;
-    height: 4px;
-    background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
-    border-radius: ${props => props.theme.borderRadius.full};
-  }
   
   @media (max-width: ${props => props.theme.breakpoints.md}) {
     padding: ${props => props.theme.spacing[16]} 0;
@@ -212,27 +204,11 @@ const ServiceCard = styled.div`
     }
   }
   
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(135deg, ${props => props.theme.colors.primary[500]}, ${props => props.theme.colors.primary[600]});
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-  }
-  
   &:hover {
     transform: translateY(-12px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
     border-color: ${props => props.theme.colors.primary[200]};
     animation: none;
-    
-    &::before {
-      transform: scaleX(1);
-    }
   }
 `;
 

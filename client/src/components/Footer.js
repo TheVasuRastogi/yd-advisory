@@ -120,9 +120,9 @@ const NewsletterForm = styled.form`
   input {
     flex: 1;
     padding: ${props => props.theme.spacing[3]};
-    border: 1px solid ${props => props.theme.colors.gray[600]};
+    border: 1px solid ${props => props.theme.colors.primary[700]};
     border-radius: ${props => props.theme.borderRadius.md};
-    background: ${props => props.theme.colors.gray[800]};
+    background: ${props => props.theme.colors.primary[900]};
     color: ${props => props.theme.colors.white};
     
     &::placeholder {
@@ -210,14 +210,14 @@ const SocialLinks = styled.div`
     align-items: center;
     gap: ${props => props.theme.spacing[2]};
     padding: ${props => props.theme.spacing[3]} ${props => props.theme.spacing[4]};
-    background: ${props => props.theme.colors.gray[800]};
-    color: ${props => props.theme.colors.gray[300]};
+    background: ${props => props.theme.colors.primary[800]};
+    color: ${props => props.theme.colors.white};
     border-radius: 9999px;
     text-decoration: none;
     transition: all ${props => props.theme.transitions.fast};
     line-height: 1;
     font-weight: 600;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px rgba(20, 184, 166, 0.25);
 
     svg {
       font-size: 1.2rem;
@@ -376,7 +376,7 @@ const Footer = () => {
               <li><Link to="/about">About Us</Link></li>
               <li><Link to="/services">Services</Link></li>
               <li><Link to="/blog">Blog</Link></li>
-              <li><Link to="/careers">Careers</Link></li>
+              <li><Link to="/careers">Join Us</Link></li>
               <li><Link to="/contact">Contact</Link></li>
             </FooterLinks>
           </FooterSection>
@@ -400,6 +400,10 @@ const Footer = () => {
                 <FiMapPin />
                 <span>Level 41, Emirates Tower - DIFC,<br />Near Trade Center - Dubai, UAE</span>
               </div>
+                <div className="contact-item">
+                  <FiMapPin />
+                  <span>Level 24, CapitaGreen,<br />138 Market Street, Singapore - 048946</span>
+                </div>
               <div className="contact-item">
                 <FiPhone />
                 <a
@@ -424,10 +428,10 @@ const Footer = () => {
               </div>
             </ContactInfo>
             
-            <h4 style={{ marginTop: '24px', marginBottom: '12px', fontSize: '16px' }}>
+            <h4 style={{ marginTop: '24px', marginBottom: '12px', fontSize: '16px', color: 'white' }}>
               Newsletter
             </h4>
-            <p style={{ fontSize: '14px', marginBottom: '12px' }}>
+            <p style={{ fontSize: '14px', marginBottom: '12px', color: 'white' }}>
               Subscribe to get financial tips and updates.
             </p>
             <NewsletterForm onSubmit={handleNewsletterSubmit}>

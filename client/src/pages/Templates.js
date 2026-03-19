@@ -112,22 +112,6 @@ const ComingSoonSection = styled.div`
     transform: translateY(-2px);
     box-shadow: 0 20px 40px rgba(20, 184, 166, 0.15);
   }
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, ${props => props.theme.colors.primary[500]}, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[500]});
-    animation: shimmer 3s infinite;
-  }
-  
-  @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
 `;
 
 const ComingSoonTitle = styled.h2`
