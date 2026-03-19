@@ -20,7 +20,7 @@ const teamMembers = [
     tagline: 'Bespoke Transaction & Valuation Advisory',
     image: '/images/team/yashaswi_das.png',
     social: {
-      linkedin: 'https://www.linkedin.com/in/yashaswi-das/',
+      linkedin: '',
       email: 'Yashaswi.das@ydadvisory.ae',
     },
     credentials: [
@@ -155,6 +155,7 @@ const HeroBannerInner = styled.div`
   z-index: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: ${p => p.theme.spacing[10]};
 
   @media (max-width: ${p => p.theme.breakpoints.md}) {
@@ -169,6 +170,7 @@ const HeroPhoto = styled.div`
   flex-shrink: 0;
   width: 160px;
   height: 160px;
+  margin-top: -24px;
   border-radius: 9999px;
   background: linear-gradient(135deg, ${p => p.theme.colors.primary[600]}, ${p => p.theme.colors.primary[800]});
   border: 4px solid rgba(255, 255, 255, 0.25);
@@ -205,6 +207,10 @@ const HeroPhoto = styled.div`
 
 const HeroText = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 `;
 
 const HeroEyebrow = styled.div`
@@ -252,12 +258,14 @@ const HeroTagline = styled.p`
 
 const HeroActions = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: ${p => p.theme.spacing[3]};
   margin-top: ${p => p.theme.spacing[5]};
+  flex-wrap: wrap;
 
   @media (max-width: ${p => p.theme.breakpoints.md}) {
     justify-content: center;
-    flex-wrap: wrap;
   }
 `;
 

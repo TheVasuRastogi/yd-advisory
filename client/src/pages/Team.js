@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import {
   FiLinkedin, FiMail, FiArrowRight,
-  FiShield, FiTarget, FiClock,
-  FiBriefcase, FiGlobe, FiAward, FiUsers,
 } from 'react-icons/fi';
 import SEO from '../components/SEO';
 
@@ -122,80 +120,6 @@ const HeroDivider = styled.div`
   margin: ${p => p.theme.spacing[6]} auto 0;
 `;
 
-/* ════════════════════════════════════════════════════════════════
-   STATS STRIP — dark band showing firm credentials
-════════════════════════════════════════════════════════════════ */
-
-const StatsStrip = styled.div`
-  background: transparent;
-  padding: ${p => p.theme.spacing[6]} 0 ${p => p.theme.spacing[14]};
-`;
-
-const StatsInner = styled.div`
-  max-width: 980px;
-  margin: 0 auto;
-  padding: ${p => p.theme.spacing[8]} ${p => p.theme.spacing[8]};
-  background: ${p => p.theme.colors.white};
-  border: 1px solid ${p => p.theme.colors.gray[200]};
-  border-radius: ${p => p.theme.borderRadius['2xl']};
-  box-shadow: 0 14px 45px rgba(20, 184, 166, 0.10);
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  align-items: center;
-  gap: ${p => p.theme.spacing[8]};
-
-  @media (max-width: ${p => p.theme.breakpoints.sm}) {
-    grid-template-columns: 1fr;
-    gap: ${p => p.theme.spacing[5]};
-    padding: ${p => p.theme.spacing[6]} ${p => p.theme.spacing[4]};
-  }
-`;
-
-const StatCell = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: ${p => p.theme.spacing[2]};
-  padding: 0;
-  border-right: none;
-`;
-
-const StatIcon = styled.div`
-  display: none;
-`;
-
-const StatNumber = styled.span`
-  font-size: ${p => p.theme.fontSizes['3xl']};
-  font-weight: ${p => p.theme.fontWeights.extrabold};
-  color: ${p => p.theme.colors.primary[600]};
-  line-height: 1;
-`;
-
-const StatLabel = styled.span`
-  font-size: ${p => p.theme.fontSizes.xs};
-  font-weight: ${p => p.theme.fontWeights.medium};
-  color: ${p => p.theme.colors.gray[600]};
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  text-align: center;
-`;
-
-const SupportDescription = styled.p`
-  margin: 0;
-  font-size: ${p => p.theme.fontSizes.base};
-  color: ${p => p.theme.colors.gray[700]};
-  line-height: 1.8;
-
-  strong {
-    color: ${p => p.theme.colors.primary[800]};
-    font-weight: ${p => p.theme.fontWeights.semibold};
-  }
-`;
-
-/* ════════════════════════════════════════════════════════════════
-   TEAM SECTION — vertical profile cards in centered grid
-════════════════════════════════════════════════════════════════ */
-
 const TeamSection = styled.section`
   padding: ${p => p.theme.spacing[10]} 0 ${p => p.theme.spacing[6]};
   background: ${p => p.theme.colors.gray[50]};
@@ -206,8 +130,6 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 0 ${p => p.theme.spacing[4]};
 `;
-
-/* Section heading — mirrors About.js SectionHeader */
 const SectionHead = styled.div`
   display: none;
   text-align: center;
@@ -464,26 +386,7 @@ const ProfileBtn = styled.button`
    HOW WE WORK — white bg, mirrors About.js PrincipleCard
 ════════════════════════════════════════════════════════════════ */
 
-const WorkSection = styled.section`
-  padding: ${p => p.theme.spacing[16]} 0;
-  background: ${p => p.theme.colors.white};
-`;
-
-const WorkGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: ${p => p.theme.spacing[6]};
-
-  @media (max-width: ${p => p.theme.breakpoints.lg}) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: ${p => p.theme.breakpoints.sm}) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-/* exact copy of About.js PrincipleCard */
+// eslint-disable-next-line no-unused-vars
 const WorkCard = styled.div`
   background: ${p => p.theme.colors.white};
   border: 1px solid ${p => p.theme.colors.gray[200]};
@@ -594,33 +497,6 @@ const CtaButton = styled.button`
 /* ════════════════════════════════════════════════════════════════
    DATA
 ════════════════════════════════════════════════════════════════ */
-
-const stats = [
-  {
-    icon: <FiUsers />,
-    value: '5+',
-    label: 'Professionals',
-    body: 'Beyond our named principals, YD Advisory is supported by 5+ seasoned professionals spanning financial due diligence, valuation, legal structuring, and capital markets — each embedded in deals from day one.',
-  },
-];
-
-const principles = [
-  {
-    icon: <FiTarget />,
-    title: 'Founder-led & Hands-on',
-    body:  'No hand-offs. Senior attention and accountability from day one through to final delivery.',
-  },
-  {
-    icon: <FiClock />,
-    title: 'Quality with Boutique Speed',
-    body:  'Institutional-grade models and frameworks — without the overhead, delays, or extra layers.',
-  },
-  {
-    icon: <FiShield />,
-    title: 'Tailored, Not Templated',
-    body:  'Every valuation, model, and memo is built around the specific business, deal, and decision.',
-  },
-];
 
 /* ════════════════════════════════════════════════════════════════
    COMPONENT
