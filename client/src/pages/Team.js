@@ -173,6 +173,12 @@ const CardsGrid = styled.div`
     grid-template-columns: 1fr;
     max-width: 520px;
     margin: 0 auto;
+    padding-top: ${p => p.theme.spacing[8]};
+  }
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    gap: ${p => p.theme.spacing[8]};
+    padding-top: ${p => p.theme.spacing[6]};
   }
 `;
 
@@ -197,6 +203,11 @@ const Card = styled.div`
     box-shadow: ${p => p.theme.shadows.xl};
     transform: translateY(-6px);
   }
+
+  @media (max-width: ${p => p.theme.breakpoints.md}) {
+    padding-top: ${p => p.theme.spacing[5]};
+    overflow: hidden;
+  }
 `;
 
 /* avatar — circular badge */
@@ -216,6 +227,16 @@ const PhotoWrap = styled.div`
   transform: translateX(-50%);
   overflow: hidden;
   z-index: 2;
+
+  @media (max-width: ${p => p.theme.breakpoints.md}) {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    margin: 0 auto;
+    width: 170px;
+    height: 170px;
+  }
 `;
 
 const Photo = styled.img`
@@ -255,7 +276,7 @@ const CardBody = styled.div`
   text-align: center;
 
   @media (max-width: ${p => p.theme.breakpoints.sm}) {
-    padding: ${p => p.theme.spacing[6]} ${p => p.theme.spacing[6]};
+    padding: ${p => p.theme.spacing[5]} ${p => p.theme.spacing[5]} ${p => p.theme.spacing[6]};
   }
 `;
 
@@ -305,6 +326,11 @@ const Bio = styled.p`
   margin-bottom: ${p => p.theme.spacing[4]};
   flex: 1;
   max-width: 340px;
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    font-size: ${p => p.theme.fontSizes.base};
+    line-height: 1.65;
+  }
 `;
 
 const Credentials = styled.ul`
@@ -330,6 +356,13 @@ const CardFooter = styled.div`
   padding-top: ${p => p.theme.spacing[5]};
   border-top: 1px solid ${p => p.theme.colors.gray[100]};
   margin-top: auto;
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    width: 100%;
+    justify-content: center;
+    gap: ${p => p.theme.spacing[3]};
+    padding-top: ${p => p.theme.spacing[4]};
+  }
 `;
 
 const IconBtn = styled.a`
@@ -379,6 +412,10 @@ const ProfileBtn = styled.button`
     color: ${p => p.theme.colors.primary[800]};
 
     svg { transform: translateX(3px); }
+  }
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    margin-left: 0;
   }
 `;
 

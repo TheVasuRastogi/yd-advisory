@@ -1462,6 +1462,10 @@ const ContactPreviewGrid = styled.div`
     grid-template-columns: 1fr;
     gap: ${props => props.theme.spacing[8]};
   }
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    gap: ${props => props.theme.spacing[6]};
+  }
 `;
 
 const ContactPreviewContent = styled.div`
@@ -1527,16 +1531,20 @@ const ContactInfo = styled.div`
 
   @media (max-width: ${props => props.theme.breakpoints.md}) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    & > a:nth-child(4),
-    & > a:nth-child(5) {
-      grid-column: auto;
-      grid-row: auto;
+    /* Reset explicit desktop placements so the cards auto-flow */
+    & > a {
+      grid-column: auto !important;
+      grid-row: auto !important;
     }
   }
 
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     grid-template-columns: 1fr;
+    /* Stack cards vertically on small screens */
+    & > a {
+      grid-column: auto !important;
+      grid-row: auto !important;
+    }
   }
 `;
 
@@ -1585,6 +1593,11 @@ const ContactItem = styled.a`
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: ${props => props.theme.spacing[4]};
+    gap: ${props => props.theme.spacing[1]};
   }
 `;
 

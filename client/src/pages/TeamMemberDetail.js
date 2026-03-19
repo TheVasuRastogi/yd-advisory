@@ -98,12 +98,18 @@ const Page = styled.div`
   min-height: 100vh;
   background: ${p => p.theme.colors.gray[50]};
   padding-top: 80px; /* fixed header height */
+  /* Keeps bottom content readable when the fixed action buttons are visible */
+  padding-bottom: ${p => p.theme.spacing[20]};
 `;
 
 /* ── Back nav bar (sits above hero, below fixed header) ── */
 const BackBar = styled.div`
   background: ${p => p.theme.colors.primary[900]};
   padding: ${p => p.theme.spacing[3]} ${p => p.theme.spacing[6]};
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    padding: ${p => p.theme.spacing[3]} ${p => p.theme.spacing[4]};
+  }
 `;
 
 const BackBarInner = styled.div`
@@ -145,6 +151,10 @@ const HeroBanner = styled.section`
     background: ${p => p.theme.colors.gray[50]};
     clip-path: ellipse(55% 100% at 50% 100%);
   }
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    padding: ${p => p.theme.spacing[10]} 0 ${p => p.theme.spacing[12]};
+  }
 `;
 
 const HeroBannerInner = styled.div`
@@ -163,6 +173,10 @@ const HeroBannerInner = styled.div`
     text-align: center;
     gap: ${p => p.theme.spacing[6]};
     padding: 0 ${p => p.theme.spacing[4]};
+  }
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    gap: ${p => p.theme.spacing[4]};
   }
 `;
 
@@ -202,6 +216,7 @@ const HeroPhoto = styled.div`
   @media (max-width: ${p => p.theme.breakpoints.sm}) {
     width: 130px;
     height: 130px;
+    margin-top: -18px;
   }
 `;
 
@@ -267,6 +282,10 @@ const HeroActions = styled.div`
   @media (max-width: ${p => p.theme.breakpoints.md}) {
     justify-content: center;
   }
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    display: none;
+  }
 `;
 
 const SocialBtn = styled.a`
@@ -324,6 +343,11 @@ const BodyWrapper = styled.div`
     gap: ${p => p.theme.spacing[6]};
     padding: ${p => p.theme.spacing[7]} ${p => p.theme.spacing[4]} ${p => p.theme.spacing[12]};
   }
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    gap: ${p => p.theme.spacing[5]};
+    padding: ${p => p.theme.spacing[6]} ${p => p.theme.spacing[4]} ${p => p.theme.spacing[12]};
+  }
 `;
 
 /* ── Left sidebar ────────────────────────────── */
@@ -339,6 +363,10 @@ const SideCard = styled.div`
   padding: ${p => p.theme.spacing[6]} ${p => p.theme.spacing[6]} ${p => p.theme.spacing[7]};
   border: 1px solid ${p => p.theme.colors.gray[100]};
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    padding: ${p => p.theme.spacing[5]} ${p => p.theme.spacing[5]} ${p => p.theme.spacing[6]};
+  }
 `;
 
 const SideCardTitle = styled.h3`
@@ -375,6 +403,11 @@ const CredentialItem = styled.div`
     font-size: ${p => p.theme.fontSizes.sm};
     color: ${p => p.theme.colors.gray[600]};
     line-height: 1.6;
+  }
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    padding: ${p => p.theme.spacing[2]} 0 ${p => p.theme.spacing[2]};
+    gap: ${p => p.theme.spacing[2]};
   }
 `;
 
