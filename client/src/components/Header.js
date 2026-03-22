@@ -311,13 +311,20 @@ const CTAButton = styled(Link)`
   box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
   font-size: ${props => props.theme.fontSizes.sm};
   white-space: nowrap;
-  
-  &:hover {
+
+  /* Override global a:hover (teal) so text stays readable on dark gradient */
+  &:hover,
+  &:focus-visible {
+    color: ${props => props.theme.colors.white};
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(20, 184, 166, 0.4);
     background: linear-gradient(135deg, ${props => props.theme.colors.primary[700]}, ${props => props.theme.colors.primary[800]});
   }
-  
+
+  &:active {
+    color: ${props => props.theme.colors.white};
+  }
+
   @media (max-width: ${props => props.theme.breakpoints.lg}) {
     display: none;
   }
@@ -565,13 +572,19 @@ const MobileCTAButton = styled(Link)`
   margin-top: ${props => props.theme.spacing[6]};
   transition: all ${props => props.theme.transitions.fast};
   box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
-  
-  &:hover {
+
+  &:hover,
+  &:focus-visible {
+    color: ${props => props.theme.colors.white};
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(20, 184, 166, 0.4);
     background: linear-gradient(135deg, ${props => props.theme.colors.primary[700]}, ${props => props.theme.colors.primary[800]});
   }
-  
+
+  &:active {
+    color: ${props => props.theme.colors.white};
+  }
+
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     padding: ${props => props.theme.spacing[3]} ${props => props.theme.spacing[4]};
     font-size: ${props => props.theme.fontSizes.base};

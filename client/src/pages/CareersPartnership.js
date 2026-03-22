@@ -5,29 +5,31 @@ import { Link } from 'react-router-dom';
 import { FiArrowRight, FiCheck } from 'react-icons/fi';
 import SEO from '../components/SEO';
 
-/* ── Design tokens (partner programme — forest + gold) ── */
-const forest = '#1a2e22';
-const forestDeep = '#15241c';
-const gold = '#c5b38a';
-const goldMuted = '#b8a06e';
-const cream = '#f9f8f3';
-const creamCard = '#fdfbf7';
+/* Align with site theme — teal primary scale (see theme.js + PageHero) */
 
 const Page = styled.div`
   padding-top: 120px;
   min-height: 100vh;
-  background: ${cream};
+  background: linear-gradient(
+    135deg,
+    ${p => p.theme.colors.primary[50]} 0%,
+    ${p => p.theme.colors.white} 55%
+  );
 `;
 
 /* ═══ Hero ═══ */
 const Hero = styled.section`
   position: relative;
   background:
-    radial-gradient(ellipse 55% 120% at 50% 0%, rgba(255, 255, 255, 0.06) 0%, transparent 55%),
-    linear-gradient(165deg, ${forestDeep} 0%, ${forest} 45%, #1e3a2d 100%);
-  color: #fff;
+    radial-gradient(ellipse 55% 120% at 50% 0%, rgba(255, 255, 255, 0.08) 0%, transparent 55%),
+    linear-gradient(
+      165deg,
+      ${p => p.theme.colors.primary[900]} 0%,
+      ${p => p.theme.colors.primary[800]} 45%,
+      ${p => p.theme.colors.primary[700]} 100%
+    );
+  color: ${p => p.theme.colors.white};
   overflow: hidden;
-  /* Extra top padding so the brand row + tagline clear the viewport edge below the fixed header */
   padding: ${p => p.theme.spacing[12]} ${p => p.theme.spacing[6]} ${p => p.theme.spacing[16]};
   padding-top: calc(${p => p.theme.spacing[12]} + env(safe-area-inset-top, 0px));
 
@@ -44,10 +46,10 @@ const HeroDecor = styled.div`
   pointer-events: none;
   position: absolute;
   inset: 0;
-  opacity: 0.35;
+  opacity: 0.4;
   background-image:
-    radial-gradient(circle at 88% 18%, transparent 0%, transparent 42%, rgba(197, 179, 138, 0.12) 43%, rgba(197, 179, 138, 0.12) 44%, transparent 45%),
-    radial-gradient(circle at 92% 35%, transparent 0%, transparent 38%, rgba(197, 179, 138, 0.08) 39%, rgba(197, 179, 138, 0.08) 40%, transparent 41%);
+    radial-gradient(circle at 88% 18%, transparent 0%, transparent 42%, rgba(94, 234, 212, 0.14) 43%, rgba(94, 234, 212, 0.14) 44%, transparent 45%),
+    radial-gradient(circle at 92% 35%, transparent 0%, transparent 38%, rgba(45, 212, 191, 0.1) 39%, rgba(45, 212, 191, 0.1) 40%, transparent 41%);
 `;
 
 const HeroInner = styled.div`
@@ -84,10 +86,10 @@ const BrandLockup = styled.div`
   line-height: 1.25;
 
   span:first-child {
-    color: #fff;
+    color: ${p => p.theme.colors.white};
   }
   span:last-child {
-    color: ${gold};
+    color: ${p => p.theme.colors.primary[300]};
     font-weight: ${p => p.theme.fontWeights.semibold};
   }
 `;
@@ -102,7 +104,7 @@ const HeroEyebrow = styled.div`
 const HeroEyebrowLine = styled.span`
   width: 40px;
   height: 1px;
-  background: ${gold};
+  background: ${p => p.theme.colors.primary[300]};
   border-radius: 1px;
 `;
 
@@ -110,7 +112,7 @@ const HeroEyebrowText = styled.span`
   font-size: ${p => p.theme.fontSizes.xs};
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: ${gold};
+  color: ${p => p.theme.colors.primary[300]};
   font-weight: ${p => p.theme.fontWeights.semibold};
 `;
 
@@ -142,11 +144,11 @@ const HeroTitle = styled.h1`
   line-height: 1;
   margin-bottom: ${p => p.theme.spacing[6]};
   max-width: 20ch;
-  color: #fff;
+  color: ${p => p.theme.colors.white};
 
   em {
     font-style: italic;
-    color: ${gold};
+    color: ${p => p.theme.colors.primary[300]};
     font-weight: ${p => p.theme.fontWeights.normal};
     font-size: 0.72em;
   }
@@ -203,7 +205,7 @@ const SectionLabelText = styled.span`
   font-size: ${p => p.theme.fontSizes.xs};
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: ${goldMuted};
+  color: ${p => p.theme.colors.primary[700]};
   font-weight: ${p => p.theme.fontWeights.semibold};
   white-space: nowrap;
 `;
@@ -211,16 +213,20 @@ const SectionLabelText = styled.span`
 const SectionLabelRule = styled.div`
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, ${gold}40, ${gold}12);
+  background: linear-gradient(
+    90deg,
+    ${p => p.theme.colors.primary[300]}55,
+    ${p => p.theme.colors.primary[200]}18
+  );
   min-width: 0;
 `;
 
 /* How it works — white card */
 const StepsCard = styled.div`
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(26, 46, 34, 0.06);
+  background: ${p => p.theme.colors.white};
+  border: 1px solid ${p => p.theme.colors.gray[200]};
+  border-radius: ${p => p.theme.borderRadius['2xl']};
+  box-shadow: 0 4px 24px rgba(20, 184, 166, 0.08);
   overflow: hidden;
 `;
 
@@ -240,7 +246,7 @@ const StepMeta = styled.div`
   font-size: ${p => p.theme.fontSizes.xs};
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: ${goldMuted};
+  color: ${p => p.theme.colors.primary[700]};
   font-weight: ${p => p.theme.fontWeights.semibold};
   margin-bottom: ${p => p.theme.spacing[3]};
 `;
@@ -262,10 +268,14 @@ const StepBody = styled.p`
 
 /* What we bring — dark card */
 const DarkValueCard = styled.div`
-  background: linear-gradient(145deg, ${forest} 0%, #1f3328 100%);
+  background: linear-gradient(
+    145deg,
+    ${p => p.theme.colors.primary[900]} 0%,
+    ${p => p.theme.colors.primary[800]} 100%
+  );
   border-radius: 20px;
   padding: ${p => p.theme.spacing[10]} ${p => p.theme.spacing[8]};
-  border: 1px solid rgba(197, 179, 138, 0.15);
+  border: 1px solid rgba(45, 212, 191, 0.22);
 
   @media (max-width: ${p => p.theme.breakpoints.sm}) {
     padding: ${p => p.theme.spacing[8]} ${p => p.theme.spacing[5]};
@@ -292,8 +302,8 @@ const ValueIcon = styled.span`
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: 1.5px solid ${gold};
-  color: ${gold};
+  border: 1.5px solid ${p => p.theme.colors.primary[300]};
+  color: ${p => p.theme.colors.primary[300]};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -309,13 +319,13 @@ const ValueIcon = styled.span`
 const ValueItemTitle = styled.h4`
   font-size: ${p => p.theme.fontSizes.lg};
   font-weight: ${p => p.theme.fontWeights.bold};
-  color: #fff;
+  color: ${p => p.theme.colors.white};
   margin-bottom: ${p => p.theme.spacing[2]};
 `;
 
 const ValueItemText = styled.p`
   font-size: ${p => p.theme.fontSizes.sm};
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.78);
   line-height: 1.6;
   max-width: 40rem;
 `;
@@ -332,7 +342,7 @@ const BuiltGrid = styled.div`
 `;
 
 const Pill = styled.div`
-  background: #fff;
+  background: ${p => p.theme.colors.white};
   border: 1px solid ${p => p.theme.colors.gray[200]};
   border-radius: 999px;
   padding: ${p => p.theme.spacing[5]} ${p => p.theme.spacing[6]};
@@ -345,16 +355,16 @@ const Pill = styled.div`
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
-    border-color: ${gold}80;
-    box-shadow: 0 4px 16px rgba(26, 46, 34, 0.08);
+    border-color: ${p => p.theme.colors.primary[300]};
+    box-shadow: 0 4px 16px rgba(20, 184, 166, 0.12);
   }
 `;
 
 /* Referral card */
 const ReferralCard = styled.div`
-  background: ${creamCard};
-  border: 1px solid ${gold}55;
-  border-radius: 16px;
+  background: ${p => p.theme.colors.primary[50]};
+  border: 1px solid ${p => p.theme.colors.primary[200]};
+  border-radius: ${p => p.theme.borderRadius['2xl']};
   padding: ${p => p.theme.spacing[10]} ${p => p.theme.spacing[8]};
   max-width: 800px;
   margin: 0 auto;
@@ -369,7 +379,7 @@ const ReferralBig = styled.div`
   font-family: ${p => p.theme.fonts.secondary};
   font-size: clamp(3rem, 8vw, 4.5rem);
   font-weight: ${p => p.theme.fontWeights.bold};
-  color: ${forest};
+  color: ${p => p.theme.colors.primary[900]};
   line-height: 1;
 
   sup {
@@ -383,7 +393,7 @@ const ReferralSub = styled.div`
   font-size: ${p => p.theme.fontSizes.xs};
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: ${goldMuted};
+  color: ${p => p.theme.colors.primary[700]};
   margin-top: ${p => p.theme.spacing[3]};
   font-weight: ${p => p.theme.fontWeights.semibold};
 `;
@@ -391,9 +401,9 @@ const ReferralSub = styled.div`
 const ReferralDivider = styled.div`
   width: 48px;
   height: 1px;
-  background: ${gold};
+  background: ${p => p.theme.colors.primary[400]};
   margin: ${p => p.theme.spacing[5]} auto 0;
-  opacity: 0.7;
+  opacity: 0.85;
 `;
 
 const ReferralHeading = styled.h3`
@@ -427,7 +437,8 @@ const CommitAccent = styled.div`
   height: 3px;
   width: 100%;
   flex-shrink: 0;
-  background: ${p => (p.$goldAccent ? gold : '#1a1a1a')};
+  background: ${p =>
+    p.$goldAccent ? p.theme.colors.primary[500] : p.theme.colors.primary[800]};
 `;
 
 const CommitCard = styled.div`
@@ -435,10 +446,10 @@ const CommitCard = styled.div`
   flex-direction: column;
   height: 100%;
   min-height: 0;
-  background: #fff;
-  border-radius: 16px;
+  background: ${p => p.theme.colors.white};
+  border-radius: ${p => p.theme.borderRadius['2xl']};
   border: 1px solid ${p => p.theme.colors.gray[200]};
-  box-shadow: 0 4px 18px rgba(26, 46, 34, 0.07);
+  box-shadow: 0 4px 18px rgba(20, 184, 166, 0.08);
   overflow: hidden;
 `;
 
@@ -454,7 +465,7 @@ const CommitLabel = styled.div`
   font-size: ${p => p.theme.fontSizes.xs};
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: ${goldMuted};
+  color: ${p => p.theme.colors.primary[700]};
   font-weight: ${p => p.theme.fontWeights.semibold};
   margin-bottom: ${p => p.theme.spacing[3]};
   line-height: 1.35;
@@ -484,11 +495,11 @@ const CommitText = styled.p`
 
 /* White label */
 const WLCard = styled.div`
-  background: #fff;
+  background: ${p => p.theme.colors.white};
   border-radius: 18px;
   padding: ${p => p.theme.spacing[10]} ${p => p.theme.spacing[8]};
-  box-shadow: 0 8px 32px rgba(26, 46, 34, 0.08);
-  border: 1px solid ${p => p.theme.colors.gray[100]};
+  box-shadow: 0 8px 32px rgba(20, 184, 166, 0.1);
+  border: 1px solid ${p => p.theme.colors.gray[200]};
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: ${p => p.theme.spacing[12]};
@@ -533,7 +544,7 @@ const WLItem = styled.li`
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: ${gold};
+    background: ${p => p.theme.colors.primary[500]};
     margin-top: 0.45rem;
     flex-shrink: 0;
   }
@@ -562,11 +573,15 @@ const CtaCard = styled.div`
   position: relative;
   max-width: 1120px;
   margin: 0 auto;
-  background: linear-gradient(135deg, ${forestDeep} 0%, ${forest} 100%);
+  background: linear-gradient(
+    135deg,
+    ${p => p.theme.colors.primary[900]} 0%,
+    ${p => p.theme.colors.primary[800]} 100%
+  );
   border-radius: 24px;
   padding: ${p => p.theme.spacing[12]} ${p => p.theme.spacing[10]};
   overflow: hidden;
-  border: 1px solid rgba(197, 179, 138, 0.2);
+  border: 1px solid rgba(45, 212, 191, 0.25);
 
   &::after {
     content: '';
@@ -575,7 +590,7 @@ const CtaCard = styled.div`
     top: -100px;
     width: 320px;
     height: 320px;
-    border: 1px solid rgba(197, 179, 138, 0.12);
+    border: 1px solid rgba(94, 234, 212, 0.15);
     border-radius: 50%;
     pointer-events: none;
   }
@@ -595,7 +610,7 @@ const CtaEyebrow = styled.div`
   font-size: ${p => p.theme.fontSizes.xs};
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: ${gold};
+  color: ${p => p.theme.colors.primary[300]};
   font-weight: ${p => p.theme.fontWeights.semibold};
   margin-bottom: ${p => p.theme.spacing[4]};
 `;
@@ -603,7 +618,7 @@ const CtaEyebrow = styled.div`
 const CtaTitle = styled.h2`
   font-family: ${p => p.theme.fonts.secondary};
   font-size: clamp(1.75rem, 4vw, 2.5rem);
-  color: #fff;
+  color: ${p => p.theme.colors.white};
   margin-bottom: ${p => p.theme.spacing[5]};
   font-weight: ${p => p.theme.fontWeights.bold};
   line-height: 1.2;
@@ -620,20 +635,21 @@ const ApplyBtn = styled.a`
   display: inline-flex;
   align-items: center;
   gap: ${p => p.theme.spacing[2]};
-  background: ${gold};
-  color: ${forest};
+  background: ${p => p.theme.colors.white};
+  color: ${p => p.theme.colors.primary[800]};
   padding: ${p => p.theme.spacing[3]} ${p => p.theme.spacing[8]};
   border-radius: 999px;
   font-weight: ${p => p.theme.fontWeights.bold};
   font-size: ${p => p.theme.fontSizes.sm};
   text-decoration: none;
   letter-spacing: 0.04em;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    color: ${forest};
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+    background: ${p => p.theme.colors.primary[50]};
+    color: ${p => p.theme.colors.primary[900]};
   }
 `;
 
@@ -641,6 +657,23 @@ const CtaFoot = styled.div`
   margin-top: ${p => p.theme.spacing[8]};
   font-size: ${p => p.theme.fontSizes.sm};
   color: rgba(255, 255, 255, 0.45);
+`;
+
+const FooterContactLink = styled(Link)`
+  display: inline-block;
+  margin-top: 2rem;
+  text-align: center;
+  color: ${p => p.theme.colors.primary[700]};
+  font-weight: ${p => p.theme.fontWeights.semibold};
+  text-decoration: none;
+  border-bottom: 1px solid ${p => p.theme.colors.primary[300]};
+  transition: color ${p => p.theme.transitions.fast},
+    border-color ${p => p.theme.transitions.fast};
+
+  &:hover {
+    color: ${p => p.theme.colors.primary[800]};
+    border-bottom-color: ${p => p.theme.colors.primary[500]};
+  }
 `;
 
 const BUILT_FOR = ['Bankers', 'Advisors', 'Consultants', 'Trusted professionals'];
@@ -927,18 +960,10 @@ const CareersPartnership = () => {
             <CtaFoot>ydadvisory.ae</CtaFoot>
           </CtaInner>
         </CtaCard>
-        <SectionInner style={{ marginTop: '2rem', textAlign: 'center' }}>
-          <Link
-            to="/contact"
-            style={{
-              color: forest,
-              fontWeight: 600,
-              textDecoration: 'none',
-              borderBottom: `1px solid ${gold}`,
-            }}
-          >
+        <SectionInner style={{ textAlign: 'center' }}>
+          <FooterContactLink to="/contact">
             Or speak to our team via Contact
-          </Link>
+          </FooterContactLink>
         </SectionInner>
       </CtaBand>
     </Page>

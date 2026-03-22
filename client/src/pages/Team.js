@@ -1,38 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
 import {
   FiLinkedin, FiMail, FiArrowRight,
 } from 'react-icons/fi';
 import SEO from '../components/SEO';
 import InitialsAvatar from '../components/InitialsAvatar';
+import portraitYashaswi from '../assets/team/yashaswi_das.png';
+import portraitHeewon from '../assets/team/howlee.png';
 
 /* ════════════════════════════════════════════════════════════════
    PAGE WRAPPER
 ════════════════════════════════════════════════════════════════ */
 
-/* Reference palette: cream, forest green, gold — aligned with brand teal accents */
-const CREAM = '#fdfcf7';
-const FOREST = '#1b3022';
-const GOLD = '#c5a059';
-/* Inner green disc diameter; white ring adds FOREST_GOLD_RING*2 in InitialsAvatar */
-const AVATAR_SIZE = 112;
+/* Inner green disc diameter; cream ring adds FOREST_GOLD_RING*2 in InitialsAvatar */
+const AVATAR_SIZE = 148;
+/** Photo frame outer size — aligned with InitialsAvatar forestGold outer */
+const MEMBER_PHOTO_OUTER = AVATAR_SIZE + 10;
 const STACK_SIZE = 44;
 const STACK_OVERLAP = -14;
+
+/** Shared look for team summary stack — theme primary teal (matches cards / +N chip) */
+const teamStackCircleLook = css`
+  background: ${p =>
+    `linear-gradient(165deg, ${p.theme.colors.primary[900]} 0%, ${p.theme.colors.primary[800]} 100%)`};
+  border: 2px solid ${p => p.theme.colors.white};
+  color: ${p => p.theme.colors.primary[50]};
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    0 6px 16px ${p => p.theme.colors.primary[900]}33;
+`;
 
 const Page = styled.div`
   padding-top: 120px;
   min-height: 100vh;
-  background: ${CREAM};
+  background: ${p => p.theme.colors.white};
 `;
 
 /* ════════════════════════════════════════════════════════════════
-   HERO — cream band (matches “Our People” reference)
+   HERO
 ════════════════════════════════════════════════════════════════ */
 
 const HeroSection = styled.section`
-  background: ${CREAM};
+  background: transparent;
   padding: ${p => p.theme.spacing[12]} 0 ${p => p.theme.spacing[8]};
   text-align: center;
   position: relative;
@@ -48,7 +59,7 @@ const HeroInner = styled.div`
   h1 {
     font-size: clamp(1.75rem, 4vw, 2.75rem);
     font-weight: ${p => p.theme.fontWeights.bold};
-    color: ${FOREST};
+    color: ${p => p.theme.colors.primary[900]};
     margin-bottom: ${p => p.theme.spacing[5]};
     letter-spacing: -0.02em;
     line-height: 1.2;
@@ -57,7 +68,7 @@ const HeroInner = styled.div`
 
   p {
     font-size: ${p => p.theme.fontSizes.lg};
-    color: #666666;
+    color: ${p => p.theme.colors.gray[600]};
     line-height: 1.7;
     max-width: 580px;
     margin: 0 auto;
@@ -73,7 +84,7 @@ const Eyebrow = styled.div`
   display: inline-block;
   font-size: ${p => p.theme.fontSizes.xs};
   font-weight: ${p => p.theme.fontWeights.semibold};
-  color: ${GOLD};
+  color: ${p => p.theme.colors.primary[700]};
   text-transform: uppercase;
   letter-spacing: 0.28em;
   margin-bottom: ${p => p.theme.spacing[4]};
@@ -82,14 +93,18 @@ const Eyebrow = styled.div`
 const HeroDivider = styled.div`
   width: 56px;
   height: 2px;
-  background: ${GOLD};
+  background: linear-gradient(
+    90deg,
+    ${p => p.theme.colors.primary[400]},
+    ${p => p.theme.colors.primary[600]}
+  );
   border-radius: 2px;
   margin: ${p => p.theme.spacing[6]} auto 0;
 `;
 
 const TeamSection = styled.section`
   padding: ${p => p.theme.spacing[4]} 0 ${p => p.theme.spacing[16]};
-  background: ${CREAM};
+  background: ${p => p.theme.colors.white};
 `;
 
 const Container = styled.div`
@@ -157,7 +172,7 @@ const SummaryNumber = styled.div`
   font-family: ${p => p.theme.fonts.secondary};
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: ${p => p.theme.fontWeights.bold};
-  color: ${GOLD};
+  color: ${p => p.theme.colors.primary[700]};
   line-height: 1;
   margin-bottom: ${p => p.theme.spacing[2]};
 `;
@@ -165,7 +180,7 @@ const SummaryNumber = styled.div`
 const SummaryLabel = styled.div`
   font-size: ${p => p.theme.fontSizes.xs};
   font-weight: ${p => p.theme.fontWeights.semibold};
-  color: #666666;
+  color: ${p => p.theme.colors.gray[600]};
   letter-spacing: 0.12em;
   text-transform: uppercase;
 `;
@@ -183,7 +198,7 @@ const SummaryBody = styled.div`
   h3 {
     font-family: ${p => p.theme.fonts.secondary};
     font-size: ${p => p.theme.fontSizes['2xl']};
-    color: ${FOREST};
+    color: ${p => p.theme.colors.primary[900]};
     margin: 0 0 ${p => p.theme.spacing[4]} 0;
     font-weight: ${p => p.theme.fontWeights.bold};
   }
@@ -191,7 +206,7 @@ const SummaryBody = styled.div`
   p {
     margin: 0;
     font-size: ${p => p.theme.fontSizes.base};
-    color: #666666;
+    color: ${p => p.theme.colors.gray[600]};
     line-height: 1.7;
     font-family: ${p => p.theme.fonts.primary};
   }
@@ -217,6 +232,11 @@ const AvatarStack = styled.div`
 `;
 
 const StackAvatar = styled(InitialsAvatar)`
+  /* Override forest seal + compact so stack matches theme teal + +N chip */
+  && {
+    ${teamStackCircleLook}
+  }
+
   position: relative;
   flex-shrink: 0;
 
@@ -232,27 +252,24 @@ const StackAvatar = styled(InitialsAvatar)`
 `;
 
 const StackCircleMore = styled.span`
+  ${teamStackCircleLook}
   width: ${STACK_SIZE}px;
   height: ${STACK_SIZE}px;
   border-radius: 50%;
-  border: 2px solid #ffffff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: ${p => p.theme.fontSizes.sm};
+  font-size: ${STACK_SIZE * 0.38}px;
   font-weight: ${p => p.theme.fontWeights.bold};
   font-family: ${p => p.theme.fonts.secondary};
-  background: #f4ede4;
-  color: ${FOREST};
   flex-shrink: 0;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   margin-left: ${STACK_OVERLAP}px;
   position: relative;
   z-index: 3;
   font-variant-numeric: tabular-nums;
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.06),
-    0 6px 14px rgba(27, 48, 34, 0.14);
+  -webkit-font-smoothing: antialiased;
 `;
 
 /* ─── Card ─────────────────────────────────────────────────── */
@@ -268,7 +285,7 @@ const Card = styled.div`
   display: grid;
   grid-template-rows: 1fr auto;
   align-items: stretch;
-  min-height: 380px;
+  min-height: 400px;
   gap: ${p => p.theme.spacing[4]};
   padding: ${p => p.theme.spacing[6]} ${p => p.theme.spacing[5]} ${p => p.theme.spacing[6]};
   transition: box-shadow ${p => p.theme.transitions.base},
@@ -299,6 +316,36 @@ const CardAvatarRow = styled.div`
 const CardAvatar = styled(InitialsAvatar)`
   display: flex;
   flex-shrink: 0;
+`;
+
+const CardPhotoFrame = styled.div`
+  width: ${MEMBER_PHOTO_OUTER}px;
+  height: ${MEMBER_PHOTO_OUTER}px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 0;
+  /* Ring sits on the outside only — no inner gap between photo and border */
+  border: 2px solid ${p => p.theme.colors.primary[300]};
+  box-shadow:
+    0 0 0 1px ${p => p.theme.colors.primary[100]},
+    0 12px 32px rgba(20, 184, 166, 0.16);
+  overflow: hidden;
+  background: ${p => p.theme.colors.white};
+`;
+
+const CardPhoto = styled.img`
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  /* Anchor to top so hair/head aren’t cropped; cover still fills the circle edge-to-edge */
+  object-position: center top;
+  display: block;
+  /* Crisp circular clip (avoids faint gaps at the rim in some browsers) */
+  transform: translateZ(0);
 `;
 
 /* card content */
@@ -346,7 +393,7 @@ const Name = styled.h3`
 /* Credential / region tags (small caps) — from profile detail */
 const MemberTags = styled.p`
   font-size: ${p => p.theme.fontSizes.xs};
-  color: #666666;
+  color: ${p => p.theme.colors.gray[600]};
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin: 0 0 ${p => p.theme.spacing[5]} 0;
@@ -552,6 +599,33 @@ function getInitials(displayName) {
   return `${first}${last}`.toUpperCase();
 }
 
+/** Same paths as TeamMemberDetail — photo with teal frame, fallback to initials */
+function MemberAvatar({ image, displayName, name }) {
+  const [failed, setFailed] = useState(false);
+  const initials = getInitials(displayName);
+  if (!image || failed) {
+    return (
+      <CardAvatar
+        initials={initials}
+        variant="forestGold"
+        size={AVATAR_SIZE}
+        aria-label={`${name} — initials`}
+      />
+    );
+  }
+  return (
+    <CardPhotoFrame>
+      <CardPhoto
+        src={image}
+        alt={`${name}, portrait`}
+        onError={() => setFailed(true)}
+        loading="lazy"
+        decoding="async"
+      />
+    </CardPhotoFrame>
+  );
+}
+
 /* ════════════════════════════════════════════════════════════════
    COMPONENT
 ════════════════════════════════════════════════════════════════ */
@@ -561,6 +635,9 @@ const Team = () => {
 
   const memberYashaswi = 'Yashaswi Das';
   const memberHeewon = 'Heewon Lee';
+  /** Bundled URLs so portraits always resolve (fallback: initials on error) */
+  const imageYashaswi = portraitYashaswi;
+  const imageHeewon = portraitHeewon;
 
   return (
     <Page>
@@ -621,11 +698,10 @@ const Team = () => {
             >
               <Card>
                 <CardAvatarRow>
-                  <CardAvatar
-                    initials={getInitials(memberYashaswi)}
-                    variant="forestGold"
-                    size={AVATAR_SIZE}
-                    aria-label={`${memberYashaswi} — initials`}
+                  <MemberAvatar
+                    image={imageYashaswi}
+                    displayName={memberYashaswi}
+                    name={memberYashaswi}
                   />
                 </CardAvatarRow>
 
@@ -679,11 +755,10 @@ const Team = () => {
             >
               <Card>
                 <CardAvatarRow>
-                  <CardAvatar
-                    initials={getInitials(memberHeewon)}
-                    variant="forestGold"
-                    size={AVATAR_SIZE}
-                    aria-label={`${memberHeewon} — initials`}
+                  <MemberAvatar
+                    image={imageHeewon}
+                    displayName={memberHeewon}
+                    name={memberHeewon}
                   />
                 </CardAvatarRow>
 
