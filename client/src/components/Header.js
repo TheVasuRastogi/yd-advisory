@@ -815,7 +815,7 @@ const Header = () => {
                   <DropdownButton 
                     onClick={toggleValuatorDropdown}
                     $isOpen={isValuatorDropdownOpen}
-                    className={location.pathname.startsWith('/calculator') || location.pathname.startsWith('/ip-valuation') ? 'active' : ''}
+                    className={location.pathname.startsWith('/calculator') || location.pathname.startsWith('/ip-valuation') || location.pathname === '/transparency' ? 'active' : ''}
                   >
                     YD Valuator
                     <FiChevronDown />
@@ -840,6 +840,12 @@ const Header = () => {
                         >
                           IP Valuation Tool
                         </DropdownItem>
+                        <DropdownItem 
+                          to="/transparency" 
+                          className={location.pathname === '/transparency' ? 'active' : ''}
+                        >
+                          Transparency
+                        </DropdownItem>
                       </DropdownMenu>
                     )}
                   </AnimatePresence>
@@ -848,11 +854,6 @@ const Header = () => {
               <NavItem>
                 <NavLink to="/team" className={location.pathname.startsWith('/team') ? 'active' : ''}>
                   Our team
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/transparency" className={location.pathname === '/transparency' ? 'active' : ''}>
-                  Transparency
                 </NavLink>
               </NavItem>
               <NavItem>
@@ -1015,14 +1016,20 @@ const Header = () => {
                         IP Valuation Tool
                       </MobileDropdownItem>
                     </li>
+                    <li>
+                      <MobileDropdownItem
+                        to="/transparency"
+                        className={location.pathname === '/transparency' ? 'active' : ''}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Transparency
+                      </MobileDropdownItem>
+                    </li>
                   </MobileDropdownMenu>
                 </MobileDropdownPanel>
               </MobileNavItem>
               <MobileNavItem>
                 <MobileNavLink to="/team">Our team</MobileNavLink>
-              </MobileNavItem>
-              <MobileNavItem>
-                <MobileNavLink to="/transparency">Transparency</MobileNavLink>
               </MobileNavItem>
               <MobileNavItem style={{ position: 'relative', zIndex: 1 }}>
                 <MobileDropdownButton

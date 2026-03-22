@@ -82,6 +82,7 @@ const FooterLinks = styled.ul`
   li {
     margin-bottom: ${props => props.theme.spacing[2]};
     
+    
     a {
       color: ${props => props.theme.colors.gray[300]};
       text-decoration: none;
