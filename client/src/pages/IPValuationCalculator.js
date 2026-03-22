@@ -1,88 +1,168 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiArrowLeft, FiPieChart, FiTrendingUp, FiDollarSign, FiPercent, FiMail, FiPhone, FiUser, FiShield, FiTarget, FiX, FiCheck } from 'react-icons/fi';
+import { FiArrowLeft, FiPieChart, FiTrendingUp, FiDollarSign, FiPercent, FiMail, FiPhone, FiUser, FiShield, FiTarget, FiX, FiCheck, FiClock } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import PageHero from '../components/PageHero';
 
 const CalculatorContainer = styled.div`
   min-height: 100vh;
-  padding-top: 120px;
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary[50]}, ${props => props.theme.colors.white});
+  padding-top: ${props => props.theme.spacing[8]};
+  padding-bottom: ${props => props.theme.spacing[16]};
+  background: linear-gradient(
+    165deg,
+    ${props => props.theme.colors.primary[50]} 0%,
+    ${props => props.theme.colors.white} 45%,
+    #fafafa 100%
+  );
 `;
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 960px;
   margin: 0 auto;
   padding: ${props => props.theme.spacing[8]} ${props => props.theme.spacing[4]};
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding-left: ${props => props.theme.spacing[3]};
+    padding-right: ${props => props.theme.spacing[3]};
+  }
 `;
 
 const Header = styled.div`
   display: flex;
   align-items: center;
-  gap: ${props => props.theme.spacing[4]};
-  margin-bottom: ${props => props.theme.spacing[8]};
+  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: ${props => props.theme.spacing[6]};
 `;
 
 const BackButton = styled(Link)`
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: ${props => props.theme.spacing[2]};
-  color: ${props => props.theme.colors.primary[600]};
+  color: ${props => props.theme.colors.primary[700]};
   text-decoration: none;
-  font-weight: ${props => props.theme.fontWeights.medium};
-  transition: all ${props => props.theme.transitions.fast};
-  
+  font-weight: ${props => props.theme.fontWeights.semibold};
+  font-size: ${props => props.theme.fontSizes.sm};
+  transition: color ${props => props.theme.transitions.fast},
+    transform ${props => props.theme.transitions.fast};
+
+  svg {
+    flex-shrink: 0;
+  }
+
   &:hover {
-    color: ${props => props.theme.colors.primary[700]};
-    transform: translateX(-2px);
+    color: ${props => props.theme.colors.primary[800]};
+    transform: translateX(-3px);
   }
 `;
 
 const Description = styled.p`
   color: ${props => props.theme.colors.gray[600]};
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: ${props => props.theme.spacing[8]};
-  max-width: 800px;
+  font-size: ${props => props.theme.fontSizes.lg};
+  line-height: 1.65;
+  margin: 0 auto ${props => props.theme.spacing[8]};
+  max-width: 52rem;
+  text-align: left;
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    font-size: ${props => props.theme.fontSizes.base};
+  }
 `;
 
 const CalculatorTabs = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: ${props => props.theme.spacing[2]};
+  width: 100%;
+  max-width: 52rem;
+  margin: 0 auto ${props => props.theme.spacing[8]};
+  padding: ${props => props.theme.spacing[1]};
   background: ${props => props.theme.colors.white};
-  border-radius: 12px;
-  padding: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin-bottom: ${props => props.theme.spacing[8]};
+  border-radius: ${props => props.theme.borderRadius.xl};
   border: 1px solid ${props => props.theme.colors.gray[200]};
+  box-shadow: 0 4px 20px rgba(15, 118, 110, 0.08);
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    flex-direction: column;
+    gap: ${props => props.theme.spacing[2]};
+  }
 `;
 
 const Tab = styled.button`
-  flex: 1;
-  padding: ${props => props.theme.spacing[4]} ${props => props.theme.spacing[6]};
-  border: none;
-  background: ${props => props.active ? props.theme.colors.primary[600] : 'transparent'};
-  color: ${props => props.active ? props.theme.colors.white : props.theme.colors.gray[600]};
-  border-radius: 8px;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: ${props => props.theme.spacing[3]} ${props => props.theme.spacing[4]};
+  border: 1px solid transparent;
+  background: ${props =>
+    props.$active ? props.theme.colors.primary[600] : 'transparent'};
+  color: ${props =>
+    props.$active ? props.theme.colors.white : props.theme.colors.gray[600]};
+  border-radius: ${props => props.theme.borderRadius.lg};
   font-weight: ${props => props.theme.fontWeights.semibold};
+  font-size: ${props => props.theme.fontSizes.sm};
   cursor: pointer;
-  transition: all ${props => props.theme.transitions.fast};
-  display: flex;
+  transition: background ${props => props.theme.transitions.fast},
+    color ${props => props.theme.transitions.fast},
+    border-color ${props => props.theme.transitions.fast},
+    box-shadow ${props => props.theme.transitions.fast};
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: ${props => props.theme.spacing[2]};
-  
+  line-height: 1.3;
+
+  svg {
+    flex-shrink: 0;
+    width: 1.1em;
+    height: 1.1em;
+  }
+
+  &:only-child {
+    flex: 0 1 auto;
+    max-width: min(100%, 22rem);
+    padding-left: ${props => props.theme.spacing[8]};
+    padding-right: ${props => props.theme.spacing[8]};
+  }
+
   &:hover {
-    background: ${props => props.active ? props.theme.colors.primary[700] : props.theme.colors.gray[50]};
+    background: ${props =>
+      props.$active
+        ? props.theme.colors.primary[700]
+        : props.theme.colors.gray[50]};
+    border-color: ${props =>
+      props.$active ? 'transparent' : props.theme.colors.gray[200]};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${props => props.theme.colors.primary[500]};
+    outline-offset: 2px;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    flex: 1 1 auto;
+    min-height: 48px;
+    width: 100%;
+    max-width: none;
+
+    &:only-child {
+      max-width: none;
+    }
   }
 `;
 
 const CalculatorCard = styled(motion.div)`
+  width: 100%;
+  max-width: 52rem;
+  margin-left: auto;
+  margin-right: auto;
   background: ${props => props.theme.colors.white};
-  border-radius: 16px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  border: 1px solid ${props => props.theme.colors.gray[100]};
+  border-radius: ${props => props.theme.borderRadius['2xl']};
+  box-shadow: 0 10px 40px rgba(15, 118, 110, 0.09);
+  border: 1px solid ${props => props.theme.colors.gray[200]};
   overflow: hidden;
   margin-bottom: ${props => props.theme.spacing[8]};
 `;
@@ -105,6 +185,14 @@ const CalculatorTitle = styled.h2`
 
 const CalculatorBody = styled.div`
   padding: ${props => props.theme.spacing[8]};
+`;
+
+const CalculatorIntro = styled.p`
+  color: ${props => props.theme.colors.gray[600]};
+  font-size: ${props => props.theme.fontSizes.base};
+  line-height: 1.65;
+  margin: 0 0 ${props => props.theme.spacing[8]} 0;
+  max-width: 48rem;
 `;
 
 const FormGrid = styled.div`
@@ -195,10 +283,14 @@ const CalculateButton = styled.button`
 `;
 
 const ResultsCard = styled(motion.div)`
+  width: 100%;
+  max-width: 52rem;
+  margin-left: auto;
+  margin-right: auto;
   background: ${props => props.theme.colors.white};
-  border-radius: 16px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  border: 1px solid ${props => props.theme.colors.gray[100]};
+  border-radius: ${props => props.theme.borderRadius['2xl']};
+  box-shadow: 0 10px 40px rgba(15, 118, 110, 0.09);
+  border: 1px solid ${props => props.theme.colors.gray[200]};
   overflow: hidden;
   margin-top: ${props => props.theme.spacing[8]};
 `;
@@ -1009,10 +1101,10 @@ Thank you for your expertise.`);
             </CalculatorHeader>
             
             <CalculatorBody>
-              <p style={{ color: '#6b7280', marginBottom: '2rem' }}>
-                This tool enables you to perform a comprehensive IP valuation (patents, trademarks) using the relief from royalty method. 
-                Default values are shown below. Please fill in all fields and press the 'Calculate' button when you're done.
-              </p>
+              <CalculatorIntro>
+                This tool enables you to perform a comprehensive IP valuation (patents, trademarks) using the relief from royalty method.
+                Default values are shown below. Please fill in all fields and press the &apos;Calculate&apos; button when you&apos;re done.
+              </CalculatorIntro>
               
               <FormGrid>
                 <FormGroup>
@@ -1705,35 +1797,39 @@ Thank you for your expertise.`);
 
           <CalculatorTabs>
             {calculatorType !== 'advanced' && (
-              <Tab 
-                active={activeTab === 'basic'} 
+              <Tab
+                type="button"
+                $active={activeTab === 'basic'}
                 onClick={() => setActiveTab('basic')}
               >
-                <FiPieChart />
+                <FiClock aria-hidden />
                 Basic IP Valuation
               </Tab>
             )}
             {calculatorType === 'advanced' && (
               <>
-                <Tab 
-                  active={activeTab === 'earning'} 
+                <Tab
+                  type="button"
+                  $active={activeTab === 'earning'}
                   onClick={() => setActiveTab('earning')}
                 >
-                  <FiPieChart />
+                  <FiPieChart aria-hidden />
                   Earning Multiples
                 </Tab>
-                <Tab 
-                  active={activeTab === 'rd'} 
+                <Tab
+                  type="button"
+                  $active={activeTab === 'rd'}
                   onClick={() => setActiveTab('rd')}
                 >
-                  <FiTrendingUp />
+                  <FiTrendingUp aria-hidden />
                   Research & Development
                 </Tab>
-                <Tab 
-                  active={activeTab === 'royalty'} 
+                <Tab
+                  type="button"
+                  $active={activeTab === 'royalty'}
                   onClick={() => setActiveTab('royalty')}
                 >
-                  <FiPercent />
+                  <FiPercent aria-hidden />
                   Royalty Rate
                 </Tab>
               </>

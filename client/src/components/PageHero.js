@@ -6,12 +6,17 @@ import { motion } from 'framer-motion';
  * Shared image hero for inner pages (not Home).
  * Uses a teal gradient overlay on top of `image` for readability.
  */
+/* Fixed site header (~120px) sits over the document; push hero content below it */
 const Section = styled.section`
   position: relative;
   color: ${p => p.theme.colors.white};
-  padding: ${p => p.theme.spacing[16]} 0;
+  padding-top: calc(120px + ${p => p.theme.spacing[12]});
+  padding-bottom: ${p => p.theme.spacing[16]};
+  padding-left: 0;
+  padding-right: 0;
   text-align: center;
   overflow: hidden;
+  min-height: min(52vh, 420px);
   background: linear-gradient(
       135deg,
       ${p => p.theme.colors.primary[900]}cc 0%,
@@ -20,8 +25,15 @@ const Section = styled.section`
     ),
     url(${p => p.$image}) center center / cover no-repeat;
 
+  @media (max-width: ${p => p.theme.breakpoints.md}) {
+    padding-top: calc(100px + ${p => p.theme.spacing[10]});
+    min-height: min(46vh, 360px);
+  }
+
   @media (max-width: ${p => p.theme.breakpoints.sm}) {
-    padding: ${p => p.theme.spacing[12]} 0;
+    padding-top: calc(88px + ${p => p.theme.spacing[8]});
+    padding-bottom: ${p => p.theme.spacing[12]};
+    min-height: min(44vh, 320px);
   }
 `;
 

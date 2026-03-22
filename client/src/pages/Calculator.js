@@ -14,17 +14,9 @@ import SEO from '../components/SEO';
 import PageHero from '../components/PageHero';
 
 const CalculatorContainer = styled.div`
-  padding-top: 120px;
   min-height: 100vh;
+  padding-top: 0;
   background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
-  
-  @media (max-width: ${props => props.theme.breakpoints.md}) {
-    padding-top: 100px;
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    padding-top: 80px;
-  }
 `;
 
 const CalculatorSection = styled.section`

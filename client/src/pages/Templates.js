@@ -6,7 +6,6 @@ import PageHero from '../components/PageHero';
 
 const TemplatesContainer = styled.div`
   min-height: 100vh;
-  padding-top: 120px;
   background: linear-gradient(135deg, ${props => props.theme.colors.primary[50]}, ${props => props.theme.colors.white});
 `;
 

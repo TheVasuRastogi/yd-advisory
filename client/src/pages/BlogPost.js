@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import PageHero from '../components/PageHero';
 
 const PageContainer = styled.div`
-  padding-top: 120px;
   min-height: 80vh;
 `;
 

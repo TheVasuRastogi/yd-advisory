@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import PageHero from '../components/PageHero';
 
 const NotFoundContainer = styled.div`
-  padding-top: 120px;
   min-height: 80vh;
 `;
 
