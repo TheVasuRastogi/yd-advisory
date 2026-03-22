@@ -804,18 +804,16 @@ const Team = () => {
             >
               <TeamSummaryCard>
                 <SummaryStat>
-                  <SummaryNumber>50+</SummaryNumber>
-                  <SummaryLabel>Clients</SummaryLabel>
+                  <SummaryNumber>5+</SummaryNumber>
+                  <SummaryLabel>Professionals</SummaryLabel>
                 </SummaryStat>
                 <SummaryBody>
-                  <h3>Senior attention on every mandate</h3>
+                  <h3>Backed by a specialist expert team</h3>
                   <p>
-                    Every mandate is handled with senior attention — from origination
-                    through delivery. Our track record includes 50+ clients across
-                    10+ geographies and 15+ sectors, with $100M+ in value raised,
-                    structured, or unlocked — led by principals with 8+ years of
-                    frontline experience at institutions such as JPMorgan and Dubai
-                    Holding.
+                    Beyond our named principals, YD Advisory is supported by 5+ seasoned
+                    professionals spanning financial due diligence, valuation, legal
+                    structuring, and capital markets — each embedded in deals from day
+                    one.
                   </p>
                   <AvatarStack aria-hidden>
                     <StackAvatar
