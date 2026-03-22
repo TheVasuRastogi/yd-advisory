@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import SEO from '../components/SEO';
+import PageHero from '../components/PageHero';
 
 const TemplatesContainer = styled.div`
   min-height: 100vh;
@@ -14,44 +15,6 @@ const Container = styled.div`
   margin: 0 auto;
   padding: ${props => props.theme.spacing[8]} ${props => props.theme.spacing[4]};
 `;
-
-const Hero = styled.div`
-  background: linear-gradient(180deg, ${props => props.theme.colors.white} 0%, ${props => props.theme.colors.primary[50]} 100%);
-  border: 1px solid ${props => props.theme.colors.gray[100]};
-  border-radius: 24px;
-  padding: ${props => props.theme.spacing[12]} ${props => props.theme.spacing[8]};
-  text-align: center;
-  margin-bottom: ${props => props.theme.spacing[12]};
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-`;
-
-const Title = styled.h1`
-  font-size: 3rem;
-  font-weight: ${props => props.theme.fontWeights.bold};
-  color: ${props => props.theme.colors.primary[800]};
-  margin-bottom: ${props => props.theme.spacing[4]};
-  
-  @media (max-width: ${props => props.theme.breakpoints.md}) {
-    font-size: 2.5rem;
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    font-size: 2rem;
-  }
-`;
-
-const Subtitle = styled.p`
-  font-size: 1.25rem;
-  color: ${props => props.theme.colors.gray[600]};
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    font-size: 1.1rem;
-  }
-`;
-
 
 const CTA = styled.div`
   background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
@@ -158,20 +121,11 @@ const Templates = () => {
       />
       
       <TemplatesContainer>
+        <PageHero
+          title="Financial Templates"
+          subtitle="Professional financial templates and tools for startups and businesses. Coming soon with comprehensive analytics and detailed reporting."
+        />
         <Container>
-          <Hero>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <Title>Financial Templates</Title>
-              <Subtitle>
-                Professional financial templates and tools for startups and businesses. Coming soon with comprehensive analytics and detailed reporting.
-              </Subtitle>
-            </motion.div>
-          </Hero>
-
           <ComingSoonSection>
           <motion.div
                   initial={{ opacity: 0, y: 20 }}

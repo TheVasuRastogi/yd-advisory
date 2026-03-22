@@ -1,30 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import PageHero from '../components/PageHero';
 
 const NotFoundContainer = styled.div`
   padding-top: 120px;
   min-height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Content = styled.div`
   text-align: center;
   max-width: 600px;
-  padding: ${props => props.theme.spacing[8]};
-  
-  h1 {
-    font-size: ${props => props.theme.fontSizes['6xl']};
-    color: ${props => props.theme.colors.primary[700]};
-    margin-bottom: ${props => props.theme.spacing[4]};
-  }
+  margin: 0 auto;
+  padding: ${props => props.theme.spacing[10]} ${props => props.theme.spacing[4]};
   
   h2 {
     font-size: ${props => props.theme.fontSizes['2xl']};
-    color: ${props => props.theme.colors.gray[600]};
-    margin-bottom: ${props => props.theme.spacing[6]};
+    color: ${props => props.theme.colors.gray[700]};
+    margin-bottom: ${props => props.theme.spacing[4]};
   }
   
   p {
@@ -57,12 +50,15 @@ const HomeButton = styled(Link)`
 const NotFound = () => {
   return (
     <NotFoundContainer>
+      <PageHero
+        title="404"
+        subtitle="The page you’re looking for doesn’t exist or has been moved."
+      />
       <Content>
-        <h1>404</h1>
         <h2>Page Not Found</h2>
         <p>
-          Sorry, the page you are looking for doesn't exist or has been moved. 
-          Let's get you back on track with your financial journey.
+          Sorry, the page you are looking for doesn&apos;t exist or has been moved.
+          Let&apos;s get you back on track with your financial journey.
         </p>
         <HomeButton to="/">
           Go Back Home

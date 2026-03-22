@@ -15,6 +15,7 @@ import {
   PARENT_SLUG,
   PARENT_TITLE,
 } from '../data/comprehensiveBusinessValuationSubServices';
+import { innerPageHeroBackground } from '../styles/heroMixins';
 
 const PageContainer = styled.div`
   padding-top: 120px;
@@ -61,7 +62,8 @@ const Breadcrumb = styled.nav`
 `;
 
 const HeroSection = styled.section`
-  background: linear-gradient(135deg, ${(props) => props.theme.colors.primary[700]}, ${(props) => props.theme.colors.primary[800]});
+  ${innerPageHeroBackground('/services.png')}
+  position: relative;
   color: ${(props) => props.theme.colors.white};
   padding: ${(props) => props.theme.spacing[12]} 0 ${(props) => props.theme.spacing[16]};
   text-align: center;

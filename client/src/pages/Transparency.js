@@ -3,13 +3,15 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FiShield, FiFileText, FiAlertTriangle, FiCheckCircle, FiInfo, FiBook } from 'react-icons/fi';
 import SEO from '../components/SEO';
+import { innerPageHeroBackground } from '../styles/heroMixins';
 
 const TransparencyContainer = styled.div`
   padding-top: 120px;
 `;
 
 const HeroSection = styled.section`
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary[800]} 0%, ${props => props.theme.colors.primary[900]} 100%);
+  ${innerPageHeroBackground()}
+  position: relative;
   color: ${props => props.theme.colors.white};
   padding: ${props => props.theme.spacing[20]} 0;
   text-align: center;

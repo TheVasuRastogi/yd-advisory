@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { FiArrowRight, FiCalendar, FiUser, FiTag } from 'react-icons/fi';
 import SEO from '../components/SEO';
 import { articleSchema } from '../utils/structuredData';
+import { innerPageHeroBackground } from '../styles/heroMixins';
 
 const BlogContainer = styled.div`
   padding-top: 120px;
@@ -12,8 +13,9 @@ const BlogContainer = styled.div`
 `;
 
 const HeroSection = styled.section`
-  background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
-  color: ${props => props.theme.colors.primary[800]};
+  ${innerPageHeroBackground()}
+  position: relative;
+  color: ${props => props.theme.colors.white};
   padding: ${props => props.theme.spacing[20]} 0;
   text-align: center;
 `;
@@ -22,11 +24,13 @@ const HeroContent = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 0 ${props => props.theme.spacing[4]};
+  position: relative;
+  z-index: 1;
   
   h1 {
     font-size: 3rem;
     margin-bottom: ${props => props.theme.spacing[6]};
-    color: ${props => props.theme.colors.primary[800]};
+    color: ${props => props.theme.colors.white};
     font-weight: 800;
     
     @media (max-width: ${props => props.theme.breakpoints.md}) {
@@ -36,7 +40,7 @@ const HeroContent = styled.div`
   
   p {
     font-size: 1.25rem;
-    color: ${props => props.theme.colors.gray[600]};
+    color: rgba(255, 255, 255, 0.9);
     line-height: 1.6;
   }
 `;

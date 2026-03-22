@@ -6,56 +6,36 @@ import {
   FiLinkedin, FiMail, FiArrowRight,
 } from 'react-icons/fi';
 import SEO from '../components/SEO';
+import InitialsAvatar from '../components/InitialsAvatar';
 
 /* ════════════════════════════════════════════════════════════════
    PAGE WRAPPER
 ════════════════════════════════════════════════════════════════ */
 
+/* Reference palette: cream, forest green, gold — aligned with brand teal accents */
+const CREAM = '#fdfcf7';
+const FOREST = '#1b3022';
+const GOLD = '#c5a059';
+/* Inner green disc diameter; white ring adds FOREST_GOLD_RING*2 in InitialsAvatar */
+const AVATAR_SIZE = 112;
+const STACK_SIZE = 44;
+const STACK_OVERLAP = -14;
+
 const Page = styled.div`
   padding-top: 120px;
   min-height: 100vh;
+  background: ${CREAM};
 `;
 
 /* ════════════════════════════════════════════════════════════════
-   HERO
+   HERO — cream band (matches “Our People” reference)
 ════════════════════════════════════════════════════════════════ */
 
 const HeroSection = styled.section`
-  background: linear-gradient(
-    135deg,
-    ${p => p.theme.colors.primary[800]} 0%,
-    ${p => p.theme.colors.primary[900]} 60%,
-    #0a2a2a 100%
-  );
-  padding: ${p => p.theme.spacing[20]} 0 ${p => p.theme.spacing[16]};
+  background: ${CREAM};
+  padding: ${p => p.theme.spacing[12]} 0 ${p => p.theme.spacing[8]};
   text-align: center;
   position: relative;
-  overflow: hidden;
-
-  /* subtle radial glow */
-  &::before {
-    content: '';
-    position: absolute;
-    top: -120px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 800px;
-    height: 600px;
-    background: radial-gradient(ellipse, rgba(20, 184, 166, 0.18) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  /* decorative arc at bottom */
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    right: 0;
-    height: 56px;
-    background: ${p => p.theme.colors.gray[50]};
-    clip-path: ellipse(55% 100% at 50% 100%);
-  }
 `;
 
 const HeroInner = styled.div`
@@ -66,29 +46,22 @@ const HeroInner = styled.div`
   z-index: 1;
 
   h1 {
-    font-size: 3rem;
-    font-weight: ${p => p.theme.fontWeights.extrabold};
-    color: ${p => p.theme.colors.white};
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: ${p => p.theme.fontWeights.bold};
+    color: ${FOREST};
     margin-bottom: ${p => p.theme.spacing[5]};
-    letter-spacing: -0.025em;
+    letter-spacing: -0.02em;
     line-height: 1.2;
     font-family: ${p => p.theme.fonts.secondary};
-
-    @media (max-width: ${p => p.theme.breakpoints.md}) {
-      font-size: 2.4rem;
-    }
-
-    @media (max-width: ${p => p.theme.breakpoints.sm}) {
-      font-size: ${p => p.theme.fontSizes['3xl']};
-    }
   }
 
   p {
     font-size: ${p => p.theme.fontSizes.lg};
-    color: rgba(255, 255, 255, 0.75);
+    color: #666666;
     line-height: 1.7;
     max-width: 580px;
     margin: 0 auto;
+    font-family: ${p => p.theme.fonts.primary};
 
     @media (max-width: ${p => p.theme.breakpoints.sm}) {
       font-size: ${p => p.theme.fontSizes.base};
@@ -97,89 +70,189 @@ const HeroInner = styled.div`
 `;
 
 const Eyebrow = styled.div`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  display: inline-block;
   font-size: ${p => p.theme.fontSizes.xs};
   font-weight: ${p => p.theme.fontWeights.semibold};
-  color: ${p => p.theme.colors.primary[300]};
+  color: ${GOLD};
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  margin-bottom: ${p => p.theme.spacing[5]};
-  background: rgba(20, 184, 166, 0.12);
-  border: 1px solid rgba(20, 184, 166, 0.3);
-  padding: 6px 16px;
-  border-radius: 999px;
+  letter-spacing: 0.28em;
+  margin-bottom: ${p => p.theme.spacing[4]};
 `;
 
 const HeroDivider = styled.div`
-  width: 52px;
-  height: 3px;
-  background: linear-gradient(90deg, ${p => p.theme.colors.primary[400]}, ${p => p.theme.colors.primary[600]});
+  width: 56px;
+  height: 2px;
+  background: ${GOLD};
   border-radius: 2px;
   margin: ${p => p.theme.spacing[6]} auto 0;
 `;
 
 const TeamSection = styled.section`
-  padding: ${p => p.theme.spacing[10]} 0 ${p => p.theme.spacing[6]};
-  background: ${p => p.theme.colors.gray[50]};
+  padding: ${p => p.theme.spacing[4]} 0 ${p => p.theme.spacing[16]};
+  background: ${CREAM};
 `;
 
 const Container = styled.div`
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0 ${p => p.theme.spacing[4]};
 `;
-const SectionHead = styled.div`
-  display: none;
-  text-align: center;
-  margin-bottom: ${p => p.theme.spacing[12]};
 
-  h2 {
-    font-size: ${p => p.theme.fontSizes['4xl']};
-    font-weight: ${p => p.theme.fontWeights.bold};
-    color: ${p => p.theme.colors.primary[800]};
-    margin-bottom: ${p => p.theme.spacing[4]};
-
-    @media (max-width: ${p => p.theme.breakpoints.sm}) {
-      font-size: ${p => p.theme.fontSizes['2xl']};
-    }
-  }
-
-  p {
-    font-size: ${p => p.theme.fontSizes.xl};
-    color: ${p => p.theme.colors.gray[600]};
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.6;
-
-    @media (max-width: ${p => p.theme.breakpoints.sm}) {
-      font-size: ${p => p.theme.fontSizes.base};
-    }
-  }
-`;
-
-/* Centered grid: 2 equal columns, centered if fewer cards than columns */
+/* Top row: two profile cards; bottom row: summary card spans full width */
 const CardsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: ${p => p.theme.spacing[6]};
-  justify-items: center;
-  max-width: 980px;
+  gap: ${p => p.theme.spacing[8]};
+  justify-items: stretch;
+  max-width: 100%;
   margin: 0 auto;
-  padding-top: 110px;
+  padding-top: ${p => p.theme.spacing[8]};
 
   @media (max-width: ${p => p.theme.breakpoints.md}) {
     grid-template-columns: 1fr;
     max-width: 520px;
-    margin: 0 auto;
-    padding-top: ${p => p.theme.spacing[8]};
+    padding-top: ${p => p.theme.spacing[6]};
   }
 
   @media (max-width: ${p => p.theme.breakpoints.sm}) {
-    gap: ${p => p.theme.spacing[8]};
-    padding-top: ${p => p.theme.spacing[6]};
+    gap: ${p => p.theme.spacing[10]};
+    padding-top: ${p => p.theme.spacing[5]};
   }
+`;
+
+const TeamSummaryCard = styled.div`
+  display: grid;
+  grid-template-columns: minmax(140px, 200px) 1fr;
+  gap: ${p => p.theme.spacing[8]};
+  align-items: center;
+  background: ${p => p.theme.colors.white};
+  border: 1px solid ${p => p.theme.colors.gray[200]};
+  border-radius: ${p => p.theme.borderRadius['2xl']};
+  padding: ${p => p.theme.spacing[8]} ${p => p.theme.spacing[10]};
+  box-shadow: 0 8px 32px rgba(27, 48, 34, 0.06);
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: ${p => p.theme.breakpoints.md}) {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: ${p => p.theme.spacing[8]};
+  }
+`;
+
+const SummaryStat = styled.div`
+  text-align: center;
+  padding-right: ${p => p.theme.spacing[6]};
+  border-right: 1px solid ${p => p.theme.colors.gray[200]};
+
+  @media (max-width: ${p => p.theme.breakpoints.md}) {
+    border-right: none;
+    padding-right: 0;
+    padding-bottom: ${p => p.theme.spacing[6]};
+    border-bottom: 1px solid ${p => p.theme.colors.gray[200]};
+  }
+`;
+
+const SummaryNumber = styled.div`
+  font-family: ${p => p.theme.fonts.secondary};
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: ${p => p.theme.fontWeights.bold};
+  color: ${GOLD};
+  line-height: 1;
+  margin-bottom: ${p => p.theme.spacing[2]};
+`;
+
+const SummaryLabel = styled.div`
+  font-size: ${p => p.theme.fontSizes.xs};
+  font-weight: ${p => p.theme.fontWeights.semibold};
+  color: #666666;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+`;
+
+const SummaryBody = styled.div`
+  position: relative;
+  padding-right: 140px;
+  min-height: 88px;
+
+  @media (max-width: ${p => p.theme.breakpoints.md}) {
+    padding-right: 0;
+    min-height: 0;
+  }
+
+  h3 {
+    font-family: ${p => p.theme.fonts.secondary};
+    font-size: ${p => p.theme.fontSizes['2xl']};
+    color: ${FOREST};
+    margin: 0 0 ${p => p.theme.spacing[4]} 0;
+    font-weight: ${p => p.theme.fontWeights.bold};
+  }
+
+  p {
+    margin: 0;
+    font-size: ${p => p.theme.fontSizes.base};
+    color: #666666;
+    line-height: 1.7;
+    font-family: ${p => p.theme.fonts.primary};
+  }
+`;
+
+const AvatarStack = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  /* Later circles paint on top */
+  isolation: isolate;
+
+  @media (max-width: ${p => p.theme.breakpoints.md}) {
+    position: relative;
+    margin-top: ${p => p.theme.spacing[6]};
+    justify-content: center;
+    bottom: auto;
+    right: auto;
+  }
+`;
+
+const StackAvatar = styled(InitialsAvatar)`
+  position: relative;
+  flex-shrink: 0;
+
+  &:nth-child(1) {
+    z-index: 1;
+  }
+  &:nth-child(2) {
+    z-index: 2;
+  }
+  &:not(:first-child) {
+    margin-left: ${STACK_OVERLAP}px;
+  }
+`;
+
+const StackCircleMore = styled.span`
+  width: ${STACK_SIZE}px;
+  height: ${STACK_SIZE}px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: ${p => p.theme.fontSizes.sm};
+  font-weight: ${p => p.theme.fontWeights.bold};
+  font-family: ${p => p.theme.fonts.secondary};
+  background: #f4ede4;
+  color: ${FOREST};
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+  margin-left: ${STACK_OVERLAP}px;
+  position: relative;
+  z-index: 3;
+  font-variant-numeric: tabular-nums;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    0 6px 14px rgba(27, 48, 34, 0.14);
 `;
 
 /* ─── Card ─────────────────────────────────────────────────── */
@@ -192,10 +265,12 @@ const Card = styled.div`
   box-shadow: 0 10px 30px rgba(20, 184, 166, 0.08);
   overflow: visible;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 120px;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: stretch;
+  min-height: 380px;
+  gap: ${p => p.theme.spacing[4]};
+  padding: ${p => p.theme.spacing[6]} ${p => p.theme.spacing[5]} ${p => p.theme.spacing[6]};
   transition: box-shadow ${p => p.theme.transitions.base},
               transform ${p => p.theme.transitions.base};
 
@@ -204,71 +279,32 @@ const Card = styled.div`
     transform: translateY(-6px);
   }
 
-  @media (max-width: ${p => p.theme.breakpoints.md}) {
-    padding-top: ${p => p.theme.spacing[5]};
-    overflow: hidden;
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    padding: ${p => p.theme.spacing[5]} ${p => p.theme.spacing[4]} ${p => p.theme.spacing[5]};
+    min-height: 0;
+    grid-template-rows: auto auto;
   }
 `;
 
-/* avatar — circular badge */
-const PhotoWrap = styled.div`
-  width: 200px;
-  height: 200px;
-  border-radius: 9999px;
-  background: #ffffff;
-  border: 4px solid ${p => p.theme.colors.primary[200]};
-  box-shadow: 0 4px 20px rgba(20, 184, 166, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: -100px;
-  left: 50%;
-  transform: translateX(-50%);
-  overflow: hidden;
-  z-index: 2;
-
-  @media (max-width: ${p => p.theme.breakpoints.md}) {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
-    margin: 0 auto;
-    width: 170px;
-    height: 170px;
-  }
-`;
-
-const Photo = styled.img`
-  position: absolute;
-  inset: 0;
+/* Forest + gold + white ring — centered in upper card area (grid row 1fr) */
+const CardAvatarRow = styled.div`
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  opacity: 1;
-  pointer-events: none;
-  z-index: 2;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-const PhotoGradient = styled.div`
-  display: none;
-`;
-
-const AvatarInitials = styled.div`
-  position: relative;
-  z-index: 1;
-  color: ${p => p.theme.colors.white};
-  font-family: ${p => p.theme.fonts.display};
-  font-size: ${p => p.theme.fontSizes['2xl']};
-  font-weight: ${p => p.theme.fontWeights.extrabold};
-  letter-spacing: -0.02em;
-  display: none;
+const CardAvatar = styled(InitialsAvatar)`
+  display: flex;
+  flex-shrink: 0;
 `;
 
 /* card content */
 const CardBody = styled.div`
-  padding: ${p => p.theme.spacing[3]} ${p => p.theme.spacing[6]} ${p => p.theme.spacing[8]};
+  padding: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -276,7 +312,7 @@ const CardBody = styled.div`
   text-align: center;
 
   @media (max-width: ${p => p.theme.breakpoints.sm}) {
-    padding: ${p => p.theme.spacing[5]} ${p => p.theme.spacing[5]} ${p => p.theme.spacing[6]};
+    padding: 0;
   }
 `;
 
@@ -295,11 +331,11 @@ const RoleBadge = styled.span`
 `;
 
 const Name = styled.h3`
-  font-size: ${p => p.theme.fontSizes.xl};
+  font-size: ${p => p.theme.fontSizes['2xl']};
   font-weight: ${p => p.theme.fontWeights.bold};
-  color: ${p => p.theme.colors.primary[900]};
+  color: ${p => p.theme.colors.gray[900]};
   line-height: 1.2;
-  margin-bottom: ${p => p.theme.spacing[1]};
+  margin-bottom: ${p => p.theme.spacing[3]};
   font-family: ${p => p.theme.fonts.secondary};
 
   @media (max-width: ${p => p.theme.breakpoints.sm}) {
@@ -307,25 +343,32 @@ const Name = styled.h3`
   }
 `;
 
-const Tagline = styled.p`
-  font-size: ${p => p.theme.fontSizes.sm};
-  color: ${p => p.theme.colors.gray[500]};
-  font-style: italic;
-  margin-bottom: ${p => p.theme.spacing[5]};
-  display: none;
+/* Credential / region tags (small caps) — from profile detail */
+const MemberTags = styled.p`
+  font-size: ${p => p.theme.fontSizes.xs};
+  color: #666666;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 ${p => p.theme.spacing[5]} 0;
+  font-family: ${p => p.theme.fonts.primary};
 `;
 
 const CardDivider = styled.hr`
-  display: none;
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  border: none;
+  border-top: 1px solid ${p => p.theme.colors.gray[200]};
+  margin: 0 0 ${p => p.theme.spacing[5]} 0;
 `;
 
 const Bio = styled.p`
   font-size: ${p => p.theme.fontSizes.sm};
-  color: ${p => p.theme.colors.gray[600]};
+  color: ${p => p.theme.colors.gray[700]};
   line-height: 1.75;
-  margin-bottom: ${p => p.theme.spacing[4]};
+  margin-bottom: ${p => p.theme.spacing[6]};
   flex: 1;
-  max-width: 340px;
+  max-width: 380px;
 
   @media (max-width: ${p => p.theme.breakpoints.sm}) {
     font-size: ${p => p.theme.fontSizes.base};
@@ -333,35 +376,19 @@ const Bio = styled.p`
   }
 `;
 
-const Credentials = styled.ul`
-  display: none;
-  padding-left: ${p => p.theme.spacing[4]};
-  margin: 0 0 ${p => p.theme.spacing[5]} 0;
-  color: ${p => p.theme.colors.gray[600]};
-  font-size: ${p => p.theme.fontSizes.xs};
-  line-height: 1.7;
-
-  li + li {
-    margin-top: 4px;
-  }
-`;
-
 /* card footer with social/action buttons */
 const CardFooter = styled.div`
-  display: none;
   display: flex;
   flex-wrap: wrap;
-  gap: ${p => p.theme.spacing[2]};
+  gap: ${p => p.theme.spacing[3]};
   align-items: center;
-  padding-top: ${p => p.theme.spacing[5]};
-  border-top: 1px solid ${p => p.theme.colors.gray[100]};
+  justify-content: center;
+  padding-top: ${p => p.theme.spacing[2]};
   margin-top: auto;
+  width: 100%;
 
   @media (max-width: ${p => p.theme.breakpoints.sm}) {
-    width: 100%;
-    justify-content: center;
     gap: ${p => p.theme.spacing[3]};
-    padding-top: ${p => p.theme.spacing[4]};
   }
 `;
 
@@ -393,7 +420,6 @@ const ProfileBtn = styled.button`
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-left: auto;
   background: transparent;
   border: none;
   color: ${p => p.theme.colors.primary[600]};
@@ -413,52 +439,26 @@ const ProfileBtn = styled.button`
 
     svg { transform: translateX(3px); }
   }
+`;
 
-  @media (max-width: ${p => p.theme.breakpoints.sm}) {
-    margin-left: 0;
+const CardFooterInner = styled.div`
+  display: flex;
+  width: 100%;
+  max-width: 360px;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${p => p.theme.spacing[4]};
+
+  @media (max-width: 400px) {
+    flex-direction: column;
+    gap: ${p => p.theme.spacing[4]};
   }
 `;
 
-/* ════════════════════════════════════════════════════════════════
-   HOW WE WORK — white bg, mirrors About.js PrincipleCard
-════════════════════════════════════════════════════════════════ */
-
-// eslint-disable-next-line no-unused-vars
-const WorkCard = styled.div`
-  background: ${p => p.theme.colors.white};
-  border: 1px solid ${p => p.theme.colors.gray[200]};
-  border-radius: ${p => p.theme.borderRadius.lg};
-  padding: ${p => p.theme.spacing[6]};
-  box-shadow: ${p => p.theme.shadows.sm};
+const IconGroup = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: ${p => p.theme.spacing[3]};
-  transition: box-shadow ${p => p.theme.transitions.base},
-              transform ${p => p.theme.transitions.base};
-
-  &:hover {
-    box-shadow: ${p => p.theme.shadows.md};
-    transform: translateY(-2px);
-  }
-
-  svg {
-    font-size: 1.75rem;
-    color: ${p => p.theme.colors.primary[600]};
-  }
-
-  h3 {
-    font-size: ${p => p.theme.fontSizes.lg};
-    font-weight: ${p => p.theme.fontWeights.semibold};
-    color: ${p => p.theme.colors.primary[800]};
-    margin: 0;
-  }
-
-  p {
-    font-size: ${p => p.theme.fontSizes.base};
-    color: ${p => p.theme.colors.gray[600]};
-    line-height: 1.65;
-    margin: 0;
-  }
+  gap: ${p => p.theme.spacing[2]};
+  align-items: center;
 `;
 
 /* ════════════════════════════════════════════════════════════════
@@ -536,11 +536,31 @@ const CtaButton = styled.button`
 ════════════════════════════════════════════════════════════════ */
 
 /* ════════════════════════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════════════════════════ */
+
+/** First letter of first name + first letter of last name (e.g. "Jane Doe" → "JD") */
+function getInitials(displayName) {
+  const parts = displayName.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '—';
+  if (parts.length === 1) {
+    const w = parts[0];
+    return w.slice(0, 2).toUpperCase();
+  }
+  const first = parts[0][0] || '';
+  const last = parts[parts.length - 1][0] || '';
+  return `${first}${last}`.toUpperCase();
+}
+
+/* ════════════════════════════════════════════════════════════════
    COMPONENT
 ════════════════════════════════════════════════════════════════ */
 
 const Team = () => {
   const navigate = useNavigate();
+
+  const memberYashaswi = 'Yashaswi Das';
+  const memberHeewon = 'Heewon Lee';
 
   return (
     <Page>
@@ -551,7 +571,7 @@ const Team = () => {
         url="https://ydadvisory.ae/team"
       />
 
-      {/* ── Hero ─────────────────────────────────────────────────── */}
+      {/* ── Intro (cream band — “Our People” reference) ─────────── */}
       <HeroSection>
         <HeroInner>
           <motion.div
@@ -587,29 +607,9 @@ const Team = () => {
         </HeroInner>
       </HeroSection>
 
-      {/* ── Team cards ───────────────────────────────────────────── */}
+      {/* ── Team cards + summary ─────────────────────────────────── */}
       <TeamSection>
         <Container>
-          <SectionHead>
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              Meet the People Behind YD Advisory
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              viewport={{ once: true }}
-            >
-              Every mandate is handled with senior attention — from origination
-              through delivery.
-            </motion.p>
-          </SectionHead>
-
           <CardsGrid>
             {/* ── Yashaswi Das ─────────────────────────────── */}
             <motion.div
@@ -620,20 +620,19 @@ const Team = () => {
               style={{ width: '100%' }}
             >
               <Card>
-                <PhotoWrap>
-                  <Photo
-                    src="/images/team/yashaswi_das.png"
-                    alt="Yashaswi Das — Founder & Principal"
+                <CardAvatarRow>
+                  <CardAvatar
+                    initials={getInitials(memberYashaswi)}
+                    variant="forestGold"
+                    size={AVATAR_SIZE}
+                    aria-label={`${memberYashaswi} — initials`}
                   />
-                  <PhotoGradient />
-                  <AvatarInitials>YD</AvatarInitials>
-                </PhotoWrap>
+                </CardAvatarRow>
 
                 <CardBody>
                   <RoleBadge>FOUNDER &amp; PRINCIPAL</RoleBadge>
-                  <Name>Yashaswi D.</Name>
-                  <Tagline>Bespoke transaction &amp; valuation advisory</Tagline>
-                  <CardDivider />
+                  <Name>{memberYashaswi}</Name>
+                  <MemberTags>CA · CFA · Valuation</MemberTags>
 
                   <Bio>
                     Leads all M&amp;A advisory, valuations, IPO readiness, and
@@ -641,31 +640,30 @@ const Team = () => {
                     speed across the Gulf, South Asia &amp; the US.
                   </Bio>
 
-                  <Credentials>
-                    <li>8+ years — JPMorgan, Dubai Holding, and leading advisory mandates</li>
-                    <li>50+ clients across 10+ geographies and 15+ sectors</li>
-                    <li>$100M+ in value raised, structured, or unlocked</li>
-                    <li>Licensed practice based in Dubai, UAE</li>
-                  </Credentials>
+                  <CardDivider />
 
                   <CardFooter>
-                    <IconBtn
-                      href="https://www.linkedin.com/in/yashaswi-das/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title="LinkedIn"
-                    >
-                      <FiLinkedin />
-                    </IconBtn>
-                    <IconBtn
-                      href="mailto:Yashaswi.das@ydadvisory.ae?subject=Business Inquiry — YD Advisory"
-                      title="Email"
-                    >
-                      <FiMail />
-                    </IconBtn>
-                    <ProfileBtn onClick={() => navigate('/team/1')}>
-                      Full Profile <FiArrowRight />
-                    </ProfileBtn>
+                    <CardFooterInner>
+                      <IconGroup>
+                        <IconBtn
+                          href="https://www.linkedin.com/in/yashaswi-das/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="LinkedIn"
+                        >
+                          <FiLinkedin />
+                        </IconBtn>
+                        <IconBtn
+                          href="mailto:Yashaswi.das@ydadvisory.ae?subject=Business Inquiry — YD Advisory"
+                          title="Email"
+                        >
+                          <FiMail />
+                        </IconBtn>
+                      </IconGroup>
+                      <ProfileBtn type="button" onClick={() => navigate('/team/1')}>
+                        Full Profile <FiArrowRight />
+                      </ProfileBtn>
+                    </CardFooterInner>
                   </CardFooter>
                 </CardBody>
               </Card>
@@ -680,20 +678,19 @@ const Team = () => {
               style={{ width: '100%' }}
             >
               <Card>
-                <PhotoWrap>
-                  <Photo
-                    src="/images/howlee.png"
-                    alt="Heewon Lee — Promotions, Distribution & Client Relationship"
+                <CardAvatarRow>
+                  <CardAvatar
+                    initials={getInitials(memberHeewon)}
+                    variant="forestGold"
+                    size={AVATAR_SIZE}
+                    aria-label={`${memberHeewon} — initials`}
                   />
-                  <PhotoGradient />
-                  <AvatarInitials>HL</AvatarInitials>
-                </PhotoWrap>
+                </CardAvatarRow>
 
                 <CardBody>
                   <RoleBadge>BUSINESS DEVELOPMENT</RoleBadge>
-                  <Name>Heewon Lee</Name>
-                  <Tagline>Business Development &amp; Operations</Tagline>
-                  <CardDivider />
+                  <Name>{memberHeewon}</Name>
+                  <MemberTags>GCC · Venture · Institutional</MemberTags>
 
                   <Bio>
                     Drives strategic relationships and deal origination across the
@@ -701,19 +698,67 @@ const Team = () => {
                     counterparties &amp; investors.
                   </Bio>
 
+                  <CardDivider />
+
                   <CardFooter>
-                    <IconBtn
-                      href="mailto:info@ydadvisory.com?subject=Business Inquiry — YD Advisory"
-                      title="Email"
-                    >
-                      <FiMail />
-                    </IconBtn>
-                    <ProfileBtn onClick={() => navigate('/team/2')}>
-                      Full Profile <FiArrowRight />
-                    </ProfileBtn>
+                    <CardFooterInner>
+                      <IconGroup>
+                        <IconBtn
+                          href="mailto:info@ydadvisory.com?subject=Business Inquiry — YD Advisory"
+                          title="Email"
+                        >
+                          <FiMail />
+                        </IconBtn>
+                      </IconGroup>
+                      <ProfileBtn type="button" onClick={() => navigate('/team/2')}>
+                        Full Profile <FiArrowRight />
+                      </ProfileBtn>
+                    </CardFooterInner>
                   </CardFooter>
                 </CardBody>
               </Card>
+            </motion.div>
+
+            {/* ── Team depth summary (existing site metrics) ───────── */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              style={{ gridColumn: '1 / -1' }}
+            >
+              <TeamSummaryCard>
+                <SummaryStat>
+                  <SummaryNumber>50+</SummaryNumber>
+                  <SummaryLabel>Clients</SummaryLabel>
+                </SummaryStat>
+                <SummaryBody>
+                  <h3>Senior attention on every mandate</h3>
+                  <p>
+                    Every mandate is handled with senior attention — from origination
+                    through delivery. Our track record includes 50+ clients across
+                    10+ geographies and 15+ sectors, with $100M+ in value raised,
+                    structured, or unlocked — led by principals with 8+ years of
+                    frontline experience at institutions such as JPMorgan and Dubai
+                    Holding.
+                  </p>
+                  <AvatarStack aria-hidden>
+                    <StackAvatar
+                      initials={getInitials(memberYashaswi)}
+                      variant="seal"
+                      size={STACK_SIZE}
+                      compact
+                    />
+                    <StackAvatar
+                      initials={getInitials(memberHeewon)}
+                      variant="seal"
+                      size={STACK_SIZE}
+                      compact
+                    />
+                    <StackCircleMore>+2</StackCircleMore>
+                  </AvatarStack>
+                </SummaryBody>
+              </TeamSummaryCard>
             </motion.div>
           </CardsGrid>
         </Container>

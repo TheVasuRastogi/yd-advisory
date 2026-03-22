@@ -259,7 +259,7 @@ const DropdownMenu = styled(motion.div)`
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
   border: 1px solid ${props => props.theme.colors.gray[200]};
   padding: ${props => props.theme.spacing[2]} 0;
-  min-width: 220px;
+  min-width: 260px;
   z-index: 10000;
   overflow: hidden;
   will-change: transform, opacity;
@@ -868,13 +868,13 @@ const Header = () => {
                           to="/careers"
                           className={location.pathname === '/careers' ? 'active' : ''}
                         >
-                          Job
+                          Careers
                         </DropdownItem>
                         <DropdownItem
                           to="/careers/partnership"
                           className={location.pathname.startsWith('/careers/partnership') ? 'active' : ''}
                         >
-                          Partnership
+                          Become a Partner
                         </DropdownItem>
                       </DropdownMenu>
                     )}
@@ -1036,7 +1036,7 @@ const Header = () => {
                         className={location.pathname === '/careers' ? 'active' : ''}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        Job
+                        Careers
                       </MobileDropdownItem>
                     </li>
                     <li>
@@ -1045,7 +1045,7 @@ const Header = () => {
                         className={location.pathname.startsWith('/careers/partnership') ? 'active' : ''}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        Partnership
+                        Become a Partner
                       </MobileDropdownItem>
                     </li>
                   </MobileDropdownMenu>

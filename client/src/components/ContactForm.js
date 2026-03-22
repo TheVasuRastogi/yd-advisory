@@ -2,61 +2,98 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
-import { FiSend, FiCheckCircle, FiAlertCircle, FiLoader } from 'react-icons/fi';
+import {
+  FiSend, FiCheckCircle, FiAlertCircle, FiLoader, FiUser, FiMail,
+} from 'react-icons/fi';
 import { emailjsService } from '../services/emailjsService';
 
 const ContactFormContainer = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  padding: ${props => props.theme.spacing[4]};
+  width: 100%;
+  max-width: 640px;
+  margin: 0;
 `;
 
 const ContactFormCard = styled.div`
   background: ${props => props.theme.colors.white};
-  border-radius: 16px;
-  padding: ${props => props.theme.spacing[8]};
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border-radius: ${props => props.theme.borderRadius['2xl']};
+  padding: ${props => props.theme.spacing[8]} ${props => props.theme.spacing[8]};
+  box-shadow:
+    0 4px 6px -1px rgba(15, 118, 110, 0.06),
+    0 20px 40px -12px rgba(15, 118, 110, 0.12);
   border: 1px solid ${props => props.theme.colors.gray[100]};
-  
+
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    padding: ${props => props.theme.spacing[6]};
-    border-radius: 12px;
+    padding: ${props => props.theme.spacing[6]} ${props => props.theme.spacing[5]};
+    border-radius: ${props => props.theme.borderRadius.xl};
   }
 `;
 
 const FormTitle = styled.h2`
-  font-size: 2rem;
-  color: ${props => props.theme.colors.primary[800]};
-  margin-bottom: ${props => props.theme.spacing[4]};
-  font-weight: 700;
-  text-align: center;
-  
+  font-size: ${props => props.theme.fontSizes['2xl']};
+  font-family: ${props => props.theme.fonts.secondary};
+  color: ${props => props.theme.colors.primary[900]};
+  margin-bottom: ${props => props.theme.spacing[2]};
+  font-weight: ${props => props.theme.fontWeights.bold};
+  text-align: left;
+  letter-spacing: -0.02em;
+
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    font-size: 1.5rem;
+    font-size: ${props => props.theme.fontSizes.xl};
   }
 `;
 
 const FormDescription = styled.p`
   color: ${props => props.theme.colors.gray[600]};
-  line-height: 1.6;
+  line-height: 1.65;
   margin-bottom: ${props => props.theme.spacing[8]};
-  text-align: center;
-  font-size: 1rem;
+  text-align: left;
+  font-size: ${props => props.theme.fontSizes.sm};
+  max-width: 36rem;
+`;
+
+const FormHeaderBlock = styled.div`
+  margin-bottom: ${props => props.theme.spacing[8]};
+  padding-bottom: ${props => props.theme.spacing[6]};
+  border-bottom: 1px solid ${props => props.theme.colors.gray[100]};
+`;
+
+const FormSectionLabel = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing[2]};
+  font-size: ${props => props.theme.fontSizes.xs};
+  font-weight: ${props => props.theme.fontWeights.bold};
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: ${props => props.theme.colors.primary[700]};
+  margin-bottom: ${props => props.theme.spacing[5]};
+`;
+
+const FormBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing[5]};
+  margin-bottom: ${props => props.theme.spacing[8]};
+
+  &:last-of-type {
+    margin-bottom: ${props => props.theme.spacing[6]};
+  }
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: ${props => props.theme.spacing[6]};
+  gap: 0;
 `;
 
 const FormRow = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: ${props => props.theme.spacing[4]};
-  
+  gap: ${props => props.theme.spacing[5]};
+
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     grid-template-columns: 1fr;
+    gap: ${props => props.theme.spacing[5]};
   }
 `;
 
@@ -67,47 +104,61 @@ const FormGroup = styled.div`
 `;
 
 const Label = styled.label`
-  font-weight: ${props => props.theme.fontWeights.semibold};
-  color: ${props => props.theme.colors.primary[700]};
+  font-weight: ${props => props.theme.fontWeights.medium};
+  color: ${props => props.theme.colors.gray[700]};
   font-size: ${props => props.theme.fontSizes.sm};
 `;
 
 const Input = styled.input`
   padding: ${props => props.theme.spacing[3]} ${props => props.theme.spacing[4]};
-  border: 1px solid ${props => props.hasError ? props.theme.colors.error : props.theme.colors.gray[300]};
-  border-radius: ${props => props.theme.borderRadius.md};
+  min-height: 48px;
+  border: 1px solid ${props => props.hasError ? props.theme.colors.error : props.theme.colors.gray[200]};
+  border-radius: ${props => props.theme.borderRadius.lg};
   font-size: ${props => props.theme.fontSizes.base};
   transition: all ${props => props.theme.transitions.fast};
-  background: ${props => props.theme.colors.white};
-  
+  background: ${props => props.theme.colors.gray[50]};
+
+  &:hover {
+    border-color: ${props => props.theme.colors.gray[300]};
+    background: ${props => props.theme.colors.white};
+  }
+
   &:focus {
     outline: none;
     border-color: ${props => props.theme.colors.primary[500]};
     box-shadow: 0 0 0 3px ${props => props.theme.colors.primary[100]};
+    background: ${props => props.theme.colors.white};
   }
-  
+
   &::placeholder {
     color: ${props => props.theme.colors.gray[400]};
   }
 `;
 
 const TextArea = styled.textarea`
-  padding: ${props => props.theme.spacing[3]} ${props => props.theme.spacing[4]};
-  border: 1px solid ${props => props.hasError ? props.theme.colors.error : props.theme.colors.gray[300]};
-  border-radius: ${props => props.theme.borderRadius.md};
+  padding: ${props => props.theme.spacing[4]} ${props => props.theme.spacing[4]};
+  border: 1px solid ${props => props.hasError ? props.theme.colors.error : props.theme.colors.gray[200]};
+  border-radius: ${props => props.theme.borderRadius.lg};
   font-size: ${props => props.theme.fontSizes.base};
   transition: all ${props => props.theme.transitions.fast};
-  background: ${props => props.theme.colors.white};
-  min-height: 120px;
+  background: ${props => props.theme.colors.gray[50]};
+  min-height: 140px;
   resize: vertical;
   font-family: inherit;
-  
+  line-height: 1.55;
+
+  &:hover {
+    border-color: ${props => props.theme.colors.gray[300]};
+    background: ${props => props.theme.colors.white};
+  }
+
   &:focus {
     outline: none;
     border-color: ${props => props.theme.colors.primary[500]};
     box-shadow: 0 0 0 3px ${props => props.theme.colors.primary[100]};
+    background: ${props => props.theme.colors.white};
   }
-  
+
   &::placeholder {
     color: ${props => props.theme.colors.gray[400]};
   }
@@ -115,17 +166,24 @@ const TextArea = styled.textarea`
 
 const Select = styled.select`
   padding: ${props => props.theme.spacing[3]} ${props => props.theme.spacing[4]};
-  border: 1px solid ${props => props.hasError ? props.theme.colors.error : props.theme.colors.gray[300]};
-  border-radius: ${props => props.theme.borderRadius.md};
+  min-height: 48px;
+  border: 1px solid ${props => props.hasError ? props.theme.colors.error : props.theme.colors.gray[200]};
+  border-radius: ${props => props.theme.borderRadius.lg};
   font-size: ${props => props.theme.fontSizes.base};
   transition: all ${props => props.theme.transitions.fast};
-  background: ${props => props.theme.colors.white};
+  background: ${props => props.theme.colors.gray[50]};
   cursor: pointer;
-  
+
+  &:hover {
+    border-color: ${props => props.theme.colors.gray[300]};
+    background: ${props => props.theme.colors.white};
+  }
+
   &:focus {
     outline: none;
     border-color: ${props => props.theme.colors.primary[500]};
     box-shadow: 0 0 0 3px ${props => props.theme.colors.primary[100]};
+    background: ${props => props.theme.colors.white};
   }
 `;
 
@@ -138,28 +196,30 @@ const ErrorMessage = styled.div`
 `;
 
 const SubmitButton = styled.button`
+  width: 100%;
   background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
   color: ${props => props.theme.colors.white};
   border: none;
-  padding: ${props => props.theme.spacing[4]} ${props => props.theme.spacing[8]};
+  padding: ${props => props.theme.spacing[4]} ${props => props.theme.spacing[6]};
   border-radius: ${props => props.theme.borderRadius.lg};
   font-weight: ${props => props.theme.fontWeights.semibold};
   font-size: ${props => props.theme.fontSizes.lg};
   cursor: pointer;
   transition: all ${props => props.theme.transitions.base};
-  box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+  box-shadow: 0 4px 14px rgba(20, 184, 166, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: ${props => props.theme.spacing[2]};
-  min-height: 56px;
-  
+  min-height: 54px;
+  margin-top: ${props => props.theme.spacing[2]};
+
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(20, 184, 166, 0.4);
+    box-shadow: 0 10px 28px rgba(20, 184, 166, 0.45);
     background: linear-gradient(135deg, ${props => props.theme.colors.primary[700]}, ${props => props.theme.colors.primary[800]});
   }
-  
+
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -179,7 +239,7 @@ const SuccessMessage = styled(motion.div)`
   margin-bottom: ${props => props.theme.spacing[4]};
 `;
 
-const ContactForm = () => {
+const ContactForm = ({ hideHeader = false }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [submitMessage, setSubmitMessage] = useState('');
@@ -284,11 +344,15 @@ const ContactForm = () => {
   return (
     <ContactFormContainer>
       <ContactFormCard>
-        <FormTitle>Send Us a Message</FormTitle>
-        <FormDescription>
-          Ready to take control of your financial future? Contact our expert advisors 
-          for a free consultation and personalized financial guidance.
-        </FormDescription>
+        {!hideHeader && (
+          <FormHeaderBlock>
+            <FormTitle>Send Us a Message</FormTitle>
+            <FormDescription>
+              Ready to take control of your financial future? Contact our expert advisors
+              for a free consultation and personalized financial guidance.
+            </FormDescription>
+          </FormHeaderBlock>
+        )}
 
         {submitStatus === 'success' && (
           <SuccessMessage
@@ -327,7 +391,12 @@ const ContactForm = () => {
         )}
 
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <FormRow>
+          <FormBlock>
+            <FormSectionLabel>
+              <FiUser aria-hidden />
+              Your details
+            </FormSectionLabel>
+            <FormRow>
             <FormGroup>
               <Label htmlFor="firstName">First Name *</Label>
               <Input
@@ -425,7 +494,13 @@ const ContactForm = () => {
               {...register('company')}
             />
           </FormGroup>
+          </FormBlock>
 
+          <FormBlock>
+            <FormSectionLabel>
+              <FiMail aria-hidden />
+              Your inquiry
+            </FormSectionLabel>
           <FormGroup>
             <Label htmlFor="subject">Subject *</Label>
             <Input
@@ -480,6 +555,7 @@ const ContactForm = () => {
               </ErrorMessage>
             )}
           </FormGroup>
+          </FormBlock>
 
           <SubmitButton type="submit" disabled={isSubmitting}>
             {isSubmitting ? (

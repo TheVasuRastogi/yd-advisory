@@ -4,37 +4,49 @@ import { motion } from 'framer-motion';
 import { FiShield, FiUsers, FiTarget, FiBriefcase, FiDollarSign, FiBarChart, FiClock, FiStar } from 'react-icons/fi';
 import SEO from '../components/SEO';
 import { organizationSchema, personSchema } from '../utils/structuredData';
+import { innerPageHeroBackground } from '../styles/heroMixins';
 
 const AboutContainer = styled.div`
   padding-top: 120px;
 `;
 
 const HeroSection = styled.section`
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary[800]} 0%, ${props => props.theme.colors.primary[900]} 100%);
+  ${innerPageHeroBackground()}
+  position: relative;
   color: ${props => props.theme.colors.white};
   padding: ${props => props.theme.spacing[20]} 0;
   text-align: center;
+  overflow: hidden;
 `;
 
 const HeroContent = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 0 ${props => props.theme.spacing[4]};
+  position: relative;
+  z-index: 1;
   
   h1 {
     font-size: ${props => props.theme.fontSizes['5xl']};
-    margin-bottom: ${props => props.theme.spacing[6]};
+    margin-bottom: ${props => props.theme.spacing[4]};
     color: ${props => props.theme.colors.white};
     
     @media (max-width: ${props => props.theme.breakpoints.md}) {
       font-size: ${props => props.theme.fontSizes['4xl']};
     }
   }
+`;
+
+const HeroSubtitle = styled.p`
+  font-size: ${props => props.theme.fontSizes.xl};
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.5;
+  margin: 0 auto;
+  max-width: 42rem;
+  font-weight: ${props => props.theme.fontWeights.medium};
   
-  p {
-    font-size: ${props => props.theme.fontSizes.xl};
-    color: ${props => props.theme.colors.gray[200]};
-    line-height: 1.6;
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    font-size: ${props => props.theme.fontSizes.lg};
   }
 `;
 
@@ -324,7 +336,15 @@ const About = () => {
           >
             About Us
           </motion.h1>
-          {/* description removed as requested */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.15 }}
+          >
+            <HeroSubtitle>
+              Institutional-grade valuation and transaction advisory — with boutique agility and founder-led execution.
+            </HeroSubtitle>
+          </motion.div>
         </HeroContent>
       </HeroSection>
 

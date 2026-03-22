@@ -22,6 +22,7 @@ import {
   FiDownload
 } from 'react-icons/fi';
 import BrochureDownloadModal from '../components/BrochureDownloadModal';
+import { innerPageHeroBackground } from '../styles/heroMixins';
 
 const PageContainer = styled.div`
   padding-top: 120px;
@@ -29,7 +30,8 @@ const PageContainer = styled.div`
 `;
 
 const HeroSection = styled.section`
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary[700]}, ${props => props.theme.colors.primary[800]});
+  ${innerPageHeroBackground('/services.png')}
+  position: relative;
   color: ${props => props.theme.colors.white};
   padding: ${props => props.theme.spacing[16]} 0;
   text-align: center;

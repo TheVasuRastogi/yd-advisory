@@ -1,26 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FiPhone, FiMail, FiMapPin, FiLinkedin } from 'react-icons/fi';
+import {
+  FiPhone, FiMail, FiMapPin, FiLinkedin, FiFileText, FiMessageCircle,
+} from 'react-icons/fi';
 import { openMailto, openTel, handleInteractiveLink } from '../utils/linkHelpers';
 import SEO from '../components/SEO';
 import ContactForm from '../components/ContactForm';
 import { localBusinessSchema } from '../utils/structuredData';
+import { innerPageHeroBackground } from '../styles/heroMixins';
 
 const ContactContainer = styled.div`
   padding-top: 120px;
 `;
 
 const HeroSection = styled.section`
-  background: linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(15, 118, 110, 0.5) 100%), 
-              url('/images/cta-bg.jpg') center/cover;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  ${innerPageHeroBackground()}
+  position: relative;
   color: ${props => props.theme.colors.white};
   padding: ${props => props.theme.spacing[20]} 0;
   text-align: center;
-  min-height: 60vh;
+  min-height: 50vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -115,29 +115,123 @@ const ContactItem = styled.div`
   }
 `;
 
-const ValuationSection = styled.section`
-  padding: ${props => props.theme.spacing[16]} 0;
-  background: ${props => props.theme.colors.gray[50]};
+const FormSection = styled.section`
+  padding: ${props => props.theme.spacing[20]} 0;
+  background: linear-gradient(
+    180deg,
+    ${props => props.theme.colors.gray[50]} 0%,
+    ${props => props.theme.colors.white} 45%
+  );
 `;
 
-const ValuationSectionHeader = styled.div`
-  text-align: center;
-  margin-bottom: ${props => props.theme.spacing[12]};
-  
-  h2 {
-    font-size: ${props => props.theme.fontSizes['4xl']};
-    color: ${props => props.theme.colors.primary[800]};
-    margin-bottom: ${props => props.theme.spacing[4]};
-    font-weight: 700;
+const FormLayout = styled.div`
+  display: grid;
+  grid-template-columns: minmax(260px, 400px) minmax(0, 1fr);
+  gap: ${props => props.theme.spacing[12]};
+  align-items: start;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: ${props => props.theme.spacing[10]};
   }
-  
+`;
+
+const IntroColumn = styled.div`
+  position: sticky;
+  top: 100px;
+
+  @media (max-width: 1024px) {
+    position: static;
+  }
+`;
+
+const FormEyebrow = styled.span`
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: ${props => props.theme.fontSizes.xs};
+  font-weight: ${props => props.theme.fontWeights.semibold};
+  color: ${props => props.theme.colors.primary[600]};
+  margin-bottom: ${props => props.theme.spacing[3]};
+`;
+
+const FormIntroTitle = styled.h2`
+  font-family: ${props => props.theme.fonts.secondary};
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  color: ${props => props.theme.colors.primary[900]};
+  line-height: 1.25;
+  margin: 0 0 ${props => props.theme.spacing[6]} 0;
+  font-weight: ${props => props.theme.fontWeights.bold};
+`;
+
+const IntroHighlights = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing[4]};
+`;
+
+const HighlightCard = styled.div`
+  background: ${props => props.theme.colors.white};
+  border: 1px solid ${props => props.theme.colors.gray[200]};
+  border-radius: ${props => props.theme.borderRadius.xl};
+  padding: ${props => props.theme.spacing[5]} ${props => props.theme.spacing[6]};
+  box-shadow: ${props => props.theme.shadows.sm};
+  display: flex;
+  gap: ${props => props.theme.spacing[4]};
+  align-items: flex-start;
+  transition:
+    transform ${props => props.theme.transitions.base},
+    box-shadow ${props => props.theme.transitions.base};
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: ${props => props.theme.shadows.md};
+  }
+`;
+
+const HighlightIcon = styled.div`
+  width: 48px;
+  height: 48px;
+  border-radius: ${props => props.theme.borderRadius.lg};
+  background: ${props => props.theme.colors.primary[50]};
+  color: ${props => props.theme.colors.primary[700]};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  flex-shrink: 0;
+`;
+
+const HighlightBody = styled.div`
+  h3 {
+    font-size: ${props => props.theme.fontSizes.base};
+    font-weight: ${props => props.theme.fontWeights.bold};
+    color: ${props => props.theme.colors.primary[800]};
+    margin: 0 0 ${props => props.theme.spacing[2]} 0;
+  }
+
   p {
-    font-size: ${props => props.theme.fontSizes.lg};
+    margin: 0;
+    font-size: ${props => props.theme.fontSizes.sm};
     color: ${props => props.theme.colors.gray[600]};
-    max-width: 600px;
-    margin: 0 auto;
     line-height: 1.6;
   }
+`;
+
+const IntroFootnote = styled.p`
+  margin: ${props => props.theme.spacing[8]} 0 0 0;
+  font-size: ${props => props.theme.fontSizes.sm};
+  color: ${props => props.theme.colors.gray[500]};
+  line-height: 1.55;
+  padding-top: ${props => props.theme.spacing[6]};
+  border-top: 1px solid ${props => props.theme.colors.gray[200]};
+`;
+
+const FormColumn = styled.div`
+  width: 100%;
+  min-width: 0;
 `;
 
 const MapSection = styled.section`
@@ -145,15 +239,29 @@ const MapSection = styled.section`
   background: ${props => props.theme.colors.white};
 `;
 
+const MapGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: ${props => props.theme.spacing[6]};
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const MapCard = styled.div`
+  h3 {
+    font-size: ${props => props.theme.fontSizes.xl};
+    color: ${props => props.theme.colors.primary[800]};
+    margin-bottom: ${props => props.theme.spacing[4]};
+  }
+`;
+
 const MapContainer = styled.div`
   height: 400px;
-  background: ${props => props.theme.colors.gray[200]};
   border-radius: ${props => props.theme.borderRadius.xl};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${props => props.theme.colors.gray[600]};
-  font-size: ${props => props.theme.fontSizes.lg};
+  overflow: hidden;
+  box-shadow: ${props => props.theme.shadows.md};
 `;
 
 const Contact = () => {
@@ -222,6 +330,13 @@ const Contact = () => {
               </div>
             </ContactItem>
             <ContactItem>
+              <FiMapPin />
+              <div>
+                <h3>Singapore Address</h3>
+                <p>Servcorp - CapitaGreen, Singapore</p>
+              </div>
+            </ContactItem>
+            <ContactItem>
               <FiPhone />
               <div>
                 <h3>Phone Number</h3>
@@ -265,34 +380,75 @@ const Contact = () => {
         </SectionContent>
       </ContactSection>
 
-      {/* Valuation Request Section */}
-      <ValuationSection>
+      {/* Proposal + contact form */}
+      <FormSection>
         <SectionContent>
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.55 }}
             viewport={{ once: true }}
           >
-            <ValuationSectionHeader>
-              <h2>Request a Custom Proposal</h2>
-              <p>
-                Get a professional business valuation from our expert team. 
-                We'll provide you with a comprehensive analysis tailored to your specific business needs.
-              </p>
-            </ValuationSectionHeader>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            <ContactForm />
+          <FormLayout>
+            <IntroColumn>
+              <FormEyebrow>Start a conversation</FormEyebrow>
+              <FormIntroTitle>
+                Request a proposal or send us a message
+              </FormIntroTitle>
+              <IntroHighlights>
+                <HighlightCard>
+                  <HighlightIcon>
+                    <FiFileText aria-hidden />
+                  </HighlightIcon>
+                  <HighlightBody>
+                    <h3>Request a custom proposal</h3>
+                    <p>
+                      Get a professional business valuation from our expert team.
+                      We&apos;ll provide a comprehensive analysis tailored to your
+                      business — IVSC-aligned and decision-ready.
+                    </p>
+                  </HighlightBody>
+                </HighlightCard>
+                <HighlightCard>
+                  <HighlightIcon>
+                    <FiMessageCircle aria-hidden />
+                  </HighlightIcon>
+                  <HighlightBody>
+                    <h3>Send us a message</h3>
+                    <p>
+                      Ready to take control of your financial future? Reach out for a
+                      free consultation and personalized guidance from our advisors.
+                    </p>
+                  </HighlightBody>
+                </HighlightCard>
+              </IntroHighlights>
+              <IntroFootnote>
+                Typical response within one business day. For urgent matters, call{' '}
+                <a
+                  href="tel:+971528477349"
+                  style={{ color: 'inherit', fontWeight: 600 }}
+                  onClick={(e) => handleInteractiveLink(e, () => openTel('+971528477349'))}
+                  onKeyDown={(e) => handleInteractiveLink(e, () => openTel('+971528477349'))}
+                >
+                  +971-528477349
+                </a>
+                .
+              </IntroFootnote>
+            </IntroColumn>
+            <FormColumn>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                viewport={{ once: true }}
+              >
+                <ContactForm hideHeader />
+              </motion.div>
+            </FormColumn>
+          </FormLayout>
           </motion.div>
         </SectionContent>
-      </ValuationSection>
+      </FormSection>
 
       {/* Map Section */}
       <MapSection>
@@ -303,18 +459,38 @@ const Contact = () => {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <MapContainer>
-              <iframe
-                title="YD Advisory Location Map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3998.7639873492535!2d55.280686499115426!3d25.217728119661174!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f4292f6d3f4ab%3A0x67b81a59cfac0a46!2sServcorp%20Emirates%20Towers%20-%20Coworking%2C%20Offices%2C%20Virtual%20Offices%20%26%20Meeting%20Rooms!5e0!3m2!1sen!2sin!4v1758279391613!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                style={{ border: 0, borderRadius: 'inherit' }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </MapContainer>
+            <MapGrid>
+              <MapCard>
+                <h3>Dubai Office</h3>
+                <MapContainer>
+                  <iframe
+                    title="YD Advisory Dubai Location Map"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3998.7639873492535!2d55.280686499115426!3d25.217728119661174!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f4292f6d3f4ab%3A0x67b81a59cfac0a46!2sServcorp%20Emirates%20Towers%20-%20Coworking%2C%20Offices%2C%20Virtual%20Offices%20%26%20Meeting%20Rooms!5e0!3m2!1sen!2sin!4v1758279391613!5m2!1sen!2sin"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0, borderRadius: 'inherit' }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </MapContainer>
+              </MapCard>
+              <MapCard>
+                <h3>Singapore Office</h3>
+                <MapContainer>
+                  <iframe
+                    title="YD Advisory Singapore Location Map"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d997.2049777622296!2d103.84937336949984!3d1.28181229991913!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da190dd3c68b25%3A0x5a28e80c51a139cd!2sServcorp%20-%20CapitaGreen!5e0!3m2!1sen!2sin!4v1774163216559!5m2!1sen!2sin"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0, borderRadius: 'inherit' }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </MapContainer>
+              </MapCard>
+            </MapGrid>
           </motion.div>
         </SectionContent>
       </MapSection>

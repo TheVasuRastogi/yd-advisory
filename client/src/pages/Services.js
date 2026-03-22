@@ -16,6 +16,7 @@ import {
 import SEO from '../components/SEO';
 import { serviceSchema } from '../utils/structuredData';
 import ValuationRequestForm from '../components/ValuationRequestForm';
+import { innerPageHeroBackground } from '../styles/heroMixins';
 
 const ServicesContainer = styled.div`
   padding-top: 120px;
@@ -23,41 +24,11 @@ const ServicesContainer = styled.div`
 `;
 
 const HeroSection = styled.section`
-  background-color: ${props => props.theme.colors.primary[900]};
-  color: ${props => props.theme.colors.white};
-  padding: ${props => props.theme.spacing[24]} 0;
-  text-align: center;
+  ${innerPageHeroBackground()}
   position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('/services.png') center/cover no-repeat;
-    filter: blur(12px);
-    transform: scale(1.08); /* keeps edges covered after blur */
-    opacity: 0.9;
-    z-index: 0;
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background:
-      radial-gradient(circle at 20% 20%, rgba(20, 184, 166, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 40% 60%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
-      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    z-index: 0;
-  }
+  color: ${props => props.theme.colors.white};
+  padding: ${props => props.theme.spacing[16]} 0;
+  text-align: center;
 `;
 
 const HeroContent = styled.div`
@@ -66,39 +37,39 @@ const HeroContent = styled.div`
   padding: 0 ${props => props.theme.spacing[4]};
   position: relative;
   z-index: 1;
-  
+
   h1 {
-    font-family: ${props => props.theme.fonts.display};
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 800;
+    font-size: ${props => props.theme.fontSizes['5xl']};
     margin-bottom: ${props => props.theme.spacing[6]};
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    background: linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    
-    @media (max-width: ${props => props.theme.breakpoints.sm}) {
-      font-size: clamp(2rem, 8vw, 2.5rem);
-      line-height: 1.2;
+    color: ${props => props.theme.colors.white};
+
+    @media (max-width: ${props => props.theme.breakpoints.md}) {
+      font-size: ${props => props.theme.fontSizes['4xl']};
     }
   }
-  
-  p {
-    font-family: ${props => props.theme.fonts.primary};
-    font-size: clamp(1.125rem, 2.5vw, 1.25rem);
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.95);
-    line-height: 1.7;
-    max-width: 700px;
-  margin: 0 auto;
-    letter-spacing: 0.01em;
-  
+`;
+
+const HeroLine = styled.span`
+  display: block;
+  &:not(:last-child) {
+    margin-bottom: 0.35em;
+  }
+`;
+
+const HeroParagraph = styled(motion.p)`
+  font-size: ${props => props.theme.fontSizes.xl};
+  color: ${props => props.theme.colors.gray[200]};
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto ${props => props.theme.spacing[8]};
+
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    font-size: ${props => props.theme.fontSizes.lg};
+  }
+
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
-      font-size: 1rem;
-      line-height: 1.6;
-    }
+    font-size: ${props => props.theme.fontSizes.base};
+    line-height: 1.65;
   }
 `;
 
@@ -944,13 +915,16 @@ const Services = () => {
           >
             YD Advisory Services
           </motion.h1>
-          <motion.p
+          <HeroParagraph
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            We deliver comprehensive financial advisory services that turn analysis into action - built to hold up in boardrooms and negotiations. All work is IVSC-aligned and audit-ready, with clear assumptions, sensitivities, and executive summaries.
-          </motion.p>
+            <HeroLine>
+              From valuation and modelling to M&amp;A and CFO support, we translate complex numbers into decisions your stakeholders can rely on.
+            </HeroLine>
+           
+          </HeroParagraph>
         </HeroContent>
       </HeroSection>
 

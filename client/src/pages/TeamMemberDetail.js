@@ -1,12 +1,14 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
 import {
   FiArrowLeft, FiLinkedin, FiMail, FiAward,
   FiGlobe, FiUsers, FiBriefcase,
 } from 'react-icons/fi';
 import SEO from '../components/SEO';
+import InitialsAvatar from '../components/InitialsAvatar';
+import { innerPageHeroBackground } from '../styles/heroMixins';
 
 /* ═══════════════════════════════════════════════
    DATA
@@ -119,12 +121,7 @@ const BackBarInner = styled.div`
 
 /* ── Hero banner ─────────────────────────────── */
 const HeroBanner = styled.section`
-  background: linear-gradient(
-    135deg,
-    ${p => p.theme.colors.primary[800]} 0%,
-    ${p => p.theme.colors.primary[900]} 60%,
-    #0a2a2a 100%
-  );
+  ${innerPageHeroBackground()}
   padding: ${p => p.theme.spacing[14]} 0 ${p => p.theme.spacing[16]};
   position: relative;
   overflow: hidden;
@@ -186,14 +183,29 @@ const HeroPhoto = styled.div`
   height: 160px;
   margin-top: -24px;
   border-radius: 9999px;
-  background: linear-gradient(135deg, ${p => p.theme.colors.primary[600]}, ${p => p.theme.colors.primary[800]});
-  border: 4px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+
+  ${p =>
+    p.$hasImage
+      ? css`
+          overflow: hidden;
+          background: linear-gradient(
+            135deg,
+            ${p.theme.colors.primary[600]},
+            ${p.theme.colors.primary[800]}
+          );
+          border: 4px solid rgba(255, 255, 255, 0.25);
+          box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+        `
+      : css`
+          overflow: visible;
+          background: transparent;
+          border: none;
+          box-shadow: none;
+        `}
 
   img {
     position: absolute;
@@ -202,15 +214,6 @@ const HeroPhoto = styled.div`
     height: 100%;
     object-fit: cover;
     object-position: center top;
-  }
-
-  span {
-    color: white;
-    font-size: 2.8rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    position: relative;
-    z-index: 1;
   }
 
   @media (max-width: ${p => p.theme.breakpoints.sm}) {
@@ -605,11 +608,18 @@ const TeamMemberDetail = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
           >
-            <HeroPhoto>
+            <HeroPhoto $hasImage={!!member.image}>
               {member.image && (
                 <img src={member.image} alt={member.name} />
               )}
-              {!member.image && <span>{member.initials}</span>}
+              {!member.image && (
+                <InitialsAvatar
+                  initials={member.initials}
+                  variant="forestGold"
+                  fill
+                  aria-label={member.name}
+                />
+              )}
             </HeroPhoto>
           </motion.div>
 

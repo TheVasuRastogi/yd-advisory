@@ -11,6 +11,7 @@ import {
   FiClock
 } from 'react-icons/fi';
 import SEO from '../components/SEO';
+import PageHero from '../components/PageHero';
 
 const CalculatorContainer = styled.div`
   padding-top: 120px;
@@ -135,43 +136,6 @@ const BenefitItem = styled.li`
     strong {
       color: ${props => props.theme.colors.primary[800]};
       font-weight: 600;
-    }
-  }
-`;
-
-const SectionHeader = styled.div`
-  text-align: center;
-  margin-bottom: ${props => props.theme.spacing[12]};
-  
-  h1 {
-    font-size: 3rem;
-    color: ${props => props.theme.colors.primary[800]};
-    margin-bottom: ${props => props.theme.spacing[4]};
-    font-weight: 800;
-    
-    @media (max-width: ${props => props.theme.breakpoints.md}) {
-      font-size: 2.5rem;
-    }
-    
-    @media (max-width: ${props => props.theme.breakpoints.sm}) {
-      font-size: 2rem;
-    }
-  }
-  
-  p {
-    font-size: 1.25rem;
-    color: ${props => props.theme.colors.gray[600]};
-    max-width: 800px;
-    margin: 0 auto;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    
-    @media (max-width: ${props => props.theme.breakpoints.sm}) {
-      font-size: 1rem;
-      white-space: normal;
-      overflow: visible;
-      text-overflow: unset;
     }
   }
 `;
@@ -2330,25 +2294,13 @@ Valuation Calculator User
         keywords="business valuation calculator, company valuation, startup valuation, business worth, valuation tool, YD Advisory"
         url="https://ydadvisory.ae/calculator"
       />
+
+      <PageHero
+        title="YD Valuator"
+        subtitle="Professional business valuation tool powered by YD Advisory's expertise."
+      />
       
       <CalculatorSection>
-        <SectionHeader>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            YD Valuator
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            Professional business valuation tool powered by YD Advisory's expertise
-          </motion.p>
-        </SectionHeader>
-
         <CalculatorGrid>
           <motion.div
             initial={{ opacity: 0, x: -20 }}

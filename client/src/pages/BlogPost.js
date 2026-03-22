@@ -1,24 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+import PageHero from '../components/PageHero';
 
 const PageContainer = styled.div`
   padding-top: 120px;
   min-height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Content = styled.div`
   text-align: center;
   max-width: 600px;
-  padding: ${props => props.theme.spacing[8]};
-  
-  h1 {
-    font-size: ${props => props.theme.fontSizes['5xl']};
-    color: ${props => props.theme.colors.primary[700]};
-    margin-bottom: ${props => props.theme.spacing[6]};
-  }
+  margin: 0 auto;
+  padding: ${props => props.theme.spacing[10]} ${props => props.theme.spacing[4]};
   
   p {
     font-size: ${props => props.theme.fontSizes.xl};
@@ -30,10 +23,13 @@ const Content = styled.div`
 const BlogPost = () => {
   return (
     <PageContainer>
+      <PageHero
+        title="Blog"
+        subtitle="Financial insights, market trends, and planning perspectives from YD Advisory."
+      />
       <Content>
-        <h1>Blog Post</h1>
         <p>
-          Read our latest financial insights and expert advice on investment 
+          Read our latest financial insights and expert advice on investment
           strategies, market trends, and financial planning.
         </p>
       </Content>

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiArrowLeft, FiPieChart, FiTrendingUp, FiDollarSign, FiPercent, FiMail, FiPhone, FiUser, FiShield, FiTarget, FiX, FiCheck } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import PageHero from '../components/PageHero';
 
 const CalculatorContainer = styled.div`
   min-height: 100vh;
@@ -36,17 +37,6 @@ const BackButton = styled(Link)`
   &:hover {
     color: ${props => props.theme.colors.primary[700]};
     transform: translateX(-2px);
-  }
-`;
-
-const Title = styled.h1`
-  font-size: 2.5rem;
-  font-weight: ${props => props.theme.fontWeights.bold};
-  color: ${props => props.theme.colors.primary[800]};
-  margin: 0;
-  
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    font-size: 2rem;
   }
 `;
 
@@ -1691,6 +1681,11 @@ Thank you for your expertise.`);
         description="Calculate the value of your intellectual property using our professional IP valuation calculator. Get accurate results for patents, trademarks, and copyrights."
         keywords="IP valuation calculator, intellectual property valuation, patent valuation, trademark valuation, IP calculator"
       />
+
+      <PageHero
+        title="IP Valuation Calculator"
+        subtitle="Professional relief-from-royalty and market-multiple models for patents, trademarks, and copyrights."
+      />
       
       <CalculatorContainer>
         <Container>
@@ -1700,8 +1695,6 @@ Thank you for your expertise.`);
               Back to IP Valuation Tools
             </BackButton>
           </Header>
-
-          <Title>IP Valuation Calculator</Title>
 
           <Description>
             {calculatorType === 'advanced' 

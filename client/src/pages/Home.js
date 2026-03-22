@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FiArrowRight, FiCheckCircle, FiUsers, FiMail, FiPhone, FiMapPin, FiBarChart, FiDownload, FiGlobe, FiTarget } from 'react-icons/fi';
+import { FiArrowRight, FiCheckCircle, FiUsers, FiMail, FiPhone, FiMapPin, FiDownload, FiGlobe, FiPieChart, FiShield } from 'react-icons/fi';
 import SEO from '../components/SEO';
 import { organizationSchema, websiteSchema, localBusinessSchema } from '../utils/structuredData';
 import BrochureDownloadModal from '../components/BrochureDownloadModal';
@@ -333,6 +333,19 @@ const PromoGrid = styled.div`
   }
 `;
 
+const PromoCardsRow = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: ${props => props.theme.spacing[6]};
+  width: 100%;
+  align-items: stretch;
+
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    grid-template-columns: 1fr;
+    gap: ${props => props.theme.spacing[5]};
+  }
+`;
+
 const PromoLeft = styled.div`
   display: flex;
   flex-direction: column;
@@ -365,7 +378,7 @@ const PromoCard = styled.div`
   border-radius: 24px;
   padding: ${props => props.theme.spacing[8]} ${props => props.theme.spacing[6]};
   text-align: center;
-  max-width: 420px;
+  max-width: 100%;
   width: 100%;
   margin: 0;
   display: flex;
@@ -388,8 +401,8 @@ const PromoCard = styled.div`
     border: 1px solid ${props => props.theme.colors.gray[100]};
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
     padding: ${props => props.theme.spacing[6]} ${props => props.theme.spacing[4]};
-    margin: 0 ${props => props.theme.spacing[2]};
-    max-width: calc(100% - 24px);
+    margin: 0;
+    max-width: 100%;
     border-radius: 20px;
   }
 `;
@@ -424,7 +437,7 @@ const PromoIcon = styled.div`
   }
 `;
 
-const PromoTitle = styled.h2`
+const PromoTitle = styled.h3`
   font-size: 2.2rem;
   color: ${props => props.theme.colors.primary[800]};
   margin-bottom: ${props => props.theme.spacing[4]};
@@ -550,43 +563,6 @@ const PromoButton = styled(Link)`
       width: 18px;
       height: 18px;
     }
-  }
-`;
-
-const ToolMenu = styled.div`
-  width: 100%;
-  max-width: 360px;
-  margin: 0 auto ${props => props.theme.spacing[6]};
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid ${props => props.theme.colors.gray[100]};
-  border-radius: 18px;
-  padding: ${props => props.theme.spacing[2]};
-  display: flex;
-  flex-direction: column;
-  gap: ${props => props.theme.spacing[2]};
-
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    max-width: 100%;
-    margin-bottom: ${props => props.theme.spacing[5]};
-  }
-`;
-
-const ToolMenuButton = styled.button`
-  width: 100%;
-  border-radius: 14px;
-  border: 1px solid transparent;
-  background: ${props => (props.$active ? props.theme.colors.primary[50] : 'transparent')};
-  color: ${props => (props.$active ? props.theme.colors.primary[800] : props.theme.colors.gray[700])};
-  padding: ${props => props.theme.spacing[4]} ${props => props.theme.spacing[4]};
-  font-weight: ${props => props.theme.fontWeights.bold};
-  font-family: ${props => props.theme.fonts.primary};
-  cursor: pointer;
-  text-align: left;
-  transition: all ${props => props.theme.transitions.fast};
-
-  &:hover {
-    background: ${props => props.theme.colors.primary[50]};
-    border-color: ${props => props.theme.colors.primary[200]};
   }
 `;
 
@@ -1742,7 +1718,6 @@ const Home = () => {
   const [featuredServices, setFeaturedServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isBrochureModalOpen, setIsBrochureModalOpen] = useState(false);
-  const [activeValuationTool, setActiveValuationTool] = useState('business');
 
   const contactEmail = 'Yashaswi.das@ydadvisory.ae';
   const contactPhone = '+971-528477349';
@@ -1833,35 +1808,34 @@ const Home = () => {
     setLoading(false);
   }, []);
 
-  const valuationToolContent =
-    activeValuationTool === 'business'
-      ? {
-          icon: FiBarChart,
-          title: 'Business Valuation Calculator',
-          description:
-            'Get an instant, professional estimate of your business value using our free calculator - accurate, no strings attached.',
-          benefits: [
-            'Industry-grade methodology',
-            'Fast, audit-ready output',
-            '100% free to try',
-          ],
-          cta: { to: '/calculator', label: 'Access Free Calculator' },
-        }
-      : {
-          icon: FiTarget,
-          title: 'IP Valuation Tool',
-          description:
-            'Professional intellectual property valuation tools for patents, trademarks, and copyrights - choose the right level of detail for your needs.',
-          benefits: [
-            'Patent portfolio analysis',
-            'Basic market research',
-            'Simple valuation models',
-          ],
-          cta: { to: '/ip-valuation', label: 'Start IP Valuation' },
-        };
-
-  const ToolIcon = valuationToolContent.icon;
-
+  const valuationTools = [
+    {
+      key: 'business',
+      Icon: FiPieChart,
+      title: 'Business Valuation Calculator',
+      description:
+        'Get an instant, professional estimate of your business value using our free calculator - accurate, no strings attached.',
+      benefits: [
+        'Industry-grade methodology',
+        'Fast, audit-ready output',
+        '100% free to try',
+      ],
+      cta: { to: '/calculator', label: 'Access Free Calculator' },
+    },
+    {
+      key: 'ip',
+      Icon: FiShield,
+      title: 'IP Valuation Tool',
+      description:
+        'Professional intellectual property valuation tools for patents, trademarks, and copyrights - choose the right level of detail for your needs.',
+      benefits: [
+        'Patent portfolio analysis',
+        'Basic market research',
+        'Simple valuation models',
+      ],
+      cta: { to: '/ip-valuation', label: 'Start IP Valuation' },
+    },
+  ];
 
   return (
     <HomeContainer>
@@ -1924,53 +1898,44 @@ const Home = () => {
             <PromoLeft>
               <h2>Valuation Tools for Business & IP</h2>
               <p>
-                Get an instant, professional estimate with our Business Valuation and IP Valuation tools. Choose the right calculator and receive boardroom-ready output.
+                Two dedicated calculators — pick Business Valuation or IP Valuation and get boardroom-ready output from each tool.
               </p>
             </PromoLeft>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-        >
-          <PromoCard>
-            <PromoIcon>
-                <ToolIcon />
-            </PromoIcon>
-
-              <ToolMenu>
-                <ToolMenuButton
-                  type="button"
-                  $active={activeValuationTool === 'business'}
-                  onClick={() => setActiveValuationTool('business')}
+          <PromoCardsRow>
+            {valuationTools.map((tool, index) => {
+              const { Icon } = tool;
+              return (
+                <motion.div
+                  key={tool.key}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  style={{ width: '100%' }}
                 >
-                  Business Valuation Tool
-                </ToolMenuButton>
+                  <PromoCard>
+                    <PromoIcon>
+                      <Icon />
+                    </PromoIcon>
 
-                <ToolMenuButton
-                  type="button"
-                  $active={activeValuationTool === 'ip'}
-                  onClick={() => setActiveValuationTool('ip')}
-                >
-                  IP Valuation Tool
-                </ToolMenuButton>
-              </ToolMenu>
+                    <PromoTitle>{tool.title}</PromoTitle>
+                    <PromoDescription>{tool.description}</PromoDescription>
+                    <PromoBenefits>
+                      {tool.benefits.map((benefit, idx) => (
+                        <PromoBenefit key={idx}>{benefit}</PromoBenefit>
+                      ))}
+                    </PromoBenefits>
 
-              <PromoTitle>{valuationToolContent.title}</PromoTitle>
-              <PromoDescription>{valuationToolContent.description}</PromoDescription>
-              <PromoBenefits>
-                {valuationToolContent.benefits.map((benefit, idx) => (
-                  <PromoBenefit key={idx}>{benefit}</PromoBenefit>
-                ))}
-              </PromoBenefits>
-
-              <PromoButton to={valuationToolContent.cta.to} aria-label={valuationToolContent.cta.label}>
-                {valuationToolContent.cta.label} <FiArrowRight />
-              </PromoButton>
-          </PromoCard>
-          </motion.div>
+                    <PromoButton to={tool.cta.to} aria-label={tool.cta.label}>
+                      {tool.cta.label} <FiArrowRight />
+                    </PromoButton>
+                  </PromoCard>
+                </motion.div>
+              );
+            })}
+          </PromoCardsRow>
         </PromoGrid>
       </PromoSection>
 

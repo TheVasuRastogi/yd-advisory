@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FiBriefcase, FiFileText, FiDollarSign, FiTrendingUp, FiShield, FiCheckCircle } from 'react-icons/fi';
 import SEO from '../components/SEO';
+import { innerPageHeroBackground } from '../styles/heroMixins';
 
 const CalculatorContainer = styled.div`
   padding-top: 120px;
   min-height: 100vh;
-  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  ${innerPageHeroBackground()}
   position: relative;
   overflow: hidden;
   width: 100%;
