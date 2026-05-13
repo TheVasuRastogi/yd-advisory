@@ -32,6 +32,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
 import Sitemap from './pages/Sitemap';
+import DealDesk from './pages/DealDesk';
 import PartnershipPage from './pages/CareersPartnership';
 import CareersJob from './pages/CareersJob';
 import NotFound from './pages/NotFound';
@@ -67,6 +68,7 @@ function App() {
                 <Route path="/terms" element={<TermsOfService />} />
                 <Route path="/cookies" element={<CookiePolicy />} />
                 <Route path="/sitemap" element={<Sitemap />} />
+                <Route path="/deal-desk" element={<DealDesk />} />
                 <Route path="/careers" element={<CareersJob />} />
                 <Route path="/careers/partnership" element={<PartnershipPage />} />
                 <Route path="*" element={<NotFound />} />
