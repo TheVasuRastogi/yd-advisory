@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { openMailto, openTel, handleInteractiveLink } from '../utils/linkHelpers';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiMenu, FiX, FiPhone, FiMail, FiLinkedin, FiChevronDown, FiChevronRight } from 'react-icons/fi';
+import { FiMenu, FiX, FiPhone, FiMail, FiLinkedin, FiChevronDown } from 'react-icons/fi';
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -309,103 +309,6 @@ const DropdownItem = styled(Link)`
   }
 `;
 
-/** YD Deal Desk row + side flyout (hover / focus-within only on desktop) */
-const DealDeskFlyoutRoot = styled.div`
-  position: relative;
-  margin-top: ${(props) => props.theme.spacing[2]};
-  padding-top: 0;
-  border-top: 1px solid ${(props) => props.theme.colors.gray[100]};
-
-  & > a:first-of-type {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: ${(props) => props.theme.spacing[2]};
-
-    svg {
-      flex-shrink: 0;
-      color: ${(props) => props.theme.colors.gray[400]};
-      font-size: ${(props) => props.theme.fontSizes.lg};
-    }
-  }
-
-  &:hover > a:first-of-type,
-  &:focus-within > a:first-of-type {
-    background: ${(props) => props.theme.colors.primary[50]};
-    color: ${(props) => props.theme.colors.primary[600]};
-  }
-
-  &:hover > a:first-of-type.active,
-  &:focus-within > a:first-of-type.active {
-    background: ${(props) => props.theme.colors.primary[100]};
-    color: ${(props) => props.theme.colors.primary[700]};
-  }
-
-  .deal-desk-flyout-panel {
-    position: absolute;
-    left: calc(100% - 6px);
-    top: 0;
-    min-width: 220px;
-    background: ${(props) => props.theme.colors.white};
-    border-radius: ${(props) => props.theme.borderRadius.lg};
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
-    border: 1px solid ${(props) => props.theme.colors.gray[200]};
-    padding: ${(props) => props.theme.spacing[1]} 0;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateX(-4px);
-    transition:
-      opacity 0.15s ease-out,
-      visibility 0.15s ease-out,
-      transform 0.15s ease-out;
-    z-index: 10002;
-  }
-
-  /* Invisible hover bridge so the pointer can reach the side panel without closing */
-  .deal-desk-flyout-panel::before {
-    content: '';
-    position: absolute;
-    right: 100%;
-    top: 0;
-    bottom: 0;
-    width: 18px;
-  }
-
-  &:hover .deal-desk-flyout-panel,
-  &:focus-within .deal-desk-flyout-panel {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: translateX(0);
-  }
-`;
-
-const DealDeskFlyoutLink = styled(Link)`
-  display: flex;
-  align-items: center;
-  min-height: 44px;
-  padding: ${(props) => props.theme.spacing[2]} ${(props) => props.theme.spacing[4]};
-  box-sizing: border-box;
-  color: ${(props) => props.theme.colors.gray[700]};
-  text-decoration: none;
-  font-weight: ${(props) => props.theme.fontWeights.medium};
-  font-size: ${(props) => props.theme.fontSizes.base};
-  line-height: 1.2;
-  white-space: nowrap;
-  transition: all ${(props) => props.theme.transitions.fast};
-
-  &:hover {
-    background: ${(props) => props.theme.colors.primary[50]};
-    color: ${(props) => props.theme.colors.primary[600]};
-  }
-
-  &.active {
-    background: ${(props) => props.theme.colors.primary[100]};
-    color: ${(props) => props.theme.colors.primary[700]};
-  }
-`;
-
 const CTAButton = styled(Link)`
   background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
   color: ${props => props.theme.colors.white};
@@ -665,12 +568,6 @@ const MobileDropdownItem = styled(Link)`
   }
 `;
 
-const MobileDropdownSubItem = styled(MobileDropdownItem)`
-  padding-left: ${(props) => props.theme.spacing[8]};
-  font-size: ${(props) => props.theme.fontSizes.sm};
-  color: ${(props) => props.theme.colors.primary[300]};
-`;
-
 const MobileCTAButton = styled(Link)`
   background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
   color: ${props => props.theme.colors.white};
@@ -920,37 +817,12 @@ const Header = () => {
                         >
                           Financial Templates
                         </DropdownItem>
-                        <DealDeskFlyoutRoot>
-                          <DropdownItem
-                            to="/deal-desk"
-                            className={location.pathname.startsWith('/deal-desk') ? 'active' : ''}
-                          >
-                            YD Deal Desk
-                            <FiChevronRight aria-hidden />
-                          </DropdownItem>
-                          <div className="deal-desk-flyout-panel" role="group" aria-label="YD Deal Desk">
-                            <DealDeskFlyoutLink
-                              to="/deal-desk#newsletter"
-                              className={
-                                location.pathname.startsWith('/deal-desk') && location.hash === '#newsletter'
-                                  ? 'active'
-                                  : ''
-                              }
-                            >
-                              Newsletter
-                            </DealDeskFlyoutLink>
-                            <DealDeskFlyoutLink
-                              to="/deal-desk#biweekly-report"
-                              className={
-                                location.pathname.startsWith('/deal-desk') && location.hash === '#biweekly-report'
-                                  ? 'active'
-                                  : ''
-                              }
-                            >
-                              Biweekly Report
-                            </DealDeskFlyoutLink>
-                          </div>
-                        </DealDeskFlyoutRoot>
+                        <DropdownItem
+                          to="/deal-desk"
+                          className={location.pathname.startsWith('/deal-desk') ? 'active' : ''}
+                        >
+                          YD Deal Desk
+                        </DropdownItem>
                       </DropdownMenu>
                     )}
                   </AnimatePresence>
@@ -1126,38 +998,12 @@ const Header = () => {
                       <MobileDropdownItem
                         to="/deal-desk"
                         className={
-                          location.pathname.startsWith('/deal-desk') && !location.hash ? 'active' : ''
+                          location.pathname.startsWith('/deal-desk') ? 'active' : ''
                         }
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         YD Deal Desk
                       </MobileDropdownItem>
-                    </li>
-                    <li>
-                      <MobileDropdownSubItem
-                        to="/deal-desk#newsletter"
-                        className={
-                          location.pathname.startsWith('/deal-desk') && location.hash === '#newsletter'
-                            ? 'active'
-                            : ''
-                        }
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        Newsletter
-                      </MobileDropdownSubItem>
-                    </li>
-                    <li>
-                      <MobileDropdownSubItem
-                        to="/deal-desk#biweekly-report"
-                        className={
-                          location.pathname.startsWith('/deal-desk') && location.hash === '#biweekly-report'
-                            ? 'active'
-                            : ''
-                        }
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        Biweekly Report
-                      </MobileDropdownSubItem>
                     </li>
                   </MobileDropdownMenu>
                 </MobileDropdownPanel>
