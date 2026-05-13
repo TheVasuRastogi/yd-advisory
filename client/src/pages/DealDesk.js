@@ -888,16 +888,16 @@ const DealDesk = () => {
             transition={{ duration: 0.5, delay: 0.15 }}
           >
             <FeaturedText>
-              <FeaturedTag>Geopolitical Finance</FeaturedTag>
+              <FeaturedTag>Market Intelligence Report</FeaturedTag>
               <FeaturedTitle>
-                Monthly Transaction & Finance Intelligence by YD Advisory
+                Geopolitical Finance by YD Deal Desk 2026
               </FeaturedTitle>
               <FeaturedDate>{heroDate}</FeaturedDate>
             </FeaturedText>
 
             <FeaturedImage>
               <img
-                src="/images/about-hero.jpg"
+                src="/images/iStock-2212319731.jpg.jpeg"
                 alt="YD Deal Desk — Monthly Transaction & Finance Intelligence"
               />
             </FeaturedImage>

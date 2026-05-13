@@ -13,12 +13,12 @@ const REPORT_PDF = '/documents/Geopolitical Finance_YD Deal Desk.pdf';
 const reportData = {
   'geopolitical-finance': {
     icon: FiTrendingUp,
-    title: 'Geopolitical Finance',
-    tagline: 'Monthly Transaction & Finance Intelligence by YD Advisory',
+    title: 'Market Intelligence Report',
+    tagline: 'Geopolitical Finance by YDDealDesk 2026',
     heroImage: '/images/about-hero.jpg',
     pdf: REPORT_PDF,
     intro:
-      'YD Deal Desk — Geopolitical Finance is our flagship monthly report that synthesises geopolitical developments with transaction and capital-market intelligence, equipping decision-makers with the context they need to act with conviction.',
+      'YD Deal Desk — Market Intelligence is our flagship monthly report that synthesises geopolitical developments with transaction and capital-market intelligence, equipping decision-makers with the context they need to act with conviction.',
     sections: [
       {
         heading: 'What\u2019s Inside',
