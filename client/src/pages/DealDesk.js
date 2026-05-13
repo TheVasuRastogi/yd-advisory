@@ -153,9 +153,21 @@ const FeaturedTitle = styled.h3`
   }
 `;
 
+const FeaturedSubline = styled.p`
+  font-size: ${(p) => p.theme.fontSizes.base};
+  color: ${(p) => p.theme.colors.primary[200]};
+  line-height: 1.6;
+  margin: ${(p) => p.theme.spacing[4]} 0 0;
+
+  @media (max-width: ${(p) => p.theme.breakpoints.sm}) {
+    font-size: ${(p) => p.theme.fontSizes.sm};
+    margin-top: ${(p) => p.theme.spacing[3]};
+  }
+`;
+
 const FeaturedDate = styled.span`
   display: block;
-  margin-top: ${(p) => p.theme.spacing[6]};
+  margin-top: ${(p) => p.theme.spacing[4]};
   font-size: ${(p) => p.theme.fontSizes.xs};
   font-weight: ${(p) => p.theme.fontWeights.bold};
   text-transform: uppercase;
@@ -163,7 +175,7 @@ const FeaturedDate = styled.span`
   color: ${(p) => p.theme.colors.gray[400]};
 
   @media (max-width: ${(p) => p.theme.breakpoints.sm}) {
-    margin-top: ${(p) => p.theme.spacing[4]};
+    margin-top: ${(p) => p.theme.spacing[3]};
   }
 `;
 
@@ -851,12 +863,6 @@ const DealDesk = () => {
     }
   };
 
-  const today = new Date();
-  const heroDate = today.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).toUpperCase();
 
   return (
     <PageWrap>
@@ -892,12 +898,15 @@ const DealDesk = () => {
               <FeaturedTitle>
                 Geopolitical Finance by YD Deal Desk 2026
               </FeaturedTitle>
-              <FeaturedDate>{heroDate}</FeaturedDate>
+              <FeaturedSubline>
+                How geopolitics, AI, regulation, and capital flows are reshaping the future of global financial markets.
+              </FeaturedSubline>
+              <FeaturedDate>MAY 2026 | EDITION 01</FeaturedDate>
             </FeaturedText>
 
             <FeaturedImage>
               <img
-                src="/images/iStock-2212319731.jpg.jpeg"
+                src="/images/imagesfordealdesk.png"
                 alt="YD Deal Desk — Monthly Transaction & Finance Intelligence"
               />
             </FeaturedImage>

@@ -872,10 +872,9 @@ const DealDeskDetail = () => {
               transition={{ duration: 0.4 }}
             >
               <DownloadCard>
-                <h2>Download the Latest Report</h2>
+                <h2>Download the Geopolitical Finance Report</h2>
                 <p>
-                  Get the current edition of our {data.title} report as a PDF —
-                  free to download.
+                  Get the latest edition of our Geopolitical Finance report by YD Deal Desk as a PDF — free to download.
                 </p>
                 <DownloadButton type="button" onClick={handleDownloadClick}>
                   <FiDownload /> Download Report
@@ -910,10 +909,10 @@ const DealDeskDetail = () => {
               </ModalCloseBtn>
 
               <ModalHeader>
-                <h2>Download {data.title}</h2>
+                <h2>Download Geopolitical Finance Report</h2>
                 <p>
-                  Get the {data.title.toLowerCase()} report with detailed market
-                  intelligence and analysis by YD Advisory.
+                  Get the Geopolitical Finance report with detailed market
+                  intelligence and analysis by YD Deal Desk.
                 </p>
               </ModalHeader>
 
