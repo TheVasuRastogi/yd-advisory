@@ -73,17 +73,16 @@ const reportData = {
   'deal-spotlights': {
     icon: FiTarget,
     title: 'Deal Spotlights',
-    tagline: 'Notable transactions decoded',
+    tagline: 'Project Oasis — Capital Structure Analysis',
     heroImage: '/images/about-hero.jpg',
-    pdf: REPORT_PDF,
-    comingSoon: true,
+    pdf: '/documents/Project Oasis_Capital Structure.pdf',
     intro:
       'Deal Spotlights breaks down the most consequential transactions of the period \u2014 from mid-market M&A to marquee IPOs \u2014 unpacking the valuation rationale, deal structure, and strategic drivers.',
     sections: [
       {
         heading: 'What\u2019s Inside',
         bullets: [
-          'Case-study teardowns of 3\u20135 headline deals per issue',
+          'Project Oasis capital structure breakdown and analysis',
           'Implied valuation multiples and premium analysis',
           'Deal-structure commentary \u2014 earnouts, rollovers, seller notes',
           'Cross-border and regulatory considerations',
@@ -872,9 +871,9 @@ const DealDeskDetail = () => {
               transition={{ duration: 0.4 }}
             >
               <DownloadCard>
-                <h2>Download the Geopolitical Finance Report</h2>
+                <h2>Download the {data.title} Report</h2>
                 <p>
-                  Get the latest edition of our Geopolitical Finance report by YD Deal Desk as a PDF — free to download.
+                  Get the latest edition of our {data.title} report by YD Deal Desk as a PDF — free to download.
                 </p>
                 <DownloadButton type="button" onClick={handleDownloadClick}>
                   <FiDownload /> Download Report
@@ -909,9 +908,9 @@ const DealDeskDetail = () => {
               </ModalCloseBtn>
 
               <ModalHeader>
-                <h2>Download Geopolitical Finance Report</h2>
+                <h2>Download {data.title} Report</h2>
                 <p>
-                  Get the Geopolitical Finance report with detailed market
+                  Get the {data.title} report with detailed market
                   intelligence and analysis by YD Deal Desk.
                 </p>
               </ModalHeader>
