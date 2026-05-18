@@ -46,7 +46,18 @@ const reportData = {
     title: 'Market Insights',
     tagline: 'Macro trends & capital-market commentary',
     heroImage: '/images/about-hero.jpg',
-    pdf: REPORT_PDF,
+    pdfs: [
+      {
+        title: 'Geopolitical Finance Report',
+        subtitle: 'Geopolitical Finance by YD Deal Desk 2026',
+        pdf: REPORT_PDF,
+      },
+      {
+        title: 'Middle East Conflict Newsletter',
+        subtitle: 'Regional conflict impact on markets and capital flows',
+        pdf: '/documents/Middle_East_Conflict_Newsletter.pdf',
+      },
+    ],
     intro:
       'Our Market Insights report distils global macro trends, sector performance, and capital-market movements into a concise monthly brief designed for busy decision-makers.',
     sections: [
@@ -360,6 +371,104 @@ const ContactRow = styled.div`
   }
 `;
 
+const DownloadSectionInner = styled.div`
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 ${(p) => p.theme.spacing[4]};
+`;
+
+const DownloadSectionHeader = styled.div`
+  text-align: center;
+  margin-bottom: ${(p) => p.theme.spacing[8]};
+
+  h2 {
+    font-family: ${(p) => p.theme.fonts.secondary};
+    font-size: ${(p) => p.theme.fontSizes['2xl']};
+    font-weight: ${(p) => p.theme.fontWeights.bold};
+    color: ${(p) => p.theme.colors.primary[800]};
+    margin: 0 0 ${(p) => p.theme.spacing[3]};
+  }
+
+  p {
+    font-size: ${(p) => p.theme.fontSizes.base};
+    color: ${(p) => p.theme.colors.gray[600]};
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 520px;
+  }
+`;
+
+const ReportsStack = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: ${(p) => p.theme.spacing[6]};
+
+  @media (min-width: ${(p) => p.theme.breakpoints.md}) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: ${(p) => p.theme.spacing[6]};
+    align-items: stretch;
+  }
+`;
+
+const ReportDownloadCard = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  gap: ${(p) => p.theme.spacing[5]};
+  padding: ${(p) => p.theme.spacing[8]} ${(p) => p.theme.spacing[6]};
+  background: ${(p) => p.theme.colors.white};
+  border: 1px solid ${(p) => p.theme.colors.gray[200]};
+  border-radius: ${(p) => p.theme.borderRadius['2xl']};
+  box-shadow: ${(p) => p.theme.shadows.md};
+  height: 100%;
+  min-height: 220px;
+
+  @media (max-width: ${(p) => p.theme.breakpoints.sm}) {
+    padding: ${(p) => p.theme.spacing[6]} ${(p) => p.theme.spacing[5]};
+    min-height: auto;
+  }
+`;
+
+const ReportDownloadInfo = styled.div`
+  flex: 1;
+  text-align: left;
+
+  h3 {
+    font-family: ${(p) => p.theme.fonts.secondary};
+    font-size: ${(p) => p.theme.fontSizes.xl};
+    font-weight: ${(p) => p.theme.fontWeights.bold};
+    color: ${(p) => p.theme.colors.primary[800]};
+    margin: 0 0 ${(p) => p.theme.spacing[2]};
+    line-height: 1.3;
+  }
+
+  p {
+    font-size: ${(p) => p.theme.fontSizes.sm};
+    color: ${(p) => p.theme.colors.gray[600]};
+    line-height: 1.6;
+    margin: 0;
+    max-width: none;
+  }
+`;
+
+const ReportDownloadButton = styled(DownloadButton)`
+  width: 100%;
+  justify-content: center;
+  margin-top: auto;
+`;
+
+const DownloadSectionFooter = styled(ContactRow)`
+  text-align: center;
+  margin-top: ${(p) => p.theme.spacing[8]};
+`;
+
+const getReportDownloads = (report) => {
+  if (report?.pdfs?.length) return report.pdfs;
+  if (report?.pdf) {
+    return [{ title: report.title, subtitle: report.tagline, pdf: report.pdf }];
+  }
+  return [];
+};
+
 /* ─── Coming Soon ─── */
 const ComingSoonBadge = styled.span`
   display: flex;
@@ -666,11 +775,15 @@ const DealDeskDetail = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [submitMessage, setSubmitMessage] = useState('');
   const [showDownload, setShowDownload] = useState(false);
+  const [selectedReport, setSelectedReport] = useState(null);
 
   const { register, handleSubmit: rhfSubmit, formState: { errors }, reset } = useForm();
+  const availableReports = data ? getReportDownloads(data) : [];
+  const activeReport = selectedReport || availableReports[0] || null;
 
-  const handleDownloadClick = (e) => {
+  const handleDownloadClick = (e, report) => {
     e.preventDefault();
+    setSelectedReport(report || availableReports[0] || null);
     setShowModal(true);
     setShowDownload(false);
     setSubmitStatus(null);
@@ -687,10 +800,10 @@ const DealDeskDetail = () => {
       body.append('email', formValues.email);
       body.append('phone', formValues.phone || '');
       body.append('formType', 'Deal Desk Report Download');
-      body.append('subject', `Report Download Request — ${data?.title || 'Deal Desk'}`);
+      body.append('subject', `Report Download Request — ${activeReport?.title || data?.title || 'Deal Desk'}`);
       body.append(
         'message',
-        `User requested "${data?.title}" report download.\nEmail: ${formValues.email}\nPhone: ${formValues.phone || 'Not provided'}`
+        `User requested "${activeReport?.title || data?.title}" report download.\nEmail: ${formValues.email}\nPhone: ${formValues.phone || 'Not provided'}`
       );
 
       const res = await fetch('https://api.web3forms.com/submit', {
@@ -717,10 +830,11 @@ const DealDeskDetail = () => {
   };
 
   const handleFinalDownload = () => {
-    if (!data) return;
+    const pdfUrl = activeReport?.pdf || data?.pdf;
+    if (!pdfUrl) return;
     const link = document.createElement('a');
-    link.href = data.pdf;
-    link.download = data.pdf.split('/').pop() || 'report.pdf';
+    link.href = pdfUrl;
+    link.download = pdfUrl.split('/').pop() || 'report.pdf';
     link.target = '_blank';
     document.body.appendChild(link);
     link.click();
@@ -736,6 +850,7 @@ const DealDeskDetail = () => {
     setShowModal(false);
     setShowDownload(false);
     setSubmitStatus(null);
+    setSelectedReport(null);
     reset();
   };
 
@@ -864,25 +979,63 @@ const DealDeskDetail = () => {
 
           {/* Download CTA */}
           <DownloadSection>
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.4 }}
-            >
-              <DownloadCard>
-                <h2>Download the {data.title} Report</h2>
-                <p>
-                  Get the latest edition of our {data.title} report by YD Deal Desk as a PDF — free to download.
-                </p>
-                <DownloadButton type="button" onClick={handleDownloadClick}>
-                  <FiDownload /> Download Report
-                </DownloadButton>
-                <ContactRow>
-                  Questions? <Link to="/contact">Contact the deal desk</Link>
-                </ContactRow>
-              </DownloadCard>
-            </motion.div>
+            <DownloadSectionInner>
+              <motion.div
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.4 }}
+              >
+                {availableReports.length > 1 ? (
+                  <>
+                    <DownloadSectionHeader>
+                      <h2>Download {data.title} Reports</h2>
+                      <p>
+                        Browse our latest {data.title} editions by YD Deal Desk — free to download as PDF.
+                      </p>
+                    </DownloadSectionHeader>
+                    <ReportsStack>
+                      {availableReports.map((report, i) => (
+                        <ReportDownloadCard
+                          key={report.pdf}
+                          initial={{ opacity: 0, y: 16 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, margin: '-24px' }}
+                          transition={{ duration: 0.4, delay: i * 0.08 }}
+                        >
+                          <ReportDownloadInfo>
+                            <h3>{report.title}</h3>
+                            {report.subtitle && <p>{report.subtitle}</p>}
+                          </ReportDownloadInfo>
+                          <ReportDownloadButton
+                            type="button"
+                            onClick={(e) => handleDownloadClick(e, report)}
+                          >
+                            <FiDownload /> Download
+                          </ReportDownloadButton>
+                        </ReportDownloadCard>
+                      ))}
+                    </ReportsStack>
+                    <DownloadSectionFooter>
+                      Questions? <Link to="/contact">Contact the deal desk</Link>
+                    </DownloadSectionFooter>
+                  </>
+                ) : (
+                  <DownloadCard>
+                    <h2>Download the {data.title} Report</h2>
+                    <p>
+                      Get the latest edition of our {data.title} report by YD Deal Desk as a PDF — free to download.
+                    </p>
+                    <DownloadButton type="button" onClick={handleDownloadClick}>
+                      <FiDownload /> Download Report
+                    </DownloadButton>
+                    <ContactRow>
+                      Questions? <Link to="/contact">Contact the deal desk</Link>
+                    </ContactRow>
+                  </DownloadCard>
+                )}
+              </motion.div>
+            </DownloadSectionInner>
           </DownloadSection>
         </>
       )}
@@ -908,9 +1061,9 @@ const DealDeskDetail = () => {
               </ModalCloseBtn>
 
               <ModalHeader>
-                <h2>Download {data.title} Report</h2>
+                <h2>Download {activeReport?.title || data.title} Report</h2>
                 <p>
-                  Get the {data.title} report with detailed market
+                  Get the {activeReport?.title || data.title} report with detailed market
                   intelligence and analysis by YD Deal Desk.
                 </p>
               </ModalHeader>
