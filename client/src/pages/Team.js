@@ -9,6 +9,7 @@ import SEO from '../components/SEO';
 import InitialsAvatar from '../components/InitialsAvatar';
 import portraitYashaswi from '../assets/team/yashaswi_das.png';
 import portraitHeewon from '../assets/team/howlee.png';
+import portraitAdeniran from '../assets/team/adeniran_jesunifemi.png';
 
 /* ════════════════════════════════════════════════════════════════
    PAGE WRAPPER
@@ -108,20 +109,25 @@ const TeamSection = styled.section`
 `;
 
 const Container = styled.div`
-  max-width: 1100px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 0 ${p => p.theme.spacing[4]};
 `;
 
-/* Top row: two profile cards; bottom row: summary card spans full width */
+/* Top row: profile cards; bottom row: summary card spans full width */
 const CardsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: ${p => p.theme.spacing[8]};
+  grid-template-columns: repeat(3, 1fr);
+  gap: ${p => p.theme.spacing[6]};
   justify-items: stretch;
+  align-items: stretch;
   max-width: 100%;
   margin: 0 auto;
   padding-top: ${p => p.theme.spacing[8]};
+
+  @media (max-width: ${p => p.theme.breakpoints.lg}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   @media (max-width: ${p => p.theme.breakpoints.md}) {
     grid-template-columns: 1fr;
@@ -133,6 +139,13 @@ const CardsGrid = styled.div`
     gap: ${p => p.theme.spacing[10]};
     padding-top: ${p => p.theme.spacing[5]};
   }
+`;
+
+const CardGridItem = styled(motion.div)`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const TeamSummaryCard = styled.div`
@@ -246,6 +259,9 @@ const StackAvatar = styled(InitialsAvatar)`
   &:nth-child(2) {
     z-index: 2;
   }
+  &:nth-child(3) {
+    z-index: 3;
+  }
   &:not(:first-child) {
     margin-left: ${STACK_OVERLAP}px;
   }
@@ -267,7 +283,7 @@ const StackCircleMore = styled.span`
   text-transform: uppercase;
   margin-left: ${STACK_OVERLAP}px;
   position: relative;
-  z-index: 3;
+  z-index: 4;
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
 `;
@@ -276,6 +292,7 @@ const StackCircleMore = styled.span`
 
 const Card = styled.div`
   width: 100%;
+  height: 100%;
   background: ${p => p.theme.colors.white};
   border: 1px solid ${p => p.theme.colors.gray[200]};
   border-radius: ${p => p.theme.borderRadius['2xl']};
@@ -283,11 +300,11 @@ const Card = styled.div`
   overflow: visible;
   position: relative;
   display: grid;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: auto 1fr;
   align-items: stretch;
-  min-height: 400px;
+  min-height: 440px;
   gap: ${p => p.theme.spacing[4]};
-  padding: ${p => p.theme.spacing[6]} ${p => p.theme.spacing[5]} ${p => p.theme.spacing[6]};
+  padding: ${p => p.theme.spacing[6]} ${p => p.theme.spacing[4]} ${p => p.theme.spacing[6]};
   transition: box-shadow ${p => p.theme.transitions.base},
               transform ${p => p.theme.transitions.base};
 
@@ -303,14 +320,14 @@ const Card = styled.div`
   }
 `;
 
-/* Forest + gold + white ring — centered in upper card area (grid row 1fr) */
+/* Forest + gold + white ring — centered in upper card area */
 const CardAvatarRow = styled.div`
   width: 100%;
-  height: 100%;
-  min-height: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
+  padding-top: ${p => p.theme.spacing[2]};
 `;
 
 const CardAvatar = styled(InitialsAvatar)`
@@ -341,8 +358,8 @@ const CardPhoto = styled.img`
   min-height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  /* Anchor to top so hair/head aren’t cropped; cover still fills the circle edge-to-edge */
-  object-position: center top;
+  /* Default: anchor near top so heads aren’t cropped */
+  object-position: ${p => p.$objectPosition || 'center top'};
   display: block;
   /* Crisp circular clip (avoids faint gaps at the rim in some browsers) */
   transform: translateZ(0);
@@ -365,16 +382,22 @@ const CardBody = styled.div`
 
 const RoleBadge = styled.span`
   display: inline-block;
-  font-size: ${p => p.theme.fontSizes.xs};
+  font-size: 0.7rem;
   font-weight: ${p => p.theme.fontWeights.semibold};
   color: ${p => p.theme.colors.primary[700]};
   background: none;
   border: none;
   border-radius: ${p => p.theme.borderRadius.full};
-  padding: 0;
+  padding: 0 2px;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.04em;
   margin-bottom: ${p => p.theme.spacing[3]};
+  white-space: nowrap;
+  max-width: 100%;
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    white-space: normal;
+  }
 `;
 
 const Name = styled.h3`
@@ -600,7 +623,7 @@ function getInitials(displayName) {
 }
 
 /** Same paths as TeamMemberDetail — photo with teal frame, fallback to initials */
-function MemberAvatar({ image, displayName, name }) {
+function MemberAvatar({ image, displayName, name, objectPosition }) {
   const [failed, setFailed] = useState(false);
   const initials = getInitials(displayName);
   if (!image || failed) {
@@ -618,6 +641,7 @@ function MemberAvatar({ image, displayName, name }) {
       <CardPhoto
         src={image}
         alt={`${name}, portrait`}
+        $objectPosition={objectPosition}
         onError={() => setFailed(true)}
         loading="lazy"
         decoding="async"
@@ -635,16 +659,18 @@ const Team = () => {
 
   const memberYashaswi = 'Yashaswi Das';
   const memberHeewon = 'Heewon Lee';
+  const memberAdeniran = 'Adeniran Jesunifemi';
   /** Bundled URLs so portraits always resolve (fallback: initials on error) */
   const imageYashaswi = portraitYashaswi;
   const imageHeewon = portraitHeewon;
+  const imageAdeniran = portraitAdeniran;
 
   return (
     <Page>
       <SEO
         title="Our Team — YD Advisory"
         description="Meet the team behind YD Advisory — a lean, founder-led practice delivering investment-bank-grade advisory with boutique execution across valuation, M&A, and transactions."
-        keywords="YD Advisory team, Yashaswi Das, Heewon Lee, valuation advisory Dubai, boutique advisory UAE"
+        keywords="YD Advisory team, Yashaswi Das, Heewon Lee, Adeniran Jesunifemi, valuation advisory Dubai, boutique advisory UAE"
         url="https://ydadvisory.ae/team"
       />
 
@@ -689,12 +715,11 @@ const Team = () => {
         <Container>
           <CardsGrid>
             {/* ── Yashaswi Das ─────────────────────────────── */}
-            <motion.div
+            <CardGridItem
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              style={{ width: '100%' }}
             >
               <Card>
                 <CardAvatarRow>
@@ -743,15 +768,14 @@ const Team = () => {
                   </CardFooter>
                 </CardBody>
               </Card>
-            </motion.div>
+            </CardGridItem>
 
             {/* ── Heewon Lee ───────────────────────────────── */}
-            <motion.div
+            <CardGridItem
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
               viewport={{ once: true }}
-              style={{ width: '100%' }}
             >
               <Card>
                 <CardAvatarRow>
@@ -763,14 +787,14 @@ const Team = () => {
                 </CardAvatarRow>
 
                 <CardBody>
-                  <RoleBadge>BUSINESS DEVELOPMENT</RoleBadge>
+                  <RoleBadge>CORPORATE AFFAIRS &amp; COMMUNICATIONS</RoleBadge>
                   <Name>{memberHeewon}</Name>
-                  <MemberTags>GCC · Venture · Institutional</MemberTags>
+                  <MemberTags>Corporate Affairs · Communications</MemberTags>
 
                   <Bio>
-                    Drives strategic relationships and deal origination across the
-                    GCC — connecting YD Advisory mandates with the right capital,
-                    counterparties &amp; investors.
+                    Leads corporate affairs and communications — shaping how YD
+                    Advisory is positioned with clients, partners &amp; markets
+                    across the GCC and beyond.
                   </Bio>
 
                   <CardDivider />
@@ -792,7 +816,56 @@ const Team = () => {
                   </CardFooter>
                 </CardBody>
               </Card>
-            </motion.div>
+            </CardGridItem>
+
+            {/* ── Adeniran Jesunifemi ──────────────────────── */}
+            <CardGridItem
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <Card>
+                <CardAvatarRow>
+                  <MemberAvatar
+                    image={imageAdeniran}
+                    displayName={memberAdeniran}
+                    name={memberAdeniran}
+                    objectPosition="center 28%"
+                  />
+                </CardAvatarRow>
+
+                <CardBody>
+                  <RoleBadge>SALES &amp; BUSINESS DEVELOPMENT</RoleBadge>
+                  <Name>{memberAdeniran}</Name>
+                  <MemberTags>Sales · BD · Client Acquisition</MemberTags>
+
+                  <Bio>
+                    Supports sales and business development — building pipeline,
+                    strengthening client relationships, and connecting mandates
+                    with the right counterparties &amp; capital.
+                  </Bio>
+
+                  <CardDivider />
+
+                  <CardFooter>
+                    <CardFooterInner>
+                      <IconGroup>
+                        <IconBtn
+                          href="mailto:info@ydadvisory.com?subject=Business Inquiry — YD Advisory"
+                          title="Email"
+                        >
+                          <FiMail />
+                        </IconBtn>
+                      </IconGroup>
+                      <ProfileBtn type="button" onClick={() => navigate('/team/3')}>
+                        Full Profile <FiArrowRight />
+                      </ProfileBtn>
+                    </CardFooterInner>
+                  </CardFooter>
+                </CardBody>
+              </Card>
+            </CardGridItem>
 
             {/* ── Team depth summary (existing site metrics) ───────── */}
             <motion.div
@@ -824,6 +897,12 @@ const Team = () => {
                     />
                     <StackAvatar
                       initials={getInitials(memberHeewon)}
+                      variant="seal"
+                      size={STACK_SIZE}
+                      compact
+                    />
+                    <StackAvatar
+                      initials={getInitials(memberAdeniran)}
                       variant="seal"
                       size={STACK_SIZE}
                       compact

@@ -16,6 +16,8 @@ import {
 import SEO from '../components/SEO';
 import { serviceSchema } from '../utils/structuredData';
 import ValuationRequestForm from '../components/ValuationRequestForm';
+import SpecialistIndustryCoverage from '../components/SpecialistIndustryCoverage';
+import BusinessModel from '../components/BusinessModel';
 import { innerPageHeroBackground } from '../styles/heroMixins';
 
 const ServicesContainer = styled.div`
@@ -401,272 +403,15 @@ const CtaButton = styled(Link)`
   }
 `;
 
-// Subscription/Pricing section
-const PricingSection = styled.section`
-  padding: ${props => props.theme.spacing[24]} 0;
-  background: linear-gradient(135deg, ${props => props.theme.colors.gray[50]} 0%, ${props => props.theme.colors.white} 100%);
-  position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      radial-gradient(circle at 20% 20%, rgba(20, 184, 166, 0.05) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.03) 0%, transparent 50%);
-    z-index: 0;
-  }
+const ServiceFormSection = styled.section`
+  padding: ${props => props.theme.spacing[16]} 0;
+  background: ${props => props.theme.colors.white};
 `;
 
-const PricingContent = styled.div`
+const FormContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${props => props.theme.spacing[4]};
-  position: relative;
-  z-index: 1;
-`;
-
-const PricingHeader = styled.div`
-  text-align: center;
-  margin-bottom: ${props => props.theme.spacing[20]};
-  
-  h2 {
-    font-family: ${props => props.theme.fonts.display};
-    font-size: clamp(2.5rem, 4vw, 3.5rem);
-    color: ${props => props.theme.colors.primary[800]};
-    margin-bottom: ${props => props.theme.spacing[6]};
-    font-weight: 800;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    
-    @media (max-width: ${props => props.theme.breakpoints.sm}) {
-      font-size: clamp(2rem, 6vw, 2.5rem);
-    }
-  }
-  
-  p {
-    font-family: ${props => props.theme.fonts.primary};
-    font-size: clamp(1.125rem, 2vw, 1.25rem);
-    color: ${props => props.theme.colors.gray[600]};
-    max-width: 800px;
-    margin: 0 auto;
-    line-height: 1.7;
-    letter-spacing: 0.01em;
-  }
-`;
-
-const PricingGrid = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 2.5rem;
-  flex-wrap: nowrap;
-  margin: 0 auto;
-  @media (max-width: ${props => props.theme.breakpoints.md}) {
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-  }
-`;
-
-const PricingCard = styled.div`
-  background: ${props => props.featured ? 
-    `linear-gradient(135deg, ${props.theme.colors.primary[50]} 0%, ${props.theme.colors.white} 100%)` : 
-    props.theme.colors.white
-  };
-  border: 2px solid ${props => props.featured ? 
-    props.theme.colors.primary[200] : 
-    props.theme.colors.gray[100]
-  };
-  border-radius: 28px;
-  box-shadow: ${props => props.featured ? 
-    '0 8px 32px rgba(20, 184, 166, 0.15)' : 
-    '0 4px 24px rgba(0,0,0,0.07)'};
-  min-width: 340px;
-  max-width: 370px;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 2.5rem 2rem 2rem 2rem;
-  position: relative;
-  transition: box-shadow 0.3s, border-color 0.3s;
-  @media (max-width: ${props => props.theme.breakpoints.md}) {
-    min-width: 0;
-    max-width: 100%;
-    height: auto;
-    width: 100%;
-  }
-`;
-
-const PopularBadge = styled.div`
-  position: absolute;
-  top: -28px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
-  color: ${props => props.theme.colors.white};
-  padding: 0.5rem 2rem;
-  border-radius: 32px;
-  font-size: ${props => props.theme.fontSizes.sm};
-  font-weight: 800;
-  font-family: ${props => props.theme.fonts.display};
-  box-shadow: 0 4px 16px rgba(20, 184, 166, 0.18);
-  z-index: 10;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  border: 3px solid ${props => props.theme.colors.white};
-  @media (max-width: ${props => props.theme.breakpoints.md}) {
-    top: -20px;
-    padding: 0.4rem 1.2rem;
-    font-size: 0.9rem;
-  }
-  &::before {
-    content: '⭐';
-    margin-right: 8px;
-    font-size: 14px;
-  }
-`;
-
-const PricingCardTitle = styled.h3`
-  font-family: ${props => props.theme.fonts.display};
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: ${props => props.theme.colors.primary[800]};
-  margin: 0 0 0.5rem 0;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-`;
-
-const PricingCardSubtitle = styled.p`
-  font-family: ${props => props.theme.fonts.primary};
-  font-size: 1.08rem;
-  font-weight: 500;
-  color: ${props => props.theme.colors.gray[600]};
-  margin: 0 0 2rem 0;
-  line-height: 1.5;
-`;
-
-const Price = styled.div`
-  font-family: ${props => props.theme.fonts.display};
-  font-size: 2.3rem;
-  color: ${props => props.theme.colors.primary[800]};
-  font-weight: 900;
-  margin: 2.2rem 0 2.2rem 0;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  position: relative;
-  white-space: nowrap; /* keep price text on one line */
-  text-align: center;
-  display: block;
-  width: 100%;
-  align-self: center;
-  margin-left: auto;
-  margin-right: auto;
-  
-  /* Prevent wrapping on small screens by scaling down slightly */
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    font-size: 2rem;
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(135deg, ${props => props.theme.colors.primary[500]}, ${props => props.theme.colors.primary[600]});
-    border-radius: 2px;
-  }
-`;
-
-const PricingList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0 0 2.5rem 0;
-  width: 100%;
-  max-width: 320px;
-  li {
-  display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 1rem;
-  color: ${props => props.theme.colors.gray[700]};
-    margin-bottom: 1.1rem;
-    font-size: 1.08rem;
-    font-family: ${props => props.theme.fonts.primary};
-  font-weight: 500;
-    line-height: 1.6;
-    position: relative;
-    padding: 0.5rem 0 0.5rem 2.2rem;
-    transition: all 0.2s ease;
-    text-align: left;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    &:hover {
-      color: ${props => props.theme.colors.primary[700]};
-      transform: translateX(4px);
-    }
-    &::before {
-      content: '✓';
-      position: absolute;
-      left: 0;
-      top: 0.5rem;
-      color: ${props => props.theme.colors.primary[600]};
-      font-weight: 800;
-  font-size: 1rem;
-      background: ${props => props.theme.colors.primary[100]};
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-      flex-shrink: 0;
-    }
-  }
-`;
-
-const PricingButton = styled.a`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 1.1rem 0;
-  border-radius: 16px;
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
-  color: ${props => props.theme.colors.white};
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 1.1rem;
-  font-family: ${props => props.theme.fonts.display};
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 18px rgba(20, 184, 166, 0.18);
-  position: relative;
-  overflow: hidden;
-  min-width: 220px;
-  max-width: 260px;
-  margin: 2.5rem auto 0 auto;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  margin-top: auto;
-  @media (max-width: ${props => props.theme.breakpoints.md}) {
-    min-width: 180px;
-    max-width: 100%;
-    font-size: 1rem;
-  }
-`;
-
-const ServiceFormSection = styled.section`
-  padding: ${props => props.theme.spacing[16]} 0;
-  background: ${props => props.theme.colors.gray[50]};
 `;
 
 const ServiceFormHeader = styled.div`
@@ -976,104 +721,19 @@ const Services = () => {
         </SectionContent>
       </CategorySection>
 
-      {/* Pricing Plans Section */}
-      <PricingSection>
-        <PricingContent>
-          <PricingHeader>
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              Our Valuation Packages
-            </motion.h2>
-            <motion.p
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-                  viewport={{ once: true }}
-            >
-              Choose a package that fits your current stage. All work is senior‑led and audit‑ready.
-            </motion.p>
-                  </PricingHeader>
+      <BusinessModel />
 
-          <PricingGrid>
-            <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-                  viewport={{ once: true }}
-            >
-              <PricingCard>
-                <PricingCardTitle>Valuation Basic</PricingCardTitle>
-                <PricingCardSubtitle>For new businesses</PricingCardSubtitle>
-                <Price>From $1,000</Price>
-                <PricingList>
-                  <li>Business plan review</li>
-                  <li>Basic financial model</li>
-                  <li>3‑year forecasts</li>
-                  <li>Terms & Conditions</li>
-                </PricingList>
-                <PricingButton href="#service-form">Get Started <FiArrowRight /></PricingButton>
-              </PricingCard>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <PricingCard featured>
-                <PopularBadge>Most Popular</PopularBadge>
-                <PricingCardTitle>Valuation Advanced</PricingCardTitle>
-                <PricingCardSubtitle>Complete solution for businesses</PricingCardSubtitle>
-                <Price>From $1,500</Price>
-                <PricingList>
-                  <li>Includes all from Valuation Basic</li>
-                  <li>Advanced financial modelling</li>
-                  <li>Investor materials</li>
-                  <li>3× strategy sessions</li>
-                  <li>Terms & Conditions</li>
-                </PricingList>
-                <PricingButton href="#service-form">Get Started <FiArrowRight /></PricingButton>
-              </PricingCard>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              <PricingCard>
-                <PricingCardTitle>Custom Advisory</PricingCardTitle>
-                <PricingCardSubtitle>Personalized advisory services</PricingCardSubtitle>
-                <Price>Upon Consultation</Price>
-                <PricingList>
-                  <li>Everything from Valuation Advanced</li>
-                  <li>Strategic planning</li>
-                  <li>Custom KPIs & dashboards</li>
-                  <li>Ongoing support</li>
-                  <li>Terms & Conditions</li>
-                </PricingList>
-                <PricingButton href="#service-form">Get Started <FiArrowRight /></PricingButton>
-                </PricingCard>
-            </motion.div>
-          </PricingGrid>
-        </PricingContent>
-      </PricingSection>
+      <SpecialistIndustryCoverage altBackground />
 
       {/* Embedded Valuation Form (from Contact page) */}
       <ServiceFormSection id="service-form">
-        <PricingContent>
+        <FormContent>
           <ServiceFormHeader>
             <h2>Request A Valuation</h2>
             <p>Submit your details and we’ll follow up within 48 hours with next steps or a complimentary valuation.</p>
           </ServiceFormHeader>
           <ValuationRequestForm />
-        </PricingContent>
+        </FormContent>
       </ServiceFormSection>
 
       {/* Tools, Standards & Assurance Section */}

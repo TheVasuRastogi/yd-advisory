@@ -6,6 +6,8 @@ import { FiArrowRight, FiCheckCircle, FiUsers, FiMail, FiPhone, FiMapPin, FiDown
 import SEO from '../components/SEO';
 import { organizationSchema, websiteSchema, localBusinessSchema } from '../utils/structuredData';
 import BrochureDownloadModal from '../components/BrochureDownloadModal';
+import SpecialistIndustryCoverage from '../components/SpecialistIndustryCoverage';
+import BusinessModel from '../components/BusinessModel';
 
 const HomeContainer = styled.div`
   padding-top: 0;
@@ -1731,7 +1733,7 @@ const Home = () => {
   const heroSlides = [
     {
       id: 1,
-      title: 'WE TURN DATA INTO DECISIONS. YOU TURN DEALS INTO RESULTS.',
+      title: 'The Architects of Transaction & Capital',
       description: 'From 409A and business valuations to transaction advisory, M&A, SPAC merger & advisory, and capital market execution, we partner with businesses across their growth journey. Backed by fractional CFO expertise, we help clients structure deals, access capital, and make informed decisions that deliver long-term value.',
       bgImage: '/images/slider/slide-1.jpg'
     }
@@ -1885,6 +1887,8 @@ const Home = () => {
           </HeroContent>
         </HeroSlide>
       </HeroSection>
+
+      <BusinessModel />
 
       {/* Promotional Section */}
       <PromoSection>
@@ -2160,6 +2164,8 @@ const Home = () => {
           </motion.div>
         </MissionContainer>
       </MissionSection>
+
+      <SpecialistIndustryCoverage altBackground />
 
       {/* Blog Section */}
       <BlogSection>

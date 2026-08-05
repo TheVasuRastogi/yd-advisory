@@ -63,30 +63,58 @@ If you advise, invest in, or lead privately held businesses in the Middle East �
     id: 2,
     name: 'Heewon Lee',
     initials: 'HL',
-    position: 'Promotions, Distribution & Client Relationship Executive',
-    tagline: 'Business Development & Operations',
+    position: 'Corporate Affairs & Communications',
+    tagline: 'Corporate Affairs & Communications',
     image: '/images/howlee.png',
     social: {
       linkedin: '',
       email: 'info@ydadvisory.com',
     },
     credentials: [
-      { icon: <FiBriefcase />, label: 'Business Development · Promotions · Client Relations' },
+      { icon: <FiBriefcase />, label: 'Corporate Affairs · Communications · Client Relations' },
       { icon: <FiGlobe />,     label: 'GCC & International Markets' },
       { icon: <FiUsers />,     label: 'Startup · Venture · Institutional Ecosystems' },
     ],
     bioSections: [
       {
         heading: 'About',
-        text: `Heewon supports promotions, distribution, and client relationship initiatives, contributing to the coordination of internal processes, workflows, and client-facing engagements that underpin the firm's transaction advisory and capital markets activities.`,
+        text: `Heewon leads corporate affairs and communications, contributing to the coordination of internal processes, workflows, and client-facing engagements that underpin the firm's transaction advisory and capital markets activities.`,
       },
       {
         heading: 'Role',
-        text: `Her work focuses on operational execution, project coordination, and strategic outreach that help identify opportunities, strengthen client relationships, and support the firm's growth across complex transaction environments.`,
+        text: `Her work focuses on corporate messaging, stakeholder communications, and strategic outreach that help strengthen client relationships and support the firm's growth across complex transaction environments.`,
       },
       {
         heading: 'Background',
-        text: `She brings experience in market analysis, venture research, and business development across startup, venture, and institutional ecosystems — including market studies on international expansion strategies and competitive analysis to inform partnership development and client acquisition.`,
+        text: `She brings experience in market analysis, venture research, and communications across startup, venture, and institutional ecosystems — including market studies on international expansion strategies and competitive analysis to inform partnership development and client engagement.`,
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: 'Adeniran Jesunifemi',
+    initials: 'AJ',
+    position: 'Sales & Business Development',
+    tagline: 'Sales & Business Development',
+    image: '/images/team/adeniran_jesunifemi.png',
+    imagePosition: 'center 28%',
+    social: {
+      linkedin: '',
+      email: 'info@ydadvisory.com',
+    },
+    credentials: [
+      { icon: <FiBriefcase />, label: 'Sales · Business Development · Client Acquisition' },
+      { icon: <FiGlobe />,     label: 'GCC & International Markets' },
+      { icon: <FiUsers />,     label: 'Deal Origination · Relationship Management' },
+    ],
+    bioSections: [
+      {
+        heading: 'About',
+        text: `Adeniran Jesunifemi is part of YD Advisory's Sales & Business Development team, focused on originating opportunities and building lasting client relationships across the firm's advisory mandates.`,
+      },
+      {
+        heading: 'Role',
+        text: `He supports pipeline development, outreach, and client engagement — helping connect founders, investors, and counterparties with YD Advisory's valuation, transaction, and capital markets capabilities.`,
       },
     ],
   },
@@ -213,7 +241,7 @@ const HeroPhoto = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center top;
+    object-position: ${p => p.$imagePosition || 'center top'};
   }
 
   @media (max-width: ${p => p.theme.breakpoints.sm}) {
@@ -608,7 +636,7 @@ const TeamMemberDetail = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
           >
-            <HeroPhoto $hasImage={!!member.image}>
+            <HeroPhoto $hasImage={!!member.image} $imagePosition={member.imagePosition}>
               {member.image && (
                 <img src={member.image} alt={member.name} />
               )}

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { FiShield, FiUsers, FiTarget, FiBriefcase, FiDollarSign, FiBarChart, FiClock, FiStar } from 'react-icons/fi';
 import SEO from '../components/SEO';
 import { organizationSchema, personSchema } from '../utils/structuredData';
+import SpecialistIndustryCoverage from '../components/SpecialistIndustryCoverage';
 import { innerPageHeroBackground } from '../styles/heroMixins';
 
 const AboutContainer = styled.div`
@@ -197,6 +198,102 @@ const FounderSection = styled.section`
   background: ${props => props.theme.colors.white};
 `;
 
+const WhoWeAreSection = styled.section`
+  padding: ${props => props.theme.spacing[16]} 0 ${props => props.theme.spacing[4]};
+  background: ${props => props.theme.colors.white};
+`;
+
+const WhoWeAreInner = styled.div`
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 ${props => props.theme.spacing[4]};
+`;
+
+const WhoWeAreTitle = styled.h2`
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: ${props => props.theme.fontWeights.bold};
+  color: ${props => props.theme.colors.primary[900]};
+  font-family: ${props => props.theme.fonts.secondary};
+  margin: 0 0 ${props => props.theme.spacing[5]} 0;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+`;
+
+const WhoWeAreLead = styled.p`
+  font-size: ${props => props.theme.fontSizes.lg};
+  color: ${props => props.theme.colors.gray[600]};
+  line-height: 1.7;
+  max-width: 52rem;
+  margin: 0 0 ${props => props.theme.spacing[10]} 0;
+  font-family: ${props => props.theme.fonts.primary};
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    font-size: ${props => props.theme.fontSizes.base};
+    margin-bottom: ${props => props.theme.spacing[8]};
+  }
+`;
+
+const MissionGoalGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${props => props.theme.spacing[6]};
+
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const MissionGoalCard = styled.div`
+  background: ${props => props.$variant === 'goal'
+    ? props.theme.colors.primary[700]
+    : props.theme.colors.primary[900]};
+  border-radius: ${props => props.theme.borderRadius['2xl']};
+  padding: ${props => props.theme.spacing[8]} ${props => props.theme.spacing[8]};
+  color: ${props => props.theme.colors.white};
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing[4]};
+  box-shadow: ${props => props.theme.shadows.lg};
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: ${props => props.theme.spacing[6]};
+    min-height: 0;
+  }
+`;
+
+const MissionGoalLetter = styled.div`
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: ${props => props.theme.colors.primary[300]};
+  color: ${props => props.theme.colors.white};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: ${props => props.theme.fontSizes.lg};
+  font-weight: ${props => props.theme.fontWeights.bold};
+  font-family: ${props => props.theme.fonts.secondary};
+  flex-shrink: 0;
+`;
+
+const MissionGoalTitle = styled.h3`
+  font-size: ${props => props.theme.fontSizes['2xl']};
+  font-weight: ${props => props.theme.fontWeights.bold};
+  font-family: ${props => props.theme.fonts.secondary};
+  color: ${props => props.theme.colors.white};
+  margin: 0;
+  line-height: 1.3;
+`;
+
+const MissionGoalText = styled.p`
+  font-size: ${props => props.theme.fontSizes.base};
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.7;
+  margin: 0;
+  font-family: ${props => props.theme.fonts.primary};
+`;
+
 const FounderContent = styled.div`
   max-width: 1000px;
   margin: 0 auto;
@@ -347,6 +444,63 @@ const About = () => {
           </motion.div>
         </HeroContent>
       </HeroSection>
+
+      {/* Who We Are — Mission & Goal */}
+      <WhoWeAreSection>
+        <WhoWeAreInner>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <WhoWeAreTitle>Who We Are</WhoWeAreTitle>
+            <WhoWeAreLead>
+              Transaction and capital platform built to carry complex deals the
+              entire way from origination to close and beyond across advisory,
+              capital markets, and project services.
+            </WhoWeAreLead>
+          </motion.div>
+
+          <MissionGoalGrid>
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+            >
+              <MissionGoalCard $variant="mission">
+                <MissionGoalLetter aria-hidden>M</MissionGoalLetter>
+                <MissionGoalTitle>Our Mission</MissionGoalTitle>
+                <MissionGoalText>
+                  To carry a transaction from the first financial model to the
+                  final mandate under one roof — giving founders, investors, and
+                  institutions a single accountable partner instead of five
+                  disconnected ones.
+                </MissionGoalText>
+              </MissionGoalCard>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <MissionGoalCard $variant="goal">
+                <MissionGoalLetter aria-hidden>G</MissionGoalLetter>
+                <MissionGoalTitle>Our Goal</MissionGoalTitle>
+                <MissionGoalText>
+                  To become the region&apos;s most trusted end-to-end capital and
+                  transaction platform — where complex deals are originated,
+                  structured, financed, and closed with institutional rigour and
+                  boutique speed.
+                </MissionGoalText>
+              </MissionGoalCard>
+            </motion.div>
+          </MissionGoalGrid>
+        </WhoWeAreInner>
+      </WhoWeAreSection>
 
       {/* Founder Section */}
       <FounderSection>
@@ -651,6 +805,8 @@ const About = () => {
           </ValuesGrid>
         </SectionContent>
       </ValuesSection>
+
+      <SpecialistIndustryCoverage />
 
       {/* CTA Section */}
       <CtaSection>
