@@ -8,32 +8,32 @@ import SEO from '../components/SEO';
 import { innerPageHeroBackground } from '../styles/heroMixins';
 
 /* ─── Data ─── */
-const REPORT_PDF = '/documents/Geopolitical Finance_YD Deal Desk.pdf';
+const REPORT_PDF = '/documents/YD_Deal_Desk_July_2026_Green_Report.pdf';
 
 const reportData = {
   'geopolitical-finance': {
     icon: FiTrendingUp,
     title: 'Market Intelligence Report',
-    tagline: 'Geopolitical Finance by YDDealDesk 2026',
+    tagline: 'Middle East Transaction Landscape and Private Capital Market Update',
     heroImage: '/images/about-hero.jpg',
     pdf: REPORT_PDF,
     intro:
-      'YD Deal Desk — Market Intelligence is our flagship monthly report that synthesises geopolitical developments with transaction and capital-market intelligence, equipping decision-makers with the context they need to act with conviction.',
+      'YD Deal Desk — July 2026 edition covering the Middle East transaction landscape and private capital markets. Built from Lincoln, PwC, and Bain data, it gives founders, boards, and investors a clear read on MENA deal flow, GCC capital, and global private-market conditions.',
     sections: [
       {
         heading: 'What\u2019s Inside',
         bullets: [
-          'Geopolitical risk analysis and its impact on cross-border deal flow',
-          'Global macro and capital-market pulse — equities, credit, FX, and commodities',
-          'Sector-specific M&A and IPO activity tracker',
-          'Central-bank policy outlook and interest-rate trajectory',
-          'Monthly deal league tables and valuation benchmarks',
-          'Featured transaction case study with structure and pricing commentary',
+          'Global private-market pulse — selectivity, multiples, and buyout scale',
+          'MENA transaction landscape and why regional private capital is different',
+          'Sovereign capital and the Gulf as marginal funder of global dealmaking',
+          '2026 year-to-date activity and top transactions',
+          'Financing and exit routes across the Middle East',
+          'YD Advisory house view on what it means for founders and investors',
         ],
       },
       {
         heading: 'Who It\u2019s For',
-        text: 'CFOs, fund managers, corporate-development leads, investment-banking professionals, and board members who need a rapid yet rigorous geopolitical and financial read before making strategic decisions.',
+        text: 'CFOs, fund managers, corporate-development leads, investment-banking professionals, and board members who need a rigorous Middle East and private-capital read before making strategic decisions.',
       },
       {
         heading: 'Frequency & Format',
@@ -48,9 +48,14 @@ const reportData = {
     heroImage: '/images/about-hero.jpg',
     pdfs: [
       {
+        title: 'Middle East Transaction Landscape',
+        subtitle: 'Middle East Transaction Landscape and Private Capital Market Update',
+        pdf: REPORT_PDF,
+      },
+      {
         title: 'Geopolitical Finance Report',
         subtitle: 'Geopolitical Finance by YD Deal Desk 2026',
-        pdf: REPORT_PDF,
+        pdf: '/documents/Geopolitical Finance_YD Deal Desk.pdf',
       },
       {
         title: 'Middle East Conflict Newsletter',
@@ -68,7 +73,7 @@ const reportData = {
           'Equity, credit, and commodity market pulse',
           'Sector-specific valuation multiples and trend analysis',
           'Central-bank policy outlook and interest-rate trajectory',
-          'Geopolitical risk assessment for cross-border transactions',
+          'Middle East and private-capital market assessment for cross-border transactions',
         ],
       },
       {
@@ -467,6 +472,13 @@ const getReportDownloads = (report) => {
     return [{ title: report.title, subtitle: report.tagline, pdf: report.pdf }];
   }
   return [];
+};
+
+/** Avoid "Report Report" / "Reports Reports" when the title already ends with Report(s). */
+const reportLabel = (title, { plural = false } = {}) => {
+  const base = (title || 'Deal Desk').trim();
+  if (/reports?$/i.test(base)) return base;
+  return plural ? `${base} Reports` : `${base} Report`;
 };
 
 /* ─── Coming Soon ─── */
@@ -989,7 +1001,7 @@ const DealDeskDetail = () => {
                 {availableReports.length > 1 ? (
                   <>
                     <DownloadSectionHeader>
-                      <h2>Download {data.title} Reports</h2>
+                      <h2>Download {reportLabel(data.title, { plural: true })}</h2>
                       <p>
                         Browse our latest {data.title} editions by YD Deal Desk — free to download as PDF.
                       </p>
@@ -1022,9 +1034,10 @@ const DealDeskDetail = () => {
                   </>
                 ) : (
                   <DownloadCard>
-                    <h2>Download the {data.title} Report</h2>
+                    <h2>Download the {reportLabel(data.title)}</h2>
                     <p>
-                      Get the latest edition of our {data.title} report by YD Deal Desk as a PDF — free to download.
+                      Get the latest edition of our {reportLabel(data.title).toLowerCase()} by YD
+                      Deal Desk as a PDF — free to download.
                     </p>
                     <DownloadButton type="button" onClick={handleDownloadClick}>
                       <FiDownload /> Download Report
@@ -1061,9 +1074,9 @@ const DealDeskDetail = () => {
               </ModalCloseBtn>
 
               <ModalHeader>
-                <h2>Download {activeReport?.title || data.title} Report</h2>
+                <h2>Download {reportLabel(activeReport?.title || data.title)}</h2>
                 <p>
-                  Get the {activeReport?.title || data.title} report with detailed market
+                  Get {reportLabel(activeReport?.title || data.title)} with detailed market
                   intelligence and analysis by YD Deal Desk.
                 </p>
               </ModalHeader>

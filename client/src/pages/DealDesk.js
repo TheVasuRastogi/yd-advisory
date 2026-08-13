@@ -133,7 +133,7 @@ const FeaturedTag = styled.span`
 
 const FeaturedTitle = styled.h3`
   font-family: ${(p) => p.theme.fonts.secondary};
-  font-size: ${(p) => p.theme.fontSizes['3xl']};
+  font-size: clamp(1.35rem, 2.4vw, ${(p) => p.theme.fontSizes['3xl']});
   font-weight: ${(p) => p.theme.fontWeights.bold};
   line-height: 1.25;
   color: ${(p) => p.theme.colors.white};
@@ -896,18 +896,18 @@ const DealDesk = () => {
             <FeaturedText>
               <FeaturedTag>Market Intelligence Report</FeaturedTag>
               <FeaturedTitle>
-                Geopolitical Finance by YD Deal Desk 2026
+                Middle East Transaction Landscape and Private Capital Market Update
               </FeaturedTitle>
               <FeaturedSubline>
-                How geopolitics, AI, regulation, and capital flows are reshaping the future of global financial markets.
+                The Gulf has quietly become the marginal funder of global dealmaking.
               </FeaturedSubline>
-              <FeaturedDate>MAY 2026 | EDITION 01</FeaturedDate>
+              <FeaturedDate>JULY 2026 | EDITION 01</FeaturedDate>
             </FeaturedText>
 
             <FeaturedImage>
               <img
                 src="/images/imagesfordealdesk.png"
-                alt="YD Deal Desk — Monthly Transaction & Finance Intelligence"
+                alt="YD Deal Desk — Middle East Transaction Landscape and Private Capital Market Update"
               />
             </FeaturedImage>
           </FeaturedCard>

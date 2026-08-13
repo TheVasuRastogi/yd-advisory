@@ -237,36 +237,66 @@ const FooterBottom = styled.div`
   border-top: 1px solid ${props => props.theme.colors.gray[700]};
   padding-top: ${props => props.theme.spacing[6]};
   display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing[4]};
+`;
+
+const FooterBottomRow = styled.div`
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  
+  gap: ${props => props.theme.spacing[4]};
+
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     flex-direction: column;
-    gap: ${props => props.theme.spacing[4]};
     text-align: center;
   }
-  
+
   p {
     color: ${props => props.theme.colors.gray[400]};
     margin: 0;
+    font-size: ${props => props.theme.fontSizes.sm};
   }
-  
+
   .footer-links {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: ${props => props.theme.spacing[6]};
-    
+
     @media (max-width: ${props => props.theme.breakpoints.sm}) {
       gap: ${props => props.theme.spacing[4]};
     }
-    
+
     a {
       color: ${props => props.theme.colors.gray[400]};
       text-decoration: none;
+      font-size: ${props => props.theme.fontSizes.sm};
       transition: color ${props => props.theme.transitions.fast};
-      
+
       &:hover {
-        color: ${props => props.theme.colors.primary[600]};
+        color: ${props => props.theme.colors.primary[300]};
       }
+    }
+  }
+`;
+
+const FooterCredit = styled.p`
+  margin: 0;
+  text-align: center;
+  font-size: ${props => props.theme.fontSizes.xs};
+  color: ${props => props.theme.colors.gray[500]};
+  letter-spacing: 0.02em;
+
+  a {
+    color: ${props => props.theme.colors.primary[300]};
+    text-decoration: none;
+    font-weight: ${props => props.theme.fontWeights.medium};
+    transition: color ${props => props.theme.transitions.fast};
+
+    &:hover {
+      color: ${props => props.theme.colors.primary[200]};
+      text-decoration: underline;
     }
   }
 `;
@@ -482,13 +512,25 @@ const Footer = () => {
         </FooterGrid>
 
         <FooterBottom>
-          <p>&copy; 2025 YD Advisory. All rights reserved.</p>
-          <div className="footer-links">
-            <Link to="/privacy">Privacy Policy</Link>
-            <Link to="/terms">Terms of Service</Link>
-            <Link to="/cookies">Cookie Policy</Link>
-            <Link to="/sitemap">Sitemap</Link>
-          </div>
+          <FooterBottomRow>
+            <p>&copy; {new Date().getFullYear()} YD Advisory. All rights reserved.</p>
+            <div className="footer-links">
+              <Link to="/privacy">Privacy Policy</Link>
+              <Link to="/terms">Terms of Service</Link>
+              <Link to="/cookies">Cookie Policy</Link>
+              <Link to="/sitemap">Sitemap</Link>
+            </div>
+          </FooterBottomRow>
+          <FooterCredit>
+            Designed, developed and maintained by{' '}
+            <a
+              href="https://www.rastogicodeworks.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Rastogi Codeworks
+            </a>
+          </FooterCredit>
         </FooterBottom>
       </FooterContent>
     </FooterContainer>
