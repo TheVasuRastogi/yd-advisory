@@ -524,7 +524,7 @@ const Footer = () => {
           <FooterCredit>
             Designed, developed and maintained by{' '}
             <a
-              href="https://www.rastogicodeworks.com/"
+              href="https://www.rastogicodeworks.com/built-by?utm_source=ydadvisory&utm_medium=referral&utm_campaign=footer"
               target="_blank"
               rel="noopener noreferrer"
             >

@@ -48,6 +48,11 @@ const reportData = {
     heroImage: '/images/about-hero.jpg',
     pdfs: [
       {
+        title: 'Renewable Energy Newsletter',
+        subtitle: 'How Renewable Energy Became One of the Biggest Business Opportunities — October 2026',
+        pdf: '/documents/YD Renewable Energy Newsletter - Oct 2026 v7.pdf',
+      },
+      {
         title: 'Middle East Transaction Landscape',
         subtitle: 'Middle East Transaction Landscape and Private Capital Market Update',
         pdf: REPORT_PDF,

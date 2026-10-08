@@ -1,0 +1,2544 @@
+/**
+ * Home page redesign — work in progress (local only).
+ * Preview at /home-preview or set REACT_APP_USE_REDESIGN_HOME=true in client/.env.local
+ * Original preserved in Home.js — do not push this branch until redesign is approved.
+ */
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { FiArrowRight, FiCheckCircle, FiUsers, FiMail, FiPhone, FiMapPin, FiDownload, FiGlobe, FiPieChart, FiShield } from 'react-icons/fi';
+import SEO from '../components/SEO';
+import { organizationSchema, websiteSchema, localBusinessSchema } from '../utils/structuredData';
+import BrochureDownloadModal from '../components/BrochureDownloadModal';
+
+const HomeContainer = styled.div`
+  padding-top: 0;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  position: relative;
+`;
+
+const HeroSection = styled.section`
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100vw;
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    min-height: 100vh;
+    padding: ${props => props.theme.spacing[4]} 0;
+    align-items: center;
+    justify-content: center;
+    padding-top: 80px; /* Slightly less for mobile header */
+  }
+`;
+
+const VideoBackground = styled.video`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  filter: brightness(0.8);
+`;
+
+const HeroSlide = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: ${props => props.theme.colors.white};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(15, 118, 110, 0.5) 100%);
+    z-index: 1;
+  }
+`;
+
+const HeroContent = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: ${props => props.theme.spacing[12]} ${props => props.theme.spacing[4]};
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+  /* Move hero text slightly down while keeping it centered */
+  transform: translateY(24px);
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: ${props => props.theme.spacing[6]} ${props => props.theme.spacing[3]};
+    min-height: calc(100vh - 80px);
+    justify-content: center;
+    align-items: center;
+    padding-top: 0;
+    transform: translateY(12px);
+  }
+  
+  h1 {
+    font-family: ${props => props.theme.fonts.display};
+    font-size: 2.5rem;
+    margin-bottom: ${props => props.theme.spacing[6]};
+    color: ${props => props.theme.colors.white};
+    font-weight: 700;
+    line-height: 1.2;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    letter-spacing: -0.02em;
+    text-transform: none;
+    
+    @media (max-width: ${props => props.theme.breakpoints.lg}) {
+      font-size: 2.2rem;
+    }
+    
+    @media (max-width: ${props => props.theme.breakpoints.md}) {
+      font-size: 2rem;
+    }
+    
+    @media (max-width: ${props => props.theme.breakpoints.sm}) {
+      font-size: 1.6rem;
+      margin-bottom: ${props => props.theme.spacing[4]};
+      padding: 0 ${props => props.theme.spacing[1]};
+      line-height: 1.3;
+      font-weight: 700;
+      margin-top: ${props => props.theme.spacing[4]};
+    }
+  }
+  
+  p {
+    font-family: ${props => props.theme.fonts.primary};
+    font-size: 1.1rem;
+    color: ${props => props.theme.colors.white};
+    line-height: 1.5;
+    margin-bottom: ${props => props.theme.spacing[8]};
+    max-width: 800px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    font-weight: 400;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    letter-spacing: 0.01em;
+    opacity: 0.95;
+    
+    @media (max-width: ${props => props.theme.breakpoints.md}) {
+      font-size: 1rem;
+    }
+    
+    @media (max-width: ${props => props.theme.breakpoints.sm}) {
+      font-size: 0.9rem;
+      margin-bottom: ${props => props.theme.spacing[5]};
+      padding: 0 ${props => props.theme.spacing[1]};
+      line-height: 1.4;
+      font-weight: 400;
+    }
+  }
+`;
+
+
+const CtaButtons = styled.div`
+  display: flex;
+  gap: ${props => props.theme.spacing[6]};
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    flex-direction: column;
+    align-items: center;
+    gap: ${props => props.theme.spacing[3]};
+    padding: 0 ${props => props.theme.spacing[1]};
+    width: 100%;
+    max-width: 100%;
+    margin-top: ${props => props.theme.spacing[4]};
+  }
+`;
+
+const PrimaryButton = styled(Link)`
+  font-family: ${props => props.theme.fonts.primary};
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
+  color: #ffffff;
+  padding: 16px 32px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(20, 184, 166, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  text-align: center;
+  min-width: 220px;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.01em;
+  isolation: isolate;
+
+  /* shimmer sweep */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform 0.55s ease;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* keep all real content above the shimmer */
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  &:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(20, 184, 166, 0.5);
+    background: linear-gradient(135deg, ${props => props.theme.colors.primary[700]}, ${props => props.theme.colors.primary[800]});
+    scale: 1.02;
+    border-color: rgba(255, 255, 255, 0.3);
+
+    &::before {
+      transform: translateX(100%);
+    }
+  }
+  
+  &:active {
+    transform: translateY(-1px);
+    scale: 1.01;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    min-width: 100%;
+    max-width: 100%;
+    padding: 14px 18px;
+    font-size: 0.9rem;
+    width: 100%;
+    border-radius: 10px;
+    font-weight: 600;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const SecondaryButton = styled(Link)`
+  font-family: ${props => props.theme.fonts.primary};
+  background: rgba(255, 255, 255, 0.1);
+  color: ${props => props.theme.colors.white};
+  padding: 16px 32px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  min-width: 220px;
+  backdrop-filter: blur(15px);
+  letter-spacing: 0.01em;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  
+  &:hover {
+    background: ${props => props.theme.colors.white};
+    color: ${props => props.theme.colors.primary[700]};
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+    border-color: ${props => props.theme.colors.white};
+    scale: 1.02;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    min-width: 100%;
+    max-width: 100%;
+    padding: 14px 18px;
+    font-size: 0.9rem;
+    width: 100%;
+    border-radius: 10px;
+    font-weight: 600;
+    border-width: 2px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const PromoSection = styled.section`
+  background: ${props => props.theme.colors.gray[50]};
+  padding: ${props => props.theme.spacing[16]} 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: auto;
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: ${props => props.theme.spacing[8]} 0;
+  }
+`;
+
+const PromoGrid = styled.div`
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 ${props => props.theme.spacing[4]};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: ${props => props.theme.spacing[8]};
+  
+  @media (max-width: ${props => props.theme.breakpoints.lg}) {
+    gap: ${props => props.theme.spacing[6]};
+  }
+`;
+
+const PromoCardsRow = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: ${props => props.theme.spacing[6]};
+  width: 100%;
+  align-items: stretch;
+
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    grid-template-columns: 1fr;
+    gap: ${props => props.theme.spacing[5]};
+  }
+`;
+
+const PromoLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h2 {
+    font-family: ${props => props.theme.fonts.display};
+    font-size: 2.4rem;
+    color: ${props => props.theme.colors.primary[800]};
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: ${props => props.theme.spacing[4]};
+    text-align: center;
+  }
+  p {
+    font-size: 1.125rem;
+    color: ${props => props.theme.colors.gray[600]};
+    line-height: 1.7;
+    max-width: 640px;
+    text-align: center;
+  }
+`;
+
+ 
+
+const PromoCard = styled.div`
+  /* Match Services page card visual language */
+  background: ${props => props.theme.colors.white};
+  border: 1px solid ${props => props.theme.colors.gray[100]};
+  border-radius: 24px;
+  padding: ${props => props.theme.spacing[8]} ${props => props.theme.spacing[6]};
+  text-align: center;
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    border-color: ${props => props.theme.colors.primary[200]};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    background: ${props => props.theme.colors.white};
+    border: 1px solid ${props => props.theme.colors.gray[100]};
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    padding: ${props => props.theme.spacing[6]} ${props => props.theme.spacing[4]};
+    margin: 0;
+    max-width: 100%;
+    border-radius: 20px;
+  }
+`;
+
+const PromoIcon = styled.div`
+  width: 70px;
+  height: 70px;
+  background: ${props => props.theme.colors.primary[50]};
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto ${props => props.theme.spacing[4]};
+  border: 2px solid ${props => props.theme.colors.primary[200]};
+  
+  svg {
+    width: 35px;
+    height: 35px;
+    color: ${props => props.theme.colors.primary[600]};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto ${props => props.theme.spacing[3]};
+    background: radial-gradient(closest-side, ${props => props.theme.colors.primary[50]} 70%, ${props => props.theme.colors.white});
+    
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+`;
+
+const PromoTitle = styled.h3`
+  font-size: 2.2rem;
+  color: ${props => props.theme.colors.primary[800]};
+  margin-bottom: ${props => props.theme.spacing[4]};
+  font-weight: 800;
+  font-family: ${props => props.theme.fonts.display};
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    font-size: 2rem;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    font-size: 1.4rem;
+    margin-bottom: ${props => props.theme.spacing[3]};
+    line-height: 1.25;
+  }
+`;
+
+const PromoDescription = styled.p`
+  font-size: 1.1rem;
+  color: ${props => props.theme.colors.gray[600]};
+  margin-bottom: ${props => props.theme.spacing[5]};
+  line-height: 1.6;
+  font-weight: 500;
+  font-family: ${props => props.theme.fonts.primary};
+  max-width: 350px;
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    font-size: 1rem;
+    margin-bottom: ${props => props.theme.spacing[4]};
+    max-width: 100%;
+    line-height: 1.55;
+  }
+`;
+
+const PromoBenefits = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0 0 ${props => props.theme.spacing[6]} 0;
+  text-align: left;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    margin: 0 0 ${props => props.theme.spacing[5]} 0;
+    max-width: 100%;
+  }
+`;
+
+const PromoBenefit = styled.li`
+  display: flex;
+  align-items: center;
+  margin-bottom: ${props => props.theme.spacing[3]};
+  color: ${props => props.theme.colors.gray[700]};
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: ${props => props.theme.fonts.primary};
+  letter-spacing: 0.01em;
+  
+  &::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: ${props => props.theme.colors.primary[500]};
+    border-radius: 50%;
+    margin-right: ${props => props.theme.spacing[3]};
+    flex-shrink: 0;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    font-size: 0.95rem;
+    margin-bottom: ${props => props.theme.spacing[2]};
+    
+    &::before {
+      width: 7px;
+      height: 7px;
+      margin-right: ${props => props.theme.spacing[2]};
+    }
+  }
+`;
+
+const PromoButton = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing[2]};
+  background: ${props => props.theme.colors.primary[600]};
+  color: ${props => props.theme.colors.white};
+  padding: ${props => props.theme.spacing[3]} ${props => props.theme.spacing[6]};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: ${props => props.theme.fonts.primary};
+  letter-spacing: 0.02em;
+  transition: all ${props => props.theme.transitions.fast};
+  box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+  border: 2px solid ${props => props.theme.colors.primary[600]};
+  width: 100%;
+  justify-content: center;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(20, 184, 166, 0.4);
+    background: ${props => props.theme.colors.primary[700]};
+    border-color: ${props => props.theme.colors.primary[700]};
+  }
+  
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: ${props => props.theme.spacing[3]} ${props => props.theme.spacing[4]};
+    font-size: 1rem;
+    min-height: 52px;
+    border-radius: 12px;
+    box-shadow: 0 10px 24px rgba(20, 184, 166, 0.28);
+    
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+`;
+
+// Mission Section
+const MissionSection = styled.section`
+  padding: ${props => props.theme.spacing[16]} 0;
+  background: ${props => props.theme.colors.primary[50]};
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, ${props => props.theme.colors.primary[50]} 0%, ${props => props.theme.colors.gray[50]} 100%);
+    opacity: 0.9;
+    z-index: 0;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: ${props => props.theme.spacing[12]} 0;
+  }
+`;
+
+const MissionContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${props => props.theme.spacing[4]};
+  position: relative;
+  z-index: 1;
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: 0 ${props => props.theme.spacing[3]};
+  }
+`;
+
+const MissionContent = styled.div`
+  text-align: center;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+`;
+
+const MissionIcon = styled.div`
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary[500]}, ${props => props.theme.colors.primary[600]});
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto ${props => props.theme.spacing[5]};
+  color: ${props => props.theme.colors.white};
+  font-size: ${props => props.theme.fontSizes['2xl']};
+  box-shadow: 0 10px 28px rgba(20, 184, 166, 0.28);
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    width: 60px;
+    height: 60px;
+    font-size: ${props => props.theme.fontSizes['2xl']};
+    margin: 0 auto ${props => props.theme.spacing[4]};
+  }
+`;
+
+const MissionTitle = styled.h2`
+  font-size: ${props => props.theme.fontSizes['3xl']};
+  color: ${props => props.theme.colors.primary[700]};
+  margin-bottom: ${props => props.theme.spacing[4]};
+  font-weight: ${props => props.theme.fontWeights.bold};
+  font-family: ${props => props.theme.fonts.display};
+  line-height: 1.2;
+  
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    font-size: ${props => props.theme.fontSizes['3xl']};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    font-size: ${props => props.theme.fontSizes['2xl']};
+    margin-bottom: ${props => props.theme.spacing[4]};
+  }
+`;
+
+const MissionStatement = styled.p`
+  font-size: ${props => props.theme.fontSizes.lg};
+  color: ${props => props.theme.colors.gray[700]};
+  line-height: 1.7;
+  font-weight: ${props => props.theme.fontWeights.medium};
+  margin-bottom: ${props => props.theme.spacing[6]};
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    font-size: ${props => props.theme.fontSizes.lg};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    font-size: ${props => props.theme.fontSizes.base};
+    margin-bottom: ${props => props.theme.spacing[6]};
+    line-height: 1.6;
+  }
+`;
+
+const MissionCarousel = styled.div`
+  overflow: hidden;
+  margin-top: ${props => props.theme.spacing[8]};
+  margin-bottom: ${props => props.theme.spacing[8]};
+  max-width: 1040px;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
+const MissionTrack = styled.div`
+  display: flex;
+  gap: ${props => props.theme.spacing[6]};
+  width: max-content;
+  align-items: stretch;
+  will-change: transform;
+  animation: scroll-left 14s linear infinite;
+
+  &:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes scroll-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    gap: ${props => props.theme.spacing[4]};
+  }
+`;
+
+const MissionValue = styled.div`
+  text-align: center;
+  padding: ${props => props.theme.spacing[7]} ${props => props.theme.spacing[5]};
+  background: linear-gradient(
+    180deg,
+    ${props => props.theme.colors.primary[50]} 0%,
+    ${props => props.theme.colors.primary[50]} 24%,
+    ${props => props.theme.colors.white} 70%
+  );
+  border-radius: ${props => props.theme.borderRadius['2xl']};
+  box-shadow: 0 12px 40px rgba(20, 184, 166, 0.12);
+  border: 1px solid ${props => props.theme.colors.gray[200]};
+  transition: all ${props => props.theme.transitions.base};
+  position: relative;
+  overflow: hidden;
+  flex: 0 0 auto;
+  min-width: 280px;
+  max-width: 280px;
+  scroll-snap-align: start;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -44px;
+    right: -44px;
+    width: 110px;
+    height: 110px;
+    border-radius: 9999px;
+    background: rgba(20, 184, 166, 0.14);
+    z-index: 0;
+  }
+  
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 22px 70px rgba(20, 184, 166, 0.20);
+  }
+  
+  h3 {
+    font-size: ${props => props.theme.fontSizes.lg};
+    color: ${props => props.theme.colors.primary[800]};
+    margin-bottom: ${props => props.theme.spacing[3]};
+    font-weight: ${props => props.theme.fontWeights.bold};
+    line-height: 1.3;
+    position: relative;
+    z-index: 1;
+  }
+  
+  p {
+    font-size: ${props => props.theme.fontSizes.base};
+    color: ${props => props.theme.colors.gray[600]};
+    line-height: 1.6;
+    font-style: normal;
+    position: relative;
+    z-index: 1;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: ${props => props.theme.spacing[6]} ${props => props.theme.spacing[4]};
+
+    min-width: 260px;
+    max-width: 260px;
+    
+    h3 {
+      font-size: ${props => props.theme.fontSizes.lg};
+      margin-bottom: ${props => props.theme.spacing[3]};
+    }
+    
+    p {
+      font-size: ${props => props.theme.fontSizes.sm};
+      line-height: 1.5;
+    }
+  }
+`;
+
+const MissionCtaButton = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing[3]};
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
+  color: ${props => props.theme.colors.white};
+  padding: ${props => props.theme.spacing[4]} ${props => props.theme.spacing[7]};
+  border-radius: ${props => props.theme.borderRadius.xl};
+  text-decoration: none;
+  font-weight: ${props => props.theme.fontWeights.bold};
+  font-size: ${props => props.theme.fontSizes.base};
+  transition: all ${props => props.theme.transitions.base};
+  box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3);
+  border: 2px solid ${props => props.theme.colors.primary[600]};
+  position: relative;
+  overflow: hidden;
+  margin-top: ${props => props.theme.spacing[4]};
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(20, 184, 166, 0.4);
+    background: linear-gradient(135deg, ${props => props.theme.colors.primary[700]}, ${props => props.theme.colors.primary[800]});
+    border-color: ${props => props.theme.colors.primary[700]};
+    
+    &::before {
+      left: 100%;
+    }
+  }
+  
+  &:active {
+    transform: translateY(-1px);
+  }
+  
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: ${props => props.theme.spacing[3]} ${props => props.theme.spacing[6]};
+    font-size: ${props => props.theme.fontSizes.base};
+    margin-top: ${props => props.theme.spacing[3]};
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+`;
+
+const ServicesSection = styled.section`
+  padding: ${props => props.theme.spacing[16]} 0;
+  background: ${props => props.theme.colors.white};
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(
+      180deg,
+      rgba(20, 184, 166, 0.14) 0%,
+      rgba(20, 184, 166, 0.00) 100%
+    );
+    pointer-events: none;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: ${props => props.theme.spacing[12]} 0;
+  }
+`;
+
+const SectionContent = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${props => props.theme.spacing[4]};
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: 0 ${props => props.theme.spacing[3]};
+  }
+`;
+
+const SectionHeader = styled.div`
+  margin-bottom: ${props => props.theme.spacing[12]};
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+
+  h2 {
+    position: relative;
+  }
+
+  h2::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+    width: 120px;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, ${props => props.theme.colors.primary[500]}, ${props => props.theme.colors.primary[700]});
+    opacity: 0.9;
+  }
+  
+  h2 {
+    font-size: ${props => props.theme.fontSizes['4xl']};
+    color: ${props => props.theme.colors.primary[800]};
+    margin-bottom: ${props => props.theme.spacing[4]};
+  }
+  
+  p {
+    font-size: ${props => props.theme.fontSizes.lg};
+    color: ${props => props.theme.colors.gray[600]};
+    max-width: 760px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+`;
+
+const ServicesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: ${props => props.theme.spacing[6]};
+  align-items: stretch;
+  position: relative;
+  z-index: 1;
+  
+  @media (max-width: ${props => props.theme.breakpoints.lg}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const ServiceCard = styled.div`
+  background: ${props => props.theme.colors.white};
+  border-radius: 20px;
+  padding: 0;
+  text-align: left;
+  transition: all ${props => props.theme.transitions.base};
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  border: 1px solid ${props => props.theme.colors.gray[100]};
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.11);
+    border-color: ${props => props.theme.colors.primary[200]};
+  }
+`;
+
+const ServiceImage = styled.div.attrs(props => ({
+  style: {
+    backgroundImage: `url(${props.image})`
+  }
+}))`
+  width: 100%;
+  height: 196px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: brightness(1.0) contrast(1.05);
+  flex-shrink: 0;
+
+  transition: transform ${props => props.theme.transitions.slow};
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(20, 184, 166, 0.28) 0%, rgba(15, 118, 110, 0.52) 100%);
+  }
+
+  ${ServiceCard}:hover & {
+    transform: scale(1.03);
+  }
+`;
+
+const ServiceContent = styled.div`
+  padding: 1.25rem 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  
+  h3 {
+    font-size: 1.05rem;
+    color: ${props => props.theme.colors.primary[800]};
+    margin-bottom: ${props => props.theme.spacing[3]};
+    font-weight: 800;
+    line-height: 1.35;
+    text-align: left;
+  }
+  
+  p {
+    color: ${props => props.theme.colors.gray[600]};
+    line-height: 1.65;
+    margin-bottom: ${props => props.theme.spacing[5]};
+    flex: 1;
+    font-size: 0.875rem;
+    text-align: left;
+  }
+`;
+
+const ServiceLink = styled(Link)`
+  color: ${props => props.theme.colors.primary[600]};
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all ${props => props.theme.transitions.fast};
+  margin-top: auto;
+  padding: 8px 20px;
+  border-radius: 999px;
+  background: ${props => props.theme.colors.primary[50]};
+  border: 1px solid ${props => props.theme.colors.primary[100]};
+  align-self: flex-start;
+  width: fit-content;
+  
+  svg {
+    font-size: 0.85rem;
+    transition: transform ${props => props.theme.transitions.fast};
+  }
+
+  &:hover {
+    color: ${props => props.theme.colors.white};
+    background: ${props => props.theme.colors.primary[600]};
+    border-color: ${props => props.theme.colors.primary[600]};
+
+    svg {
+      transform: translateX(3px);
+    }
+  }
+`;
+
+const WhyChooseUsSection = styled.section`
+  padding: ${props => props.theme.spacing[16]} 0;
+  background: ${props => props.theme.colors.white};
+`;
+
+const TwoColumnGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${props => props.theme.spacing[12]};
+  align-items: center;
+  
+  @media (max-width: ${props => props.theme.breakpoints.lg}) {
+    grid-template-columns: 1fr;
+    gap: ${props => props.theme.spacing[8]};
+  }
+`;
+
+const TextContent = styled.div`
+  h2 {
+    font-size: ${props => props.theme.fontSizes['4xl']};
+    color: ${props => props.theme.colors.primary[800]};
+    margin-bottom: ${props => props.theme.spacing[6]};
+  }
+  
+  p {
+    font-size: ${props => props.theme.fontSizes.lg};
+    color: ${props => props.theme.colors.gray[600]};
+    line-height: 1.7;
+    margin-bottom: ${props => props.theme.spacing[6]};
+  }
+`;
+
+const FeaturesList = styled.ul`
+  list-style: none;
+  padding: 0;
+`;
+
+const FeatureItem = styled.li`
+  display: flex;
+  align-items: flex-start;
+  gap: ${props => props.theme.spacing[3]};
+  margin-bottom: ${props => props.theme.spacing[4]};
+  
+  svg {
+    font-size: ${props => props.theme.fontSizes.lg};
+    color: ${props => props.theme.colors.primary[600]};
+    margin-top: ${props => props.theme.spacing[1]};
+  }
+  
+  span {
+    color: ${props => props.theme.colors.gray[700]};
+    font-weight: ${props => props.theme.fontWeights.medium};
+  }
+`;
+
+const ImageContent = styled.div`
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: ${props => props.theme.borderRadius.xl};
+    box-shadow: ${props => props.theme.shadows.xl};
+  }
+`;
+
+const BlogSection = styled.section`
+  padding: ${props => props.theme.spacing[16]} 0;
+  background: ${props => props.theme.colors.gray[50]};
+`;
+
+const BlogGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: ${props => props.theme.spacing[8]};
+  
+  @media (max-width: ${props => props.theme.breakpoints.lg}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const BlogCard = styled.div`
+  background: ${props => props.theme.colors.white};
+  border-radius: ${props => props.theme.borderRadius.xl};
+  overflow: hidden;
+  transition: all ${props => props.theme.transitions.base};
+  box-shadow: ${props => props.theme.shadows.sm};
+  border: 1px solid ${props => props.theme.colors.gray[200]};
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: ${props => props.theme.shadows.xl};
+    border-color: ${props => props.theme.colors.primary[300]};
+  }
+`;
+
+const BlogImage = styled.div`
+  width: 100%;
+  height: 200px;
+  background-image: url(${props => props.image});
+  background-size: cover;
+  background-position: center;
+  filter: brightness(1.05) contrast(1.1);
+  transition: all ${props => props.theme.transitions.base};
+  
+  &:hover {
+    filter: brightness(1.1) contrast(1.15);
+    transform: scale(1.02);
+  }
+`;
+
+const BlogContent = styled.div`
+  padding: ${props => props.theme.spacing[6]};
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
+const BlogMeta = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${props => props.theme.spacing[3]};
+  font-size: ${props => props.theme.fontSizes.sm};
+  color: ${props => props.theme.colors.gray[500]};
+`;
+
+const BlogTitle = styled.h3`
+  font-size: ${props => props.theme.fontSizes.xl};
+  color: ${props => props.theme.colors.primary[800]};
+  margin-bottom: ${props => props.theme.spacing[3]};
+  font-weight: 600;
+  line-height: 1.3;
+`;
+
+const BlogExcerpt = styled.p`
+  color: ${props => props.theme.colors.gray[600]};
+  line-height: 1.6;
+  margin-bottom: ${props => props.theme.spacing[4]};
+  flex: 1;
+`;
+
+const BlogLink = styled(Link)`
+  color: ${props => props.theme.colors.primary[600]};
+  font-weight: ${props => props.theme.fontWeights.semibold};
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing[2]};
+  transition: color ${props => props.theme.transitions.fast};
+  
+  &:hover {
+    color: ${props => props.theme.colors.primary[700]};
+  }
+`;
+
+// Team Showcase Section
+const TeamShowcaseSection = styled.section`
+  padding: ${props => props.theme.spacing[16]} 0;
+  background: ${props => props.theme.colors.white};
+`;
+
+const TeamShowcaseGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${props => props.theme.spacing[12]};
+  align-items: center;
+  
+  @media (max-width: ${props => props.theme.breakpoints.lg}) {
+    grid-template-columns: 1fr;
+    gap: ${props => props.theme.spacing[8]};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    gap: ${props => props.theme.spacing[6]};
+  }
+`;
+
+const TeamShowcaseContent = styled.div`
+  h2 {
+    font-size: ${props => props.theme.fontSizes['4xl']};
+    color: ${props => props.theme.colors.primary[800]};
+    margin-bottom: ${props => props.theme.spacing[6]};
+    font-weight: 800;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    
+    @media (max-width: ${props => props.theme.breakpoints.sm}) {
+      font-size: ${props => props.theme.fontSizes['2xl']};
+      margin-bottom: ${props => props.theme.spacing[4]};
+    }
+  }
+  
+  p {
+    font-size: ${props => props.theme.fontSizes.lg};
+    color: ${props => props.theme.colors.gray[600]};
+    line-height: 1.6;
+    margin-bottom: ${props => props.theme.spacing[8]};
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    
+    @media (max-width: ${props => props.theme.breakpoints.sm}) {
+      font-size: ${props => props.theme.fontSizes.base};
+      margin-bottom: ${props => props.theme.spacing[6]};
+    }
+  }
+`;
+
+const TeamMemberImageSquare = styled.div.attrs(props => ({
+  style: {
+    backgroundImage: `url(${props.image})`
+  }
+}))`
+  width: 400px;
+  height: 400px;
+  border-radius: ${props => props.theme.borderRadius.xl};
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0 auto;
+  border: none;
+  box-shadow: ${props => props.theme.shadows.lg};
+  transition: all ${props => props.theme.transitions.base};
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: ${props => props.theme.shadows.xl};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.lg}) {
+    width: 350px;
+    height: 350px;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    width: 280px;
+    height: 280px;
+  }
+`;
+
+// Calculator Showcase Section
+const CalculatorShowcaseSection = styled.section`
+  padding: ${props => props.theme.spacing[20]} 0 ${props => props.theme.spacing[16]};
+  background: #f7f9fb;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(20, 184, 166, 0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+`;
+
+const CalculatorStepsHeader = styled.div`
+  text-align: center;
+  margin-bottom: 3.5rem;
+`;
+
+const CalculatorStepsTitle = styled.h2`
+  text-align: center;
+  color: ${props => props.theme.colors.primary[800]};
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+  font-family: ${props => props.theme.fonts.display};
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    font-size: 2rem;
+  }
+`;
+
+const CalculatorStepsSubtitle = styled.p`
+  color: ${props => props.theme.colors.gray[500]};
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 520px;
+  margin: 0 auto;
+`;
+
+const CalculatorStepsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-bottom: 3rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 52px;
+    left: calc(16.66% + 1rem);
+    right: calc(16.66% + 1rem);
+    height: 2px;
+    background: linear-gradient(90deg, ${props => props.theme.colors.primary[200]}, ${props => props.theme.colors.primary[300]}, ${props => props.theme.colors.primary[200]});
+    z-index: 0;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    gap: 1.25rem;
+
+    &::before { display: none; }
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    grid-template-columns: 1fr;
+    max-width: 360px;
+    margin-left: auto;
+    margin-right: auto;
+
+    &::before { display: none; }
+  }
+`;
+
+const CalculatorStepCard = styled.div`
+  background: ${props => props.theme.colors.white};
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  padding: 2.5rem 2rem 2.2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all ${props => props.theme.transitions.base};
+  border: 1.5px solid ${props => props.theme.colors.gray[100]};
+  position: relative;
+  z-index: 1;
+  
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 42px rgba(20, 184, 166, 0.13);
+    border-color: ${props => props.theme.colors.primary[200]};
+  }
+`;
+
+const CalculatorStepNumber = styled.div`
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary[500]}, ${props => props.theme.colors.primary[700]});
+  color: white;
+  font-size: 1.45rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.3rem;
+  box-shadow: 0 4px 16px rgba(20, 184, 166, 0.35);
+  font-family: ${props => props.theme.fonts.display};
+  flex-shrink: 0;
+`;
+
+const CalculatorStepTitle = styled.div`
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: ${props => props.theme.colors.gray[800]};
+  margin-bottom: 0.55rem;
+  line-height: 1.35;
+`;
+
+const CalculatorStepSubtitle = styled.div`
+  font-size: 0.9rem;
+  color: ${props => props.theme.colors.gray[500]};
+  font-weight: 400;
+  line-height: 1.55;
+`;
+
+const CalculatorStepsButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+`;
+
+// Contact Preview Section
+const ContactPreviewSection = styled.section`
+  padding: ${props => props.theme.spacing[12]} 0;
+  background: ${props => props.theme.colors.primary[700]};
+  color: ${props => props.theme.colors.white};
+`;
+
+const ContactPreviewGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: ${props => props.theme.spacing[12]};
+  align-items: start;
+  
+  @media (max-width: ${props => props.theme.breakpoints.lg}) {
+    grid-template-columns: 1fr;
+    gap: ${props => props.theme.spacing[8]};
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    gap: ${props => props.theme.spacing[6]};
+  }
+`;
+
+const ContactPreviewContent = styled.div`
+  h2 {
+    font-size: ${props => props.theme.fontSizes['4xl']};
+    color: ${props => props.theme.colors.white};
+    margin-bottom: ${props => props.theme.spacing[6]};
+    font-weight: 800;
+    
+    @media (max-width: ${props => props.theme.breakpoints.sm}) {
+      font-size: ${props => props.theme.fontSizes['3xl']};
+    }
+  }
+  
+  p {
+    font-size: ${props => props.theme.fontSizes.lg};
+    color: ${props => props.theme.colors.gray[200]};
+    line-height: 1.6;
+    margin-bottom: ${props => props.theme.spacing[8]};
+  }
+`;
+
+const ContactInfo = styled.div`
+  display: grid;
+  /*
+    Desktop: 12 columns so we can make only the Email card wider.
+    Row 1: Email/Phone/Website
+    Row 2: UAE/Singapore
+  */
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: ${props => props.theme.spacing[4]};
+  align-items: stretch;
+  grid-auto-flow: row;
+  justify-items: center;
+
+  /* Desktop layout:
+     Row 1: Email wider, then Phone and Website
+     Row 2: UAE and Singapore side-by-side */
+  & > a:nth-child(1) {
+    grid-column: 1 / span 6;
+    grid-row: 1;
+  }
+
+  & > a:nth-child(2) {
+    grid-column: 7 / span 3;
+    grid-row: 1;
+  }
+
+  & > a:nth-child(3) {
+    grid-column: 10 / span 3;
+    grid-row: 1;
+  }
+
+  & > a:nth-child(4) {
+    grid-column: 1 / span 6;
+    grid-row: 2;
+  }
+
+  & > a:nth-child(5) {
+    grid-column: 7 / span 6;
+    grid-row: 2;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* Reset explicit desktop placements so the cards auto-flow */
+    & > a {
+      grid-column: auto !important;
+      grid-row: auto !important;
+    }
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    grid-template-columns: 1fr;
+    /* Stack cards vertically on small screens */
+    & > a {
+      grid-column: auto !important;
+      grid-row: auto !important;
+    }
+  }
+`;
+
+const ContactItemLabel = styled.span`
+  font-size: ${props => props.theme.fontSizes.sm};
+  font-weight: ${props => props.theme.fontWeights.semibold};
+  color: ${props => props.theme.colors.primary[700]};
+`;
+
+const ContactItemValue = styled.span`
+  font-size: ${props => props.theme.fontSizes.sm};
+  font-weight: ${props => props.theme.fontWeights.semibold};
+  color: ${props => props.theme.colors.gray[700]};
+  line-height: 1.45;
+  display: block;
+  width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+`;
+
+const ContactItem = styled.a`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: ${props => props.theme.spacing[2]};
+
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: ${props => props.theme.borderRadius.xl};
+  padding: ${props => props.theme.spacing[5]};
+  text-decoration: none;
+  transition: transform ${props => props.theme.transitions.base}, box-shadow ${props => props.theme.transitions.base};
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+  color: ${props => props.theme.colors.gray[700]};
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  svg {
+    color: ${props => props.theme.colors.primary[600]};
+    font-size: 1.2rem;
+    margin-bottom: ${props => props.theme.spacing[1]};
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: ${props => props.theme.spacing[4]};
+    gap: ${props => props.theme.spacing[1]};
+  }
+`;
+
+const CtaSection = styled.section`
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
+  color: ${props => props.theme.colors.white};
+  padding: ${props => props.theme.spacing[16]} 0;
+  text-align: center;
+`;
+
+const CtaContent = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 ${props => props.theme.spacing[4]};
+  
+  h2 {
+    font-size: ${props => props.theme.fontSizes['4xl']};
+    margin-bottom: ${props => props.theme.spacing[6]};
+    color: ${props => props.theme.colors.white};
+  }
+  
+  p {
+    font-size: ${props => props.theme.fontSizes.xl};
+    margin-bottom: ${props => props.theme.spacing[8]};
+    color: ${props => props.theme.colors.gray[200]};
+  }
+`;
+
+// Brochure Download Section
+const BrochureSection = styled.section`
+  padding: ${props => props.theme.spacing[16]} 0;
+  background: linear-gradient(135deg, ${props => props.theme.colors.gray[50]} 0%, ${props => props.theme.colors.gray[100]} 100%);
+`;
+
+const BrochureContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${props => props.theme.spacing[4]};
+`;
+
+const BrochureCard = styled.div`
+  background: ${props => props.theme.colors.white};
+  border-radius: ${props => props.theme.borderRadius.xl};
+  padding: ${props => props.theme.spacing[12]};
+  text-align: center;
+  box-shadow: ${props => props.theme.shadows.lg};
+  border: 1px solid ${props => props.theme.colors.gray[200]};
+  position: relative;
+  overflow: hidden;
+`;
+
+const BrochureIcon = styled.div`
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary[500]}, ${props => props.theme.colors.primary[600]});
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto ${props => props.theme.spacing[6]};
+  color: ${props => props.theme.colors.white};
+  font-size: ${props => props.theme.fontSizes['3xl']};
+`;
+
+const BrochureTitle = styled.h2`
+  font-size: ${props => props.theme.fontSizes['3xl']};
+  color: ${props => props.theme.colors.primary[800]};
+  margin-bottom: ${props => props.theme.spacing[4]};
+  font-weight: 700;
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    font-size: ${props => props.theme.fontSizes['2xl']};
+  }
+`;
+
+const BrochureDescription = styled.p`
+  font-size: ${props => props.theme.fontSizes.lg};
+  color: ${props => props.theme.colors.gray[600]};
+  line-height: 1.6;
+  margin-bottom: ${props => props.theme.spacing[8]};
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
+const BrochureButton = styled.button`
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
+  color: ${props => props.theme.colors.white};
+  padding: 18px 36px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.125rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 15px 35px rgba(20, 184, 166, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  text-align: center;
+  min-width: 220px;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 25px 50px rgba(20, 184, 166, 0.6);
+    background: linear-gradient(135deg, ${props => props.theme.colors.primary[700]}, ${props => props.theme.colors.primary[800]});
+    scale: 1.05;
+    border-color: rgba(255, 255, 255, 0.3);
+    
+    &::before {
+      left: 100%;
+    }
+  }
+  
+  &:active {
+    transform: translateY(-2px);
+    scale: 1.02;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    min-width: 250px;
+    padding: 16px 32px;
+    font-size: 1rem;
+  }
+`;
+
+const HomeRedesign = () => {
+  const [featuredServices, setFeaturedServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isBrochureModalOpen, setIsBrochureModalOpen] = useState(false);
+
+  const contactEmail = 'Yashaswi.das@ydadvisory.ae';
+  const contactPhone = '+971-528477349';
+  const contactWebsite = 'https://ydadvisory.ae';
+  const uaeAddress = 'Level 41, Emirates Tower - DIFC, Near Trade Center - Dubai, UAE';
+  const singaporeAddress = 'Level 24, CapitaGreen, 138 Market Street, Singapore - 048946';
+
+  const uaeMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(uaeAddress)}`;
+  const singaporeMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(singaporeAddress)}`;
+
+  const heroSlides = [
+    {
+      id: 1,
+      title: 'WE TURN DATA INTO DECISIONS. YOU TURN DEALS INTO RESULTS.',
+      description: 'From 409A and business valuations to transaction advisory, M&A, SPAC merger & advisory, and capital market execution, we partner with businesses across their growth journey. Backed by fractional CFO expertise, we help clients structure deals, access capital, and make informed decisions that deliver long-term value.',
+      bgImage: '/images/slider/slide-1.jpg'
+    }
+  ];
+
+  useEffect(() => {
+    // Set static services immediately to avoid API errors
+    setFeaturedServices([
+      {
+        id: 1,
+        title: '409A Valuation',
+        description: 'Independent, defensible valuations for fundraises, ESOPs, compliance, and strategic decisions - using DCF, comparables, and precedent transactions.',
+        icon: 'FiDollarSign',
+        image: 'https://images.unsplash.com/photo-1590650516494-0c8e4a4dd67e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGNvcnBvcmF0ZXxlbnwwfHwwfHx8MA%3D%3D',
+        slug: 'business-valuations-409a'
+      },
+      {
+        id: 2,
+        title: 'Financial Modelling & Forecasting',
+        description: 'Investor-grade three-statement models, unit economics, and multi-scenario analysis that quantify drivers and risk. Built for capital raises, budgeting, and M&A.',
+        icon: 'FiBarChart',
+        image: 'https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        slug: 'financial-modelling-forecasting'
+      },
+      {
+        id: 3,
+        title: 'M&A Advisory (Buy- & Sell-Side)',
+        description: 'Hands-on support across the deal lifecycle - target screening, red-flag diligence, SPA/PPA modelling, working-capital analysis, and integration planning.',
+        icon: 'FiBriefcase',
+        image: 'https://media.istockphoto.com/id/1457878227/photo/business-people-having-a-meeting-in-a-tech-company.jpg?s=612x612&w=0&k=20&c=G15Z82qB7v1BVzqZ9eu_wrnDQPrxUEatXyb_TGKdu_s=',
+        slug: 'ma-advisory'
+      },
+      {
+        id: 4,
+        title: 'Transaction Advisory & Due Diligence',
+        description: 'Focused QoE reviews, data-room preparation, and issue lists that keep timelines tight and surprises low - so you can move from indicative offers to close faster.',
+        icon: 'FiTarget',
+        image: 'https://media.istockphoto.com/id/1434742171/photo/laptop-ppt-presentation-business-meeting-and-team-working-on-review-for-new-digital-website.jpg?s=612x612&w=0&k=20&c=MA7DEVo4nFIJPXgERQQx-W5srlaMThr_aFtDRaHeB00=',
+        slug: 'transaction-advisory'
+      },
+      {
+        id: 5,
+        title: 'Fractional CFO & Board Support',
+        description: 'Senior finance leadership - KPI packs, board reporting, capital strategy, fair-value roll-forwards, and investor updates - without the full-time overhead.',
+        icon: 'FiUsers',
+        image: 'https://images.unsplash.com/photo-1551836022-4c4c79ecde51?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        slug: 'fractional-cfo'
+      },
+      {
+        id: 6,
+        title: 'Fundraising Support (Equity & Debt)',
+        description: 'Pitch-deck refinement, cap-table design, term-sheet advisory, and lender packages - everything required to run a professional, founder-friendly process.',
+        icon: 'FiTrendingUp',
+        image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+        slug: 'fundraising-support'
+      },
+      {
+        id: 7,
+        title: 'SPAC Merger & Advisory',
+        description: 'End-to-end SPAC merger & advisory services including de-SPAC transaction support, valuation, due diligence, and capital market execution for going public via SPAC.',
+        icon: 'FiTrendingUp',
+        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHN0b2NrJTIwbWFya2V0fGVufDB8fHwwfHx8MA%3D%3D',
+        slug: 'spac-advisory'
+      },
+      {
+        id: 8,
+        title: 'Capital Market Advisory',
+        description: 'Strategic capital markets guidance including IPO readiness, equity and debt capital raising, investor relations, and market positioning for public and private companies.',
+        icon: 'FiBarChart',
+        image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNhcGl0YWwlMjBtYXJrZXR8ZW58MHx8MHx8fHww',
+        slug: 'capital-market-advisory'
+      }
+    ]);
+    setLoading(false);
+  }, []);
+
+  const valuationTools = [
+    {
+      key: 'business',
+      Icon: FiPieChart,
+      title: 'Business Valuation Calculator',
+      description:
+        'Get an instant, professional estimate of your business value using our free calculator - accurate, no strings attached.',
+      benefits: [
+        'Industry-grade methodology',
+        'Fast, audit-ready output',
+        '100% free to try',
+      ],
+      cta: { to: '/calculator', label: 'Access Free Calculator' },
+    },
+    {
+      key: 'ip',
+      Icon: FiShield,
+      title: 'IP Valuation Tool',
+      description:
+        'Professional intellectual property valuation tools for patents, trademarks, and copyrights - choose the right level of detail for your needs.',
+      benefits: [
+        'Patent portfolio analysis',
+        'Basic market research',
+        'Simple valuation models',
+      ],
+      cta: { to: '/ip-valuation', label: 'Start IP Valuation' },
+    },
+  ];
+
+  return (
+    <HomeContainer>
+      <SEO
+        title="YD Advisory - Financial Consulting Excellence in Dubai, UAE"
+        description="YD Advisory is your trusted financial partner in Dubai, UAE. We provide comprehensive financial solutions including investment management, financial planning, risk assessment, and business consulting. Serving clients across UAE, India, Singapore, and more."
+        keywords="financial advisory Dubai, investment management UAE, financial planning Dubai, business consulting UAE, wealth management Dubai, YD Advisory, financial services Dubai, investment advisor UAE"
+        url="https://ydadvisory.ae"
+        structuredData={[organizationSchema, websiteSchema, localBusinessSchema]}
+      />
+      
+      {/* Hero Section */}
+      <HeroSection>
+        <HeroSlide>
+          <VideoBackground autoPlay muted loop playsInline crossOrigin="anonymous">
+            <source src="/images/video/your-new-video.mp4" type="video/mp4" />
+          </VideoBackground>
+          <HeroContent>
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              {heroSlides[0].title}
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              {heroSlides[0].description}
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              <CtaButtons>
+                <PrimaryButton to="/contact">
+                  <span>Get Free Consultation</span> <FiArrowRight />
+                </PrimaryButton>
+                <SecondaryButton to="/calculator">
+                  YD Valuator <FiArrowRight />
+                </SecondaryButton>
+              </CtaButtons>
+            </motion.div>
+          </HeroContent>
+        </HeroSlide>
+      </HeroSection>
+
+      {/* Promotional Section */}
+      <PromoSection>
+        <PromoGrid>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <PromoLeft>
+              <h2>Valuation Tools for Business & IP</h2>
+              <p>
+                Two dedicated calculators — pick Business Valuation or IP Valuation and get boardroom-ready output from each tool.
+              </p>
+            </PromoLeft>
+          </motion.div>
+
+          <PromoCardsRow>
+            {valuationTools.map((tool, index) => {
+              const { Icon } = tool;
+              return (
+                <motion.div
+                  key={tool.key}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  style={{ width: '100%' }}
+                >
+                  <PromoCard>
+                    <PromoIcon>
+                      <Icon />
+                    </PromoIcon>
+
+                    <PromoTitle>{tool.title}</PromoTitle>
+                    <PromoDescription>{tool.description}</PromoDescription>
+                    <PromoBenefits>
+                      {tool.benefits.map((benefit, idx) => (
+                        <PromoBenefit key={idx}>{benefit}</PromoBenefit>
+                      ))}
+                    </PromoBenefits>
+
+                    <PromoButton to={tool.cta.to} aria-label={tool.cta.label}>
+                      {tool.cta.label} <FiArrowRight />
+                    </PromoButton>
+                  </PromoCard>
+                </motion.div>
+              );
+            })}
+          </PromoCardsRow>
+        </PromoGrid>
+      </PromoSection>
+
+      {/* Services Section */}
+      <ServicesSection>
+        <SectionContent>
+          <SectionHeader>
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              YD Advisory Services
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              Valuation, M&A, and Fractional CFO support that turns analysis into action - IVSC-aligned and boardroom-ready.
+            </motion.p>
+          </SectionHeader>
+
+          <ServicesGrid>
+            {loading ? (
+              // Loading skeleton
+              Array.from({ length: 3 }).map((_, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <ServiceCard>
+                    <div style={{ height: '200px', background: '#f3f4f6', borderRadius: '8px' }} />
+                  </ServiceCard>
+                </motion.div>
+              ))
+            ) : (
+              (() => {
+                const base = featuredServices.slice(0, 3);
+                const cfo = featuredServices.find(s => s.slug === 'fractional-cfo');
+                const list = cfo ? [...base, cfo] : featuredServices.slice(0, 4);
+                return list.map((service, index) => (
+                  <motion.div
+                    key={service.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    <ServiceCard>
+                      <ServiceImage image={service.image} />
+                      <ServiceContent>
+                        <h3>{service.title}</h3>
+                        <p>{service.description}</p>
+                        <ServiceLink to={`/services/${service.slug}`}>
+                          Learn More <FiArrowRight />
+                        </ServiceLink>
+                      </ServiceContent>
+                    </ServiceCard>
+                  </motion.div>
+                ));
+            })()
+            )}
+          </ServicesGrid>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            style={{ textAlign: 'center', marginTop: '3rem' }}
+          >
+            <PrimaryButton to="/services">
+              View More Services <FiArrowRight />
+            </PrimaryButton>
+          </motion.div>
+        </SectionContent>
+      </ServicesSection>
+
+      {/* Why Choose Us Section */}
+      <WhyChooseUsSection>
+        <SectionContent>
+          <TwoColumnGrid>
+            <TextContent>
+              <motion.h2
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                Why YD Advisory?
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                Because deals move when numbers are credible and the story is clear. 
+                We deliver IVSC-aligned valuations, decision-ready models, and transaction 
+                execution that convert strategy into results.
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <FeaturesList>
+                  <FeatureItem>
+                    <FiCheckCircle />
+                    <span>Raise smarter (409A, cap tables, investor decks)</span>
+                  </FeatureItem>
+                  <FeatureItem>
+                    <FiCheckCircle />
+                    <span>Buy and sell with conviction (diligence, SPA/PPA, integration)</span>
+                  </FeatureItem>
+                  <FeatureItem>
+                    <FiCheckCircle />
+                    <span>Operate with clarity (CFO stewardship, KPI packs, fair-value updates)</span>
+                  </FeatureItem>
+                </FeaturesList>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                viewport={{ once: true }}
+                style={{ marginTop: '2rem' }}
+              >
+                <PrimaryButton to="/about">
+                  Read More About Us <FiArrowRight />
+                </PrimaryButton>
+              </motion.div>
+            </TextContent>
+            <ImageContent>
+              <motion.img
+                src="https://www.skillcast.com/hubfs/YoungPeopleBusinessMeeting_1200x627.jpg"
+                alt="Professional Business Meeting - YD Advisory Team"
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              />
+            </ImageContent>
+          </TwoColumnGrid>
+        </SectionContent>
+      </WhyChooseUsSection>
+
+      {/* Whom We Serve Section */}
+      <MissionSection>
+        <MissionContainer>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <MissionContent>
+              <MissionIcon>
+                <FiUsers />
+              </MissionIcon>
+              <MissionTitle>Whom We Serve</MissionTitle>
+              <MissionStatement>
+                We provide specialized financial expertise across the entire ecosystem, from startups to established enterprises.
+              </MissionStatement>
+              <MissionCarousel>
+                <MissionTrack>
+                  <MissionValue>
+                    <h3>For Founders & Entrepreneurs</h3>
+                    <p>From "what's my company worth?" to "how do we close this round?" - we turn numbers into a valuation you can defend and a story investors buy.</p>
+                  </MissionValue>
+                  <MissionValue>
+                    <h3>For CFOs & Finance Leaders</h3>
+                    <p>Board-ready models, KPI packs, and fair-value updates - plus a fractional lift when you need senior capacity without the full-time cost for all financial needs for a company.</p>
+                  </MissionValue>
+                  <MissionValue>
+                    <h3>For Investors & Family Offices</h3>
+                    <p>Buy, sell, or hold with conviction - IVSC-aligned valuations, red-flag diligence, SPA/PPA modelling, and post-deal integration support.</p>
+                  </MissionValue>
+                  <MissionValue>
+                    <h3>For SMEs & Boards</h3>
+                    <p>Clear options, not noise - feasibility papers, scenario analysis, working-capital reviews, and decision memos that move the agenda.</p>
+                  </MissionValue>
+                  {/* duplicate for seamless horizontal looping */}
+                  <MissionValue>
+                    <h3>For Founders & Entrepreneurs</h3>
+                    <p>From "what's my company worth?" to "how do we close this round?" - we turn numbers into a valuation you can defend and a story investors buy.</p>
+                  </MissionValue>
+                  <MissionValue>
+                    <h3>For CFOs & Finance Leaders</h3>
+                    <p>Board-ready models, KPI packs, and fair-value updates - plus a fractional lift when you need senior capacity without the full-time cost for all financial needs for a company.</p>
+                  </MissionValue>
+                  <MissionValue>
+                    <h3>For Investors & Family Offices</h3>
+                    <p>Buy, sell, or hold with conviction - IVSC-aligned valuations, red-flag diligence, SPA/PPA modelling, and post-deal integration support.</p>
+                  </MissionValue>
+                  <MissionValue>
+                    <h3>For SMEs & Boards</h3>
+                    <p>Clear options, not noise - feasibility papers, scenario analysis, working-capital reviews, and decision memos that move the agenda.</p>
+                  </MissionValue>
+                </MissionTrack>
+              </MissionCarousel>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                viewport={{ once: true }}
+                style={{ textAlign: 'center', marginTop: '2rem' }}
+              >
+                <MissionCtaButton to="/calculator">
+                  Try YD Valuator <FiArrowRight />
+                </MissionCtaButton>
+              </motion.div>
+            </MissionContent>
+          </motion.div>
+        </MissionContainer>
+      </MissionSection>
+
+      {/* Blog Section */}
+      <BlogSection>
+        <SectionContent>
+          <SectionHeader>
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              Latest Financial Insights
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              Stay informed with our expert advice and market insights
+            </motion.p>
+          </SectionHeader>
+
+          <BlogGrid>
+            {[
+              {
+                id: 1,
+                title: 'Business Valuation Methods: DCF vs Market Approach in 2025',
+                excerpt: 'Explore the latest trends in business valuation methodologies and understand when to use DCF versus market-based approaches.',
+                image: 'https://images.unsplash.com/photo-1538688423619-a81d3f23454b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNvcnBvcmF0ZSUyMHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D',
+                date: '2025-01-15',
+                readTime: '8 min read',
+                slug: 'business-valuation-methods-dcf-vs-market-approach-in-2025'
+              },
+              {
+                id: 2,
+                title: 'M&A Due Diligence: Red Flags Every Buyer Should Know',
+                excerpt: 'Learn about critical due diligence red flags in M&A transactions and how to identify potential risks before closing a deal.',
+                image: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGNvcnBvcmF0ZSUyMHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D',
+                date: '2025-01-12',
+                readTime: '10 min read',
+                slug: 'ma-due-diligence-red-flags-every-buyer-should-know'
+              },
+              {
+                id: 3,
+                title: '409A Valuations: Compliance Requirements for Startups',
+                excerpt: 'Understand 409A valuation requirements for startups and how to ensure compliance with IRS regulations for stock option pricing.',
+                image: 'https://plus.unsplash.com/premium_photo-1661573729122-6619f62ef0ea?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzN8fGNvcnBvcmF0ZSUyMHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D',
+                date: '2025-01-10',
+                readTime: '12 min read',
+                slug: '409a-valuations-compliance-requirements-for-startups'
+              }
+            ].map((post, index) => (
+              <motion.div
+                key={post.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <BlogCard>
+                  <BlogImage image={post.image} />
+                  <BlogContent>
+                    <BlogMeta>
+                      <span>{new Date(post.date).toLocaleDateString()}</span>
+                      <span>{post.readTime}</span>
+                    </BlogMeta>
+                    <BlogTitle>{post.title}</BlogTitle>
+                    <BlogExcerpt>{post.excerpt}</BlogExcerpt>
+                    <BlogLink to={`/blog/${post.slug}`}>
+                      Read More <FiArrowRight />
+                    </BlogLink>
+                  </BlogContent>
+                </BlogCard>
+              </motion.div>
+            ))}
+          </BlogGrid>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            style={{ textAlign: 'center', marginTop: '3rem' }}
+          >
+            <PrimaryButton to="/blog">
+              View All Blogs <FiArrowRight />
+            </PrimaryButton>
+          </motion.div>
+        </SectionContent>
+      </BlogSection>
+
+      {/* Team Showcase Section */}
+      <TeamShowcaseSection>
+        <SectionContent>
+          <TeamShowcaseGrid>
+            <TeamShowcaseContent>
+              <motion.h2
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                Meet Our Founder
+              </motion.h2>
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                <p style={{ marginBottom: '0.75rem' }}>Yashaswi Das - Founder & Principal</p>
+                <ul style={{ paddingLeft: '1rem', margin: 0, color: '#4b5563', lineHeight: 1.6 }}>
+                  <li>Defensible valuations: 409A, complex securities, IP/PPA</li>
+                  <li>Decision‑ready models: three‑statement, scenarios, Monte‑Carlo</li>
+                  <li>Hands‑on M&A: red‑flag diligence, SPA/PPA, integration</li>
+                </ul>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.35 }}
+                viewport={{ once: true }}
+                style={{ marginTop: '1rem' }}
+              >
+                <PrimaryButton to="/about">
+                  Read More <FiArrowRight />
+                </PrimaryButton>
+              </motion.div>
+            </TeamShowcaseContent>
+             <motion.div
+               initial={{ opacity: 0, x: 30 }}
+               whileInView={{ opacity: 1, x: 0 }}
+               transition={{ duration: 0.6 }}
+               viewport={{ once: true }}
+             >
+               <TeamMemberImageSquare image="/images/team/yashaswi_das.png" />
+             </motion.div>
+          </TeamShowcaseGrid>
+        </SectionContent>
+      </TeamShowcaseSection>
+
+      {/* Calculator Showcase Section */}
+        <CalculatorShowcaseSection>
+          <SectionContent>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <CalculatorStepsHeader>
+                <CalculatorStepsTitle>Evaluate your startup</CalculatorStepsTitle>
+                <CalculatorStepsSubtitle>
+                  Three simple steps to get your startup's valuation and strategic insights — instantly.
+                </CalculatorStepsSubtitle>
+              </CalculatorStepsHeader>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <CalculatorStepsGrid>
+                <CalculatorStepCard>
+                  <CalculatorStepNumber>1</CalculatorStepNumber>
+                  <CalculatorStepTitle>Answer targeted questions</CalculatorStepTitle>
+                  <CalculatorStepSubtitle>Customized to your startup's stage (pre-seed, seed)</CalculatorStepSubtitle>
+                </CalculatorStepCard>
+                <CalculatorStepCard>
+                  <CalculatorStepNumber>2</CalculatorStepNumber>
+                  <CalculatorStepTitle>Get automatic valuation</CalculatorStepTitle>
+                  <CalculatorStepSubtitle>Based on real market data and industry benchmarks</CalculatorStepSubtitle>
+                </CalculatorStepCard>
+                <CalculatorStepCard>
+                  <CalculatorStepNumber>3</CalculatorStepNumber>
+                  <CalculatorStepTitle>Gain actionable insights</CalculatorStepTitle>
+                  <CalculatorStepSubtitle>To improve your business value and attract investors</CalculatorStepSubtitle>
+                </CalculatorStepCard>
+              </CalculatorStepsGrid>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <CalculatorStepsButtonWrapper>
+                <PrimaryButton to="/calculator" style={{ fontSize: '1rem', padding: '16px 38px', borderRadius: '999px', fontWeight: 700 }}>
+                  <span>Try YD Valuator</span> <FiArrowRight />
+                </PrimaryButton>
+              </CalculatorStepsButtonWrapper>
+            </motion.div>
+          </SectionContent>
+        </CalculatorShowcaseSection>
+
+      {/* Contact Preview Section */}
+      <ContactPreviewSection>
+        <SectionContent>
+          <ContactPreviewGrid>
+            <ContactPreviewContent>
+              <motion.h2
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                Get In Touch With Us
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                Ready to start your financial journey? Contact us today for a free consultation 
+                and discover how we can help you achieve your financial goals.
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <PrimaryButton to="/contact">
+                  <span>Contact Us Today</span> <FiArrowRight />
+                </PrimaryButton>
+              </motion.div>
+            </ContactPreviewContent>
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <ContactInfo>
+                  <ContactItem
+                    href={`mailto:${contactEmail}?subject=${encodeURIComponent('Inquiry - YD Advisory')}&body=${encodeURIComponent('Hello YD Advisory,\n\n')}`}
+                    aria-label="Email YD Advisory"
+                  >
+                    <FiMail />
+                    <ContactItemLabel>Email</ContactItemLabel>
+                    <ContactItemValue>{contactEmail}</ContactItemValue>
+                </ContactItem>
+
+                  <ContactItem
+                    href={`tel:${contactPhone.replace(/\s+/g, '')}`}
+                    aria-label="Call YD Advisory"
+                  >
+                    <FiPhone />
+                    <ContactItemLabel>Unified Phone</ContactItemLabel>
+                    <ContactItemValue>{contactPhone}</ContactItemValue>
+                </ContactItem>
+
+                  <ContactItem
+                    href={contactWebsite}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open YD Advisory website"
+                  >
+                    <FiGlobe />
+                    <ContactItemLabel>Website</ContactItemLabel>
+                    <ContactItemValue>ydadvisory.ae</ContactItemValue>
+                  </ContactItem>
+
+                  <ContactItem
+                    href={uaeMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="UAE address"
+                  >
+                    <FiMapPin />
+                    <ContactItemLabel>UAE</ContactItemLabel>
+                    <ContactItemValue>
+                      Level 41, Emirates Tower - DIFC,
+                      <br />
+                      Near Trade Center - Dubai, UAE
+                    </ContactItemValue>
+                  </ContactItem>
+
+                  <ContactItem
+                    href={singaporeMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Singapore address"
+                  >
+                    <FiMapPin />
+                    <ContactItemLabel>Singapore</ContactItemLabel>
+                    <ContactItemValue>
+                      Level 24, CapitaGreen,
+                      <br />
+                      138 Market Street, Singapore - 048946
+                    </ContactItemValue>
+                </ContactItem>
+              </ContactInfo>
+            </motion.div>
+          </ContactPreviewGrid>
+        </SectionContent>
+      </ContactPreviewSection>
+
+      {/* Brochure Download Section */}
+      <BrochureSection>
+        <BrochureContainer>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <BrochureCard>
+              <BrochureIcon>
+                <FiDownload />
+              </BrochureIcon>
+              <BrochureTitle>Download Our Company Brochure</BrochureTitle>
+              <BrochureDescription>
+                Get comprehensive insights into our financial services, expertise, and success stories. 
+                Download our detailed brochure to learn more about how YD Advisory can help you achieve your financial goals.
+              </BrochureDescription>
+              <BrochureButton 
+                onClick={() => setIsBrochureModalOpen(true)}
+                as="button"
+              >
+                <FiDownload />
+                Download Brochure
+              </BrochureButton>
+            </BrochureCard>
+          </motion.div>
+        </BrochureContainer>
+      </BrochureSection>
+
+      {/* CTA Section */}
+      <CtaSection>
+        <CtaContent>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            Ready to Take Control of Your Financial Future?
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            Schedule a free consultation with our expert advisors and discover how 
+            our personalized approach can help you achieve your financial goals.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            <PrimaryButton to="/contact">
+              Schedule Free Consultation <FiArrowRight />
+            </PrimaryButton>
+          </motion.div>
+        </CtaContent>
+      </CtaSection>
+
+      {/* Brochure Download Modal */}
+      <BrochureDownloadModal
+        isOpen={isBrochureModalOpen}
+        onClose={() => setIsBrochureModalOpen(false)}
+        brochureUrl="/brochure/yd-advisory-brochure.pdf"
+      />
+    </HomeContainer>
+  );
+};
+
+export default HomeRedesign;
