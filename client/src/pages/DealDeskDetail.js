@@ -104,22 +104,22 @@ const reportData = {
         id: 'geological-hydrogen',
         title: 'Geological Hydrogen Transaction',
         subtitle: 'Financing the concession stage through a milestone-linked convertible instrument.',
-        type: 'image',
-        src: '/images/case-studies/geological-hydrogen.jpg',
+        type: 'pdf',
+        src: '/documents/case-studies/geological-hydrogen.pdf',
       },
       {
         id: 'sharia-lbo',
         title: 'Sharia-Compliant Leveraged Acquisition',
         subtitle: 'Buy-side leveraged acquisition in the financial services sector, financed through Commodity Murabaha.',
-        type: 'image',
-        src: '/images/case-studies/sharia-lbo.jpg',
+        type: 'pdf',
+        src: '/documents/case-studies/sharia-lbo.pdf',
       },
       {
         id: 'biotech-life-sciences',
         title: 'Biotech & Life Sciences Structuring',
         subtitle: 'A GCC life sciences group reorganised into a two-track platform that ring-fences every asset.',
-        type: 'image',
-        src: '/images/case-studies/biotech-life-sciences.jpg',
+        type: 'pdf',
+        src: '/documents/case-studies/biotech-life-sciences.pdf',
       },
       {
         id: 'project-cumulus',
@@ -813,8 +813,8 @@ const SuccessMessage = styled(motion.div)`
 const ViewerContent = styled(motion.div)`
   background: ${(p) => p.theme.colors.white};
   border-radius: ${(p) => p.theme.borderRadius.xl};
-  width: min(980px, 100%);
-  height: min(88vh, 920px);
+  width: min(920px, 96vw);
+  height: 92vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -1218,7 +1218,7 @@ const DealDeskDetail = () => {
                 {viewingCase.type === 'pdf' ? (
                   <ViewerFrame
                     title={viewingCase.title}
-                    src={`${viewingCase.src}#toolbar=0&navpanes=0&scrollbar=1`}
+                    src={`${viewingCase.src}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
                   />
                 ) : (
                   <ViewerImage

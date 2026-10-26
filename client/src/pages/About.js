@@ -74,18 +74,33 @@ const TwoColumnGrid = styled.div`
 const ImageContent = styled.div`
   display: flex;
   justify-content: flex-end;
-  
+  align-items: flex-start;
+
   img {
-    width: 90%;
+    width: min(100%, 380px);
     height: auto;
-    border-radius: ${props => props.theme.borderRadius.xl};
-    box-shadow: ${props => props.theme.shadows.xl};
-    filter: brightness(1.05) contrast(1.1);
-    transition: all ${props => props.theme.transitions.base};
-    
-    &:hover {
-      filter: brightness(1.1) contrast(1.15);
-      transform: scale(1.02);
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center top;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    background: transparent;
+    display: block;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.lg}) {
+    justify-content: center;
+
+    img {
+      width: min(100%, 340px);
+    }
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    img {
+      width: min(100%, 280px);
     }
   }
 `;
@@ -567,7 +582,7 @@ const About = () => {
             </div>
             <ImageContent>
               <motion.img
-                src="/images/team/yashaswi_das.jpg"
+                src="/images/team/yashaswi-about.jpg"
                 alt="Yashaswi Das"
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}

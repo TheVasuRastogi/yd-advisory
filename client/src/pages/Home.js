@@ -1258,30 +1258,29 @@ const TeamMemberImageSquare = styled.div.attrs(props => ({
     backgroundImage: `url(${props.image})`
   }
 }))`
-  width: 400px;
-  height: 400px;
+  width: min(100%, 380px);
+  aspect-ratio: 819 / 1024;
+  height: auto;
   border-radius: ${props => props.theme.borderRadius.xl};
   background-size: contain;
-  background-position: center;
+  background-position: center top;
   background-repeat: no-repeat;
   margin: 0 auto;
   border: none;
-  box-shadow: ${props => props.theme.shadows.lg};
+  box-shadow: none;
+  overflow: hidden;
   transition: all ${props => props.theme.transitions.base};
   
   &:hover {
     transform: translateY(-4px);
-    box-shadow: ${props => props.theme.shadows.xl};
   }
   
   @media (max-width: ${props => props.theme.breakpoints.lg}) {
-    width: 350px;
-    height: 350px;
+    width: min(100%, 340px);
   }
   
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    width: 280px;
-    height: 280px;
+    width: min(100%, 280px);
   }
 `;
 
