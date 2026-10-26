@@ -18,6 +18,7 @@ import { serviceSchema } from '../utils/structuredData';
 import ValuationRequestForm from '../components/ValuationRequestForm';
 import SpecialistIndustryCoverage from '../components/SpecialistIndustryCoverage';
 import BusinessModel from '../components/BusinessModel';
+import Testimonials from '../components/Testimonials';
 import { innerPageHeroBackground } from '../styles/heroMixins';
 
 const ServicesContainer = styled.div`
@@ -813,6 +814,7 @@ const Services = () => {
         </ToolsContent>
       </ToolsSection>
 
+      <Testimonials />
 
       {/* CTA Section */}
       <CtaSection>

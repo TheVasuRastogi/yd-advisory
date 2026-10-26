@@ -7,6 +7,7 @@ import {
 import { openMailto, openTel, handleInteractiveLink } from '../utils/linkHelpers';
 import SEO from '../components/SEO';
 import ContactForm from '../components/ContactForm';
+import Testimonials from '../components/Testimonials';
 import { localBusinessSchema } from '../utils/structuredData';
 import { innerPageHeroBackground } from '../styles/heroMixins';
 
@@ -449,6 +450,8 @@ const Contact = () => {
           </motion.div>
         </SectionContent>
       </FormSection>
+
+      <Testimonials />
 
       {/* Map Section */}
       <MapSection>

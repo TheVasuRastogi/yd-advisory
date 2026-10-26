@@ -20,7 +20,7 @@ const teamMembers = [
     initials: 'YD',
     position: 'Founder & Principal',
     tagline: 'Bespoke Transaction & Valuation Advisory',
-    image: '/images/team/yashaswi_das.png',
+    image: '/images/team/yashaswi_das.jpg',
     social: {
       linkedin: '',
       email: 'Yashaswi.das@ydadvisory.ae',

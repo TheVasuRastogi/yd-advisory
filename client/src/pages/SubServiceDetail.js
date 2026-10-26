@@ -16,6 +16,7 @@ import {
   PARENT_TITLE,
 } from '../data/comprehensiveBusinessValuationSubServices';
 import { innerPageHeroBackground } from '../styles/heroMixins';
+import Testimonials from '../components/Testimonials';
 
 const PageContainer = styled.div`
   padding-top: 120px;
@@ -552,6 +553,8 @@ const SubServiceDetail = () => {
           </BenefitsGrid>
         </ContentContainer>
       </BenefitsSection>
+
+      <Testimonials />
 
       <CtaSection>
         <CtaContent>

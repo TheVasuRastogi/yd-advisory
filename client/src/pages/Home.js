@@ -8,6 +8,7 @@ import { organizationSchema, websiteSchema, localBusinessSchema } from '../utils
 import BrochureDownloadModal from '../components/BrochureDownloadModal';
 import SpecialistIndustryCoverage from '../components/SpecialistIndustryCoverage';
 import BusinessModel from '../components/BusinessModel';
+import Testimonials from '../components/Testimonials';
 
 const HomeContainer = styled.div`
   padding-top: 0;
@@ -2302,11 +2303,13 @@ const Home = () => {
                transition={{ duration: 0.6 }}
                viewport={{ once: true }}
              >
-               <TeamMemberImageSquare image="/images/team/yashaswi_das.png" />
+               <TeamMemberImageSquare image="/images/team/yashaswi_das.jpg" />
              </motion.div>
           </TeamShowcaseGrid>
         </SectionContent>
       </TeamShowcaseSection>
+
+      <Testimonials />
 
       {/* Calculator Showcase Section */}
         <CalculatorShowcaseSection>

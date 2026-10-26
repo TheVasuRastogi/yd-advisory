@@ -22,6 +22,7 @@ import {
   FiDownload
 } from 'react-icons/fi';
 import BrochureDownloadModal from '../components/BrochureDownloadModal';
+import Testimonials from '../components/Testimonials';
 import { innerPageHeroBackground } from '../styles/heroMixins';
 
 const PageContainer = styled.div`
@@ -1352,6 +1353,8 @@ const ServiceDetail = () => {
           </ContentContainer>
         </SubServicesSection>
       )}
+
+      <Testimonials />
 
       {/* CTA Section */}
       <CtaSection>

@@ -7,7 +7,7 @@ import {
 } from 'react-icons/fi';
 import SEO from '../components/SEO';
 import InitialsAvatar from '../components/InitialsAvatar';
-import portraitYashaswi from '../assets/team/yashaswi_das.png';
+import portraitYashaswi from '../assets/team/yashaswi_das.jpg';
 import portraitHeewon from '../assets/team/howlee.png';
 import portraitAdeniran from '../assets/team/adeniran_jesunifemi.png';
 

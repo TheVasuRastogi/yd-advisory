@@ -5,6 +5,7 @@ import { FiShield, FiUsers, FiTarget, FiBriefcase, FiDollarSign, FiBarChart, FiC
 import SEO from '../components/SEO';
 import { organizationSchema, personSchema } from '../utils/structuredData';
 import SpecialistIndustryCoverage from '../components/SpecialistIndustryCoverage';
+import Testimonials from '../components/Testimonials';
 import { innerPageHeroBackground } from '../styles/heroMixins';
 
 const AboutContainer = styled.div`
@@ -416,7 +417,7 @@ const About = () => {
             name: "Yashaswi Das",
             jobTitle: "Founder & Principal",
             description: "Valuation and transactions specialist with experience at JPMorgan and Dubai Holding, leading a licensed practice in Dubai",
-            image: "https://ydadvisory.ae/images/team/Yashaswi-Das.jpg",
+            image: "https://ydadvisory.ae/images/team/yashaswi_das.jpg",
             education: "Financial Services Industry",
             awards: "50+ clients, $100M+ raised/structured/unlocked, 10+ geographies, 15+ sectors"
           })
@@ -566,7 +567,7 @@ const About = () => {
             </div>
             <ImageContent>
               <motion.img
-                src="/images/team/yashaswi_das.png"
+                src="/images/team/yashaswi_das.jpg"
                 alt="Yashaswi Das"
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -807,6 +808,8 @@ const About = () => {
       </ValuesSection>
 
       <SpecialistIndustryCoverage />
+
+      <Testimonials />
 
       {/* CTA Section */}
       <CtaSection>

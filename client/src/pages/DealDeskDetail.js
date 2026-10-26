@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useParams, Link, Navigate } from 'react-router-dom';
+import React, { useState, useLayoutEffect } from 'react';
+import { useParams, Link, Navigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
-import { FiDownload, FiArrowLeft, FiTrendingUp, FiTarget, FiFileText, FiClock, FiBell, FiX, FiMail, FiPhone, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
+import { FiDownload, FiArrowLeft, FiTrendingUp, FiTarget, FiFileText, FiClock, FiBell, FiX, FiMail, FiPhone, FiCheckCircle, FiAlertCircle, FiEye } from 'react-icons/fi';
 import SEO from '../components/SEO';
 import { innerPageHeroBackground } from '../styles/heroMixins';
 
@@ -94,29 +94,56 @@ const reportData = {
   'deal-spotlights': {
     icon: FiTarget,
     title: 'Deal Spotlights',
-    tagline: 'Project Oasis — Capital Structure Analysis',
+    tagline: 'Illustrative transaction case studies',
     heroImage: '/images/about-hero.jpg',
-    pdf: '/documents/Project Oasis_Capital Structure.pdf',
+    viewOnly: true,
     intro:
-      'Deal Spotlights breaks down the most consequential transactions of the period \u2014 from mid-market M&A to marquee IPOs \u2014 unpacking the valuation rationale, deal structure, and strategic drivers.',
+      'Selected transaction case studies from YD Advisory. Each study is illustrative and anonymised. Read them on this page — they are not available for download.',
+    cases: [
+      {
+        id: 'geological-hydrogen',
+        title: 'Geological Hydrogen Transaction',
+        subtitle: 'Financing the concession stage through a milestone-linked convertible instrument.',
+        type: 'image',
+        src: '/images/case-studies/geological-hydrogen.jpg',
+      },
+      {
+        id: 'sharia-lbo',
+        title: 'Sharia-Compliant Leveraged Acquisition',
+        subtitle: 'Buy-side leveraged acquisition in the financial services sector, financed through Commodity Murabaha.',
+        type: 'image',
+        src: '/images/case-studies/sharia-lbo.jpg',
+      },
+      {
+        id: 'biotech-life-sciences',
+        title: 'Biotech & Life Sciences Structuring',
+        subtitle: 'A GCC life sciences group reorganised into a two-track platform that ring-fences every asset.',
+        type: 'image',
+        src: '/images/case-studies/biotech-life-sciences.jpg',
+      },
+      {
+        id: 'project-cumulus',
+        title: 'Project Cumulus IPO',
+        subtitle: 'IPO case study.',
+        type: 'pdf',
+        src: '/documents/case-studies/project-cumulus-ipo.pdf',
+      },
+      {
+        id: 'bangkok-data-centre',
+        title: 'Bangkok Data Centre',
+        subtitle: 'Structured finance case study.',
+        type: 'pdf',
+        src: '/documents/case-studies/bangkok-data-centre.pdf',
+      },
+    ],
     sections: [
       {
-        heading: 'What\u2019s Inside',
-        bullets: [
-          'Project Oasis capital structure breakdown and analysis',
-          'Implied valuation multiples and premium analysis',
-          'Deal-structure commentary \u2014 earnouts, rollovers, seller notes',
-          'Cross-border and regulatory considerations',
-          'Lessons for founders and acquirers positioning for similar exits',
-        ],
+        heading: 'Who it\u2019s for',
+        text: 'Founders, boards, and transaction teams who want to see how a structure is built before a live mandate — concession finance, leveraged acquisitions, group structuring, IPOs, and project finance.',
       },
       {
-        heading: 'Who It\u2019s For',
-        text: 'Founders evaluating exit timing, PE sponsors benchmarking entry multiples, and corporate-development teams tracking competitive deal activity.',
-      },
-      {
-        heading: 'Frequency & Format',
-        text: 'Published monthly as a downloadable PDF alongside a short executive summary email.',
+        heading: 'How to read them',
+        text: 'Open any case study to view it here. These pages are for reading on the site and are not offered as downloads.',
       },
     ],
   },
@@ -390,6 +417,7 @@ const DownloadSectionInner = styled.div`
 const DownloadSectionHeader = styled.div`
   text-align: center;
   margin-bottom: ${(p) => p.theme.spacing[8]};
+  scroll-margin-top: 140px;
 
   h2 {
     font-family: ${(p) => p.theme.fonts.secondary};
@@ -782,9 +810,70 @@ const SuccessMessage = styled(motion.div)`
   font-weight: 600;
 `;
 
+const ViewerContent = styled(motion.div)`
+  background: ${(p) => p.theme.colors.white};
+  border-radius: ${(p) => p.theme.borderRadius.xl};
+  width: min(980px, 100%);
+  height: min(88vh, 920px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  box-shadow: ${(p) => p.theme.shadows['2xl']};
+`;
+
+const ViewerHeader = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: ${(p) => p.theme.spacing[4]};
+  padding: ${(p) => p.theme.spacing[4]} ${(p) => p.theme.spacing[5]};
+  padding-right: ${(p) => p.theme.spacing[12]};
+  border-bottom: 1px solid ${(p) => p.theme.colors.gray[200]};
+
+  h2 {
+    margin: 0;
+    font-size: ${(p) => p.theme.fontSizes.lg};
+    color: ${(p) => p.theme.colors.primary[800]};
+    line-height: 1.3;
+  }
+
+  p {
+    margin: 0.25rem 0 0;
+    font-size: ${(p) => p.theme.fontSizes.sm};
+    color: ${(p) => p.theme.colors.gray[500]};
+  }
+`;
+
+const ViewerBody = styled.div`
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: #eef1f1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ViewerImage = styled.img`
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+`;
+
+const ViewerFrame = styled.iframe`
+  flex: 1;
+  width: 100%;
+  min-height: 72vh;
+  border: 0;
+  background: ${(p) => p.theme.colors.white};
+`;
+
 /* ─── Component ─── */
 const DealDeskDetail = () => {
   const { slug } = useParams();
+  const location = useLocation();
   const data = reportData[slug];
 
   const [showModal, setShowModal] = useState(false);
@@ -793,10 +882,19 @@ const DealDeskDetail = () => {
   const [submitMessage, setSubmitMessage] = useState('');
   const [showDownload, setShowDownload] = useState(false);
   const [selectedReport, setSelectedReport] = useState(null);
+  const [viewingCase, setViewingCase] = useState(null);
 
   const { register, handleSubmit: rhfSubmit, formState: { errors }, reset } = useForm();
   const availableReports = data ? getReportDownloads(data) : [];
   const activeReport = selectedReport || availableReports[0] || null;
+
+  useLayoutEffect(() => {
+    const id = (location.hash || '').replace('#', '');
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (!el) return;
+    requestAnimationFrame(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  }, [location.hash, slug]);
 
   const handleDownloadClick = (e, report) => {
     e.preventDefault();
@@ -1003,7 +1101,38 @@ const DealDeskDetail = () => {
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.4 }}
               >
-                {availableReports.length > 1 ? (
+                {data.viewOnly ? (
+                  <>
+                    <DownloadSectionHeader id="case-studies">
+                      <h2>Case studies</h2>
+                      <p>
+                        Open a study to read it on this page. These materials are for viewing only.
+                      </p>
+                    </DownloadSectionHeader>
+                    <ReportsStack>
+                      {data.cases.map((study, i) => (
+                        <ReportDownloadCard
+                          key={study.id}
+                          initial={{ opacity: 0, y: 16 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, margin: '-24px' }}
+                          transition={{ duration: 0.4, delay: i * 0.06 }}
+                        >
+                          <ReportDownloadInfo>
+                            <h3>{study.title}</h3>
+                            {study.subtitle && <p>{study.subtitle}</p>}
+                          </ReportDownloadInfo>
+                          <ReportDownloadButton
+                            type="button"
+                            onClick={() => setViewingCase(study)}
+                          >
+                            <FiEye /> View
+                          </ReportDownloadButton>
+                        </ReportDownloadCard>
+                      ))}
+                    </ReportsStack>
+                  </>
+                ) : availableReports.length > 1 ? (
                   <>
                     <DownloadSectionHeader>
                       <h2>Download {reportLabel(data.title, { plural: true })}</h2>
@@ -1057,6 +1186,52 @@ const DealDeskDetail = () => {
           </DownloadSection>
         </>
       )}
+
+      <AnimatePresence>
+        {viewingCase && (
+          <ModalOverlay
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setViewingCase(null)}
+          >
+            <ViewerContent
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 16 }}
+              transition={{ duration: 0.25 }}
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label={viewingCase.title}
+            >
+              <ModalCloseBtn type="button" onClick={() => setViewingCase(null)} aria-label="Close">
+                <FiX />
+              </ModalCloseBtn>
+              <ViewerHeader>
+                <div>
+                  <h2>{viewingCase.title}</h2>
+                  <p>View only</p>
+                </div>
+              </ViewerHeader>
+              <ViewerBody>
+                {viewingCase.type === 'pdf' ? (
+                  <ViewerFrame
+                    title={viewingCase.title}
+                    src={`${viewingCase.src}#toolbar=0&navpanes=0&scrollbar=1`}
+                  />
+                ) : (
+                  <ViewerImage
+                    src={viewingCase.src}
+                    alt={viewingCase.title}
+                    draggable="false"
+                  />
+                )}
+              </ViewerBody>
+            </ViewerContent>
+          </ModalOverlay>
+        )}
+      </AnimatePresence>
 
       {/* Download Form Modal */}
       <AnimatePresence>
