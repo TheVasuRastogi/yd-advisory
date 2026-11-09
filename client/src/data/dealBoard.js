@@ -95,8 +95,9 @@ export function getLocationFilterLabel(geography = '') {
   const g = geography.toLowerCase();
   if (g.includes('qatar')) return 'Qatar';
   if (g.includes('botswana')) return 'Botswana';
+  if (g.includes('kenya')) return 'Kenya';
   if (g.includes('saudi')) return 'Saudi Arabia';
-  if (g.includes('uae')) return 'UAE';
+  if (g.includes('uae')) return 'United Arab Emirates';
   if (g.includes('brazil') || g.includes('amazon')) return 'Brazil';
   if (g.includes('zambia')) return 'Zambia';
   if (g.includes('ghana')) return 'Ghana';
@@ -182,7 +183,7 @@ export const deals = [
     status: 'ACTIVE',
     description:
       'Renewable Energy (Clean energy development) in UAE, raising growth capital with full execution support.',
-    geography: 'UAE',
+    geography: 'United Arab Emirates',
     stage: 'Growth-stage',
     sector: 'Renewable Energy',
     size: 'USD 10M',
@@ -278,7 +279,7 @@ export const deals = [
     status: 'ACTIVE',
     description:
       'Established UAE payment-processing infrastructure serving banks, government and enterprise merchants.',
-    geography: 'UAE',
+    geography: 'United Arab Emirates',
     stage: 'Operating',
     sector: 'Fintech / Digital Payments',
     size: 'USD 20M',
@@ -310,7 +311,7 @@ export const deals = [
     status: 'ACTIVE',
     description:
       'Full acquisition of an established UAE payment-processing company serving banks, government and enterprise merchants.',
-    geography: 'UAE',
+    geography: 'United Arab Emirates',
     stage: 'Operating',
     sector: 'Fintech & Payments',
     size: 'USD 20M',
@@ -470,7 +471,7 @@ export const deals = [
     status: 'ACTIVE',
     description:
       'Working Capital & Bond mandate for a petrochemicals trading opportunity in UAE.',
-    geography: 'UAE',
+    geography: 'United Arab Emirates',
     stage: 'Operating',
     sector: 'Petrochemicals Trading',
     size: 'USD 50M',
@@ -486,7 +487,7 @@ export const deals = [
     status: 'ACTIVE',
     description:
       'Senior Secured Debt Raise mandate for a oil & gas storage opportunity in UAE.',
-    geography: 'UAE',
+    geography: 'United Arab Emirates',
     stage: 'Operating',
     sector: 'Oil & Gas Storage',
     size: 'AED 100M',
@@ -518,7 +519,7 @@ export const deals = [
     status: 'ACTIVE',
     description:
       'Vessel Acquisition Finance mandate for a dry-bulk shipping opportunity in UAE & Global.',
-    geography: 'UAE & Global',
+    geography: 'United Arab Emirates & Global',
     stage: 'Operating',
     sector: 'Dry-Bulk Shipping',
     size: 'USD 25M',
@@ -662,7 +663,7 @@ export const deals = [
     status: 'ACTIVE',
     description:
       'Healthcare Products (Manufacturing & wholesale) in UAE & Africa, raising growth capital with full execution support.',
-    geography: 'UAE & Africa',
+    geography: 'United Arab Emirates & Africa',
     stage: 'Growth-stage',
     sector: 'Healthcare Products',
     size: 'USD 20M',
@@ -671,6 +672,26 @@ export const deals = [
     useOfFunds: 'Manufacturing capacity & distribution expansion',
     whyInvestable: ['Healthcare-products manufacturing & wholesale with regional reach', 'Capital to scale manufacturing and distribution'],
     investorProtection: 'Equity with governance rights; under NDA',
+  },
+  {
+    id: 'YD-34',
+    title: 'Real-Estate Blockchain Platform — Kenya',
+    status: 'ACTIVE',
+    description:
+      "A blockchain-powered property and tenancy-registration platform for Kenya (modelled on Dubai's Ejari), digitising land titles, rental contracts and transactions, with a path to real-world-asset tokenisation. RAK-structured.",
+    geography: 'Kenya (RAK-structured, UAE)',
+    stage: 'Development-stage; government contract signed, MVP',
+    sector: 'PropTech / Real-Estate Blockchain',
+    size: 'USD 5.1M (Phase 1 & 2)',
+    category: 'Equity (~10% stake)',
+    transactionType: 'Equity (~10% stake)',
+    useOfFunds: 'Platform build-out, government rollout, team and operations setup',
+    whyInvestable: [
+      "Signed government contract; model proven by Dubai's Ejari tenancy system",
+      'Targets ~USD 120M/yr in lost real-estate taxes and 80% untitled land in Kenya, with a path to RWA tokenisation',
+    ],
+    investorProtection:
+      'Equity with phased, milestone-based funding; underpinned by a signed government contract',
   },
 ];
 
@@ -699,8 +720,6 @@ export function getDealInterestMail(deal) {
       `Investor protection: ${deal.investorProtection || 'n/a'}`,
       ``,
       `Please share the next steps and any NDA / information package required.`,
-      ``,
-      `I will attach my pitch deck / relevant materials to this email.`,
       ``,
       `Name:`,
       `Organisation:`,

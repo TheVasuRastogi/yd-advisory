@@ -147,7 +147,7 @@ const DealBoard = () => {
         title="All active mandates"
         intro={[
           'Browse curated opportunities across valuation, credit, capital raising, project finance and M&A.',
-          'Register interest on any card to email YD Advisory, then attach your pitch deck and send.',
+          'Register interest on any card to email YD Advisory and request next steps under NDA.',
         ]}
       />
     </Page>
