@@ -211,13 +211,13 @@ export const deals = [
   },
   {
     id: 'YD-05',
-    title: 'Solar Power (200 MW): Project Finance',
+    title: 'Solar Power: Project Finance',
     status: 'ACTIVE',
     description:
-      'Project Finance mandate for a solar power (200 mw) opportunity in Zambia.',
+      'Project Finance mandate for a solar power opportunity in Zambia.',
     geography: 'Zambia',
     stage: 'Construction-ready',
-    sector: 'Solar Power (200 MW)',
+    sector: 'Solar Power',
     size: 'USD 180 to 250M (indicative)',
     category: 'Project Finance',
     transactionType: 'Project Finance',
@@ -611,10 +611,10 @@ export const deals = [
   },
   {
     id: 'YD-30',
-    title: 'Pre-IPO Equity: Pre-IPO Equity',
+    title: 'Pre-IPO Equity',
     status: 'ACTIVE',
     description:
-      'Pre-IPO Equity mandate for a pre-ipo equity opportunity in United States.',
+      'Pre-IPO equity mandate for a late-stage opportunity in the United States.',
     geography: 'United States',
     stage: 'Pre-IPO',
     sector: 'Pre-IPO Equity',
