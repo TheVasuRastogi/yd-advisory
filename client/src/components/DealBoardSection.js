@@ -219,23 +219,42 @@ const Meta = styled.dl`
 
 const MetaRow = styled.div`
   display: grid;
-  grid-template-columns: 88px 1fr;
+  grid-template-columns: 112px 1fr;
   gap: 0.75rem;
   align-items: start;
 
   dt {
     margin: 0;
     color: ${p => p.theme.colors.gray[500]};
-    font-size: 0.85rem;
+    font-size: 0.82rem;
   }
 
   dd {
     margin: 0;
     color: ${p => p.theme.colors.primary[900]};
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 600;
     line-height: 1.35;
   }
+`;
+
+const WhyList = styled.ul`
+  margin: 0 0 1.1rem;
+  padding-left: 1.1rem;
+  color: ${p => p.theme.colors.gray[600]};
+  font-size: 0.86rem;
+  line-height: 1.45;
+
+  li + li {
+    margin-top: 0.35rem;
+  }
+`;
+
+const CardNote = styled.p`
+  margin: 0.75rem 0 0;
+  color: ${p => p.theme.colors.gray[500]};
+  font-size: 0.75rem;
+  line-height: 1.4;
 `;
 
 const InterestButton = styled.button`
@@ -293,14 +312,35 @@ const DealCard = ({ deal, index }) => {
           <dd>{deal.geography}</dd>
         </MetaRow>
         <MetaRow>
-          <dt>Capital</dt>
-          <dd>{deal.size}</dd>
+          <dt>Stage</dt>
+          <dd>{deal.stage}</dd>
         </MetaRow>
         <MetaRow>
           <dt>Sector</dt>
           <dd>{deal.sector}</dd>
         </MetaRow>
+        <MetaRow>
+          <dt>Capital</dt>
+          <dd>{deal.size}</dd>
+        </MetaRow>
+        <MetaRow>
+          <dt>Instrument</dt>
+          <dd>{deal.category}</dd>
+        </MetaRow>
+        {deal.useOfFunds ? (
+          <MetaRow>
+            <dt>Use of funds</dt>
+            <dd>{deal.useOfFunds}</dd>
+          </MetaRow>
+        ) : null}
       </Meta>
+      {deal.whyInvestable?.length > 0 && (
+        <WhyList>
+          {deal.whyInvestable.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </WhyList>
+      )}
       <InterestButton
         type="button"
         onClick={(e) => handleInteractiveLink(e, () => openMail(mail))}
@@ -308,6 +348,9 @@ const DealCard = ({ deal, index }) => {
       >
         Register Interest <FiArrowRight />
       </InterestButton>
+      <CardNote>
+        Indicative terms shown; full data room available under NDA.
+      </CardNote>
     </Card>
   );
 };
