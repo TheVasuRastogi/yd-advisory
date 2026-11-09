@@ -475,11 +475,11 @@ const Contact = () => {
           >
             <MapGrid>
               <MapCard>
-                <h3>Dubai Office</h3>
+                <h3>Meydan Office</h3>
                 <MapContainer>
                   <iframe
-                    title="YD Advisory Dubai Location Map"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3998.7639873492535!2d55.280686499115426!3d25.217728119661174!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f4292f6d3f4ab%3A0x67b81a59cfac0a46!2sServcorp%20Emirates%20Towers%20-%20Coworking%2C%20Offices%2C%20Virtual%20Offices%20%26%20Meeting%20Rooms!5e0!3m2!1sen!2sin!4v1758279391613!5m2!1sen!2sin"
+                    title="YD Advisory Meydan Grandstand Dubai Location Map"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.5!2d55.3031987!3d25.1595436!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f69c36f082541%3A0x16f65b407bb87f9!2sMeydan%20Grandstand!5e0!3m2!1sen!2sae!4v1731168000000!5m2!1sen!2sae"
                     width="100%"
                     height="100%"
                     style={{ border: 0, borderRadius: 'inherit' }}

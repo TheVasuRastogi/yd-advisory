@@ -51,7 +51,7 @@ const FooterLogo = styled.div`
   display: flex;
   align-items: center;
   gap: ${props => props.theme.spacing[3]};
-  margin-bottom: ${props => props.theme.spacing[4]};
+  margin-bottom: ${props => props.theme.spacing[3]};
   
   div {
     width: 50px;
@@ -72,6 +72,16 @@ const FooterLogo = styled.div`
     color: ${props => props.theme.colors.white};
     margin: 0;
   }
+`;
+
+const LegalEntity = styled.p`
+  margin: 0 0 ${props => props.theme.spacing[3]} !important;
+  color: ${props => props.theme.colors.white} !important;
+  font-size: ${props => props.theme.fontSizes.sm};
+  font-weight: ${props => props.theme.fontWeights.semibold};
+  letter-spacing: 0.06em;
+  line-height: 1.4 !important;
+  text-transform: uppercase;
 `;
 
 const FooterLinks = styled.ul`
@@ -388,6 +398,7 @@ const Footer = () => {
                 }}
               />
             </FooterLogo>
+            <LegalEntity>YD ADVISORY L.L.C-FZ</LegalEntity>
             <p>
               Your trusted partner in financial excellence. We provide comprehensive 
               financial solutions tailored to your unique needs and goals.
