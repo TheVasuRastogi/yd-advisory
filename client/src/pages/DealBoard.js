@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { FiArrowRight } from 'react-icons/fi';
 import SEO from '../components/SEO';
 import DealBoardSection from '../components/DealBoardSection';
+import HowDealBoardWorks from '../components/HowDealBoardWorks';
 import {
   deals,
   dealBoardMeta,
@@ -31,22 +32,12 @@ const HeroInner = styled.div`
 `;
 
 const HeroEyebrow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
   margin-bottom: 1rem;
   color: ${p => p.theme.colors.primary[200]};
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-
-  &::before {
-    content: '';
-    width: 28px;
-    height: 2px;
-    background: #c4a35a;
-  }
 `;
 
 const HeroTitle = styled.h1`
@@ -120,9 +111,9 @@ const DealBoard = () => {
       <Hero>
         <HeroInner>
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
           >
             <HeroEyebrow>{dealBoardMeta.eyebrow}</HeroEyebrow>
             <HeroTitle>YD Deal Board</HeroTitle>
@@ -147,11 +138,16 @@ const DealBoard = () => {
         </HeroInner>
       </Hero>
 
+      <HowDealBoardWorks />
+
       <DealBoardSection
         deals={deals}
         showActions={false}
         title="All active mandates"
-        intro="Browse curated opportunities across valuation, credit, capital raising, project finance and M&A. Register interest on any card to email YD Advisory with that deal pre-filled, then attach your pitch deck and send."
+        intro={[
+          'Browse curated opportunities across valuation, credit, capital raising, project finance and M&A.',
+          'Register interest on any card to email YD Advisory, then attach your pitch deck and send.',
+        ]}
       />
     </Page>
   );

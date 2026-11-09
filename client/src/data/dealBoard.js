@@ -9,6 +9,59 @@ export const dealBoardMeta = {
     'For professional and institutional investors only. This board shows anonymised mandates and is not an offer or solicitation to invest. Full deal information is released to verified investors under NDA via YD Advisory.',
 };
 
+export const howDealBoardWorks = {
+  title: 'How the Deal Board Works',
+  subtitle: 'One board, two audiences. Access to each full deal is gated and NDA-protected.',
+  audiences: [
+    {
+      id: 'founders',
+      title: 'For Founders',
+      cta: 'Register as Founder',
+      mailType: 'submit',
+      steps: [
+        {
+          step: 1,
+          title: 'Register & submit your mandate',
+          text: 'Tell us what you are raising, the use of funds and your terms.',
+        },
+        {
+          step: 2,
+          title: 'We structure & anonymise',
+          text: 'YD prepares an investor-ready, diligence-led teaser for the board.',
+        },
+        {
+          step: 3,
+          title: 'Get matched',
+          text: 'We introduce you to relevant investors and run the process end to end.',
+        },
+      ],
+    },
+    {
+      id: 'investors',
+      title: 'For Investors',
+      cta: 'Request Access',
+      mailType: 'investor',
+      steps: [
+        {
+          step: 1,
+          title: 'Register & verify',
+          text: 'Confirm your professional or qualified-investor status.',
+        },
+        {
+          step: 2,
+          title: 'Browse curated deals',
+          text: 'Anonymised, structured opportunities across sectors and markets.',
+        },
+        {
+          step: 3,
+          title: 'Indicate interest',
+          text: 'Request full information under NDA, released and managed by YD Advisory.',
+        },
+      ],
+    },
+  ],
+};
+
 /** Featured deals shown on the homepage */
 export const featuredDealIds = ['YD-CS-01', 'YD-CS-03', 'YD-TX-05'];
 

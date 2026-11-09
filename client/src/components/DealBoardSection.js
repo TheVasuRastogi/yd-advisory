@@ -29,36 +29,32 @@ const Inner = styled.div`
 
 const HeaderRow = styled.div`
   display: grid;
-  grid-template-columns: 1.4fr auto;
-  gap: ${p => p.theme.spacing[8]};
-  align-items: end;
+  grid-template-columns: ${p => (p.$centered ? '1fr' : 'minmax(0, 1.5fr) auto')};
+  gap: ${p => p.theme.spacing[6]};
+  align-items: ${p => (p.$centered ? 'center' : 'end')};
+  justify-items: ${p => (p.$centered ? 'center' : 'stretch')};
+  text-align: ${p => (p.$centered ? 'center' : 'left')};
   margin-bottom: ${p => p.theme.spacing[10]};
 
   @media (max-width: ${p => p.theme.breakpoints.lg}) {
     grid-template-columns: 1fr;
-    gap: ${p => p.theme.spacing[6]};
-    align-items: start;
+    justify-items: ${p => (p.$centered ? 'center' : 'start')};
+    text-align: ${p => (p.$centered ? 'center' : 'left')};
   }
 `;
 
+const HeaderCopy = styled.div`
+  width: 100%;
+  max-width: ${p => (p.$centered ? '1100px' : '100%')};
+`;
+
 const Eyebrow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
   margin-bottom: ${p => p.theme.spacing[3]};
   color: ${p => p.theme.colors.primary[700]};
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-
-  &::before {
-    content: '';
-    width: 28px;
-    height: 2px;
-    background: #c4a35a;
-    flex-shrink: 0;
-  }
 `;
 
 const Title = styled.h2`
@@ -70,12 +66,29 @@ const Title = styled.h2`
   font-weight: 700;
 `;
 
-const Intro = styled.p`
+const Intro = styled.div`
   margin: 0;
-  max-width: 640px;
+  max-width: ${p => (p.$centered ? '100%' : '640px')};
+  margin-left: ${p => (p.$centered ? 'auto' : '0')};
+  margin-right: ${p => (p.$centered ? 'auto' : '0')};
   color: ${p => p.theme.colors.gray[600]};
   font-size: ${p => p.theme.fontSizes.lg};
   line-height: 1.65;
+`;
+
+const IntroLine = styled.span`
+  display: block;
+
+  ${p =>
+    p.$nowrap
+      ? `
+    white-space: nowrap;
+
+    @media (max-width: ${p.theme.breakpoints.lg}) {
+      white-space: normal;
+    }
+  `
+      : ''}
 `;
 
 const Actions = styled.div`
@@ -83,6 +96,7 @@ const Actions = styled.div`
   flex-wrap: wrap;
   gap: 0.75rem;
   justify-content: flex-end;
+  align-self: end;
 
   @media (max-width: ${p => p.theme.breakpoints.lg}) {
     justify-content: flex-start;
@@ -247,11 +261,12 @@ const InterestButton = styled.button`
 `;
 
 const FooterNote = styled.p`
-  margin: ${p => p.theme.spacing[8]} 0 0;
+  margin: ${p => p.theme.spacing[8]} auto 0;
   color: ${p => p.theme.colors.gray[500]};
   font-size: 0.85rem;
   line-height: 1.55;
   max-width: 860px;
+  text-align: ${p => (p.$centered ? 'center' : 'left')};
 `;
 
 const openMail = (mail) => {
@@ -263,10 +278,10 @@ const DealCard = ({ deal, index }) => {
 
   return (
     <Card
-      initial={{ opacity: 0, y: 18 }}
+      initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.4, delay: index * 0.06 }}
+      viewport={{ once: true, amount: 0.05, margin: '80px 0px' }}
+      transition={{ duration: 0.18, delay: Math.min(index, 2) * 0.03, ease: 'easeOut' }}
     >
       <DealId>{deal.id}</DealId>
       <CardTitle>{deal.title}</CardTitle>
@@ -304,16 +319,27 @@ const DealBoardSection = ({
   const items = dealsProp || getFeaturedDeals();
   const submitMail = getSubmitDealMail();
   const investorMail = getInvestorAccessMail();
+  const centered = !showActions;
 
   return (
     <Section aria-labelledby="deal-board-heading">
       <Inner>
-        <HeaderRow>
-          <div>
+        <HeaderRow $centered={centered}>
+          <HeaderCopy $centered={centered}>
             <Eyebrow>{dealBoardMeta.eyebrow}</Eyebrow>
             <Title id="deal-board-heading">{title}</Title>
-            <Intro>{intro}</Intro>
-          </div>
+            <Intro $centered={centered}>
+              {Array.isArray(intro) ? (
+                intro.map((line, i) => (
+                  <IntroLine key={i} $nowrap={centered}>
+                    {line}
+                  </IntroLine>
+                ))
+              ) : (
+                intro
+              )}
+            </Intro>
+          </HeaderCopy>
 
           {showActions && (
             <Actions>
@@ -344,7 +370,9 @@ const DealBoardSection = ({
           ))}
         </Grid>
 
-        {showDisclaimer && <FooterNote>{dealBoardMeta.disclaimer}</FooterNote>}
+        {showDisclaimer && (
+          <FooterNote $centered={centered}>{dealBoardMeta.disclaimer}</FooterNote>
+        )}
       </Inner>
     </Section>
   );

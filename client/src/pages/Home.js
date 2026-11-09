@@ -10,6 +10,7 @@ import SpecialistIndustryCoverage from '../components/SpecialistIndustryCoverage
 import BusinessModel from '../components/BusinessModel';
 import Testimonials from '../components/Testimonials';
 import DealBoardSection from '../components/DealBoardSection';
+import HowDealBoardWorks from '../components/HowDealBoardWorks';
 
 const HomeContainer = styled.div`
   padding-top: 0;
@@ -1890,6 +1891,7 @@ const Home = () => {
       </HeroSection>
 
       <DealBoardSection />
+      <HowDealBoardWorks compact />
 
       <BusinessModel />
 
