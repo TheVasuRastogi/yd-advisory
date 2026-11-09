@@ -431,10 +431,18 @@ const Footer = () => {
                 <FiMapPin />
                 <span>Level 41, Emirates Tower - DIFC,<br />Near Trade Center - Dubai, UAE</span>
               </div>
-                <div className="contact-item">
-                  <FiMapPin />
-                  <span>Level 24, CapitaGreen,<br />138 Market Street, Singapore - 048946</span>
-                </div>
+              <div className="contact-item">
+                <FiMapPin />
+                <span>
+                  Meydan Grandstand, 6th floor,<br />
+                  Meydan Road, Nad Al Sheba,<br />
+                  Dubai, U.A.E.
+                </span>
+              </div>
+              <div className="contact-item">
+                <FiMapPin />
+                <span>Level 24, CapitaGreen,<br />138 Market Street, Singapore - 048946</span>
+              </div>
               <div className="contact-item">
                 <FiPhone />
                 <a

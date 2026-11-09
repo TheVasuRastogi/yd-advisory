@@ -1,4 +1,4 @@
-export const DEAL_BOARD_EMAIL = 'Yashaswi.das@ydadvisory.ae';
+export const DEAL_BOARD_EMAIL = 'operations@ydadvisory.ae';
 
 export const dealBoardMeta = {
   eyebrow: 'YD DEAL BOARD',

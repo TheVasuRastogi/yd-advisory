@@ -333,6 +333,17 @@ const Contact = () => {
             <ContactItem>
               <FiMapPin />
               <div>
+                <h3>Meydan Address</h3>
+                <p>
+                  Meydan Grandstand, 6th floor,<br />
+                  Meydan Road, Nad Al Sheba,<br />
+                  Dubai, U.A.E.
+                </p>
+              </div>
+            </ContactItem>
+            <ContactItem>
+              <FiMapPin />
+              <div>
                 <h3>Singapore Address</h3>
                 <p>Servcorp - CapitaGreen, Singapore</p>
               </div>
