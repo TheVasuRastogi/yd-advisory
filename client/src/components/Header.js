@@ -698,7 +698,8 @@ const Header = () => {
   const isResourcesActive =
     location.pathname.startsWith('/blog') ||
     location.pathname.startsWith('/templates') ||
-    location.pathname.startsWith('/deal-desk');
+    location.pathname.startsWith('/deal-desk') ||
+    location.pathname.startsWith('/deal-board');
   const isJoinUsActive = location.pathname.startsWith('/careers');
 
   // Open on hover (desktop)
@@ -822,6 +823,12 @@ const Header = () => {
                           className={location.pathname.startsWith('/deal-desk') ? 'active' : ''}
                         >
                           YD Deal Desk
+                        </DropdownItem>
+                        <DropdownItem
+                          to="/deal-board"
+                          className={location.pathname.startsWith('/deal-board') ? 'active' : ''}
+                        >
+                          YD Deal Board
                         </DropdownItem>
                       </DropdownMenu>
                     )}
@@ -1003,6 +1010,17 @@ const Header = () => {
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         YD Deal Desk
+                      </MobileDropdownItem>
+                    </li>
+                    <li>
+                      <MobileDropdownItem
+                        to="/deal-board"
+                        className={
+                          location.pathname.startsWith('/deal-board') ? 'active' : ''
+                        }
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        YD Deal Board
                       </MobileDropdownItem>
                     </li>
                   </MobileDropdownMenu>

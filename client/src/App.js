@@ -34,6 +34,7 @@ import CookiePolicy from './pages/CookiePolicy';
 import Sitemap from './pages/Sitemap';
 import DealDesk from './pages/DealDesk';
 import DealDeskDetail from './pages/DealDeskDetail';
+import DealBoard from './pages/DealBoard';
 import PartnershipPage from './pages/CareersPartnership';
 import CareersJob from './pages/CareersJob';
 import NotFound from './pages/NotFound';
@@ -71,6 +72,7 @@ function App() {
                 <Route path="/sitemap" element={<Sitemap />} />
                 <Route path="/deal-desk" element={<DealDesk />} />
                 <Route path="/deal-desk/:slug" element={<DealDeskDetail />} />
+                <Route path="/deal-board" element={<DealBoard />} />
                 <Route path="/careers" element={<CareersJob />} />
                 <Route path="/careers/partnership" element={<PartnershipPage />} />
                 <Route path="*" element={<NotFound />} />

@@ -9,6 +9,7 @@ import BrochureDownloadModal from '../components/BrochureDownloadModal';
 import SpecialistIndustryCoverage from '../components/SpecialistIndustryCoverage';
 import BusinessModel from '../components/BusinessModel';
 import Testimonials from '../components/Testimonials';
+import DealBoardSection from '../components/DealBoardSection';
 
 const HomeContainer = styled.div`
   padding-top: 0;
@@ -1887,6 +1888,8 @@ const Home = () => {
           </HeroContent>
         </HeroSlide>
       </HeroSection>
+
+      <DealBoardSection />
 
       <BusinessModel />
 
