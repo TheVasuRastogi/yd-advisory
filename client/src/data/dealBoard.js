@@ -65,6 +65,84 @@ export const howDealBoardWorks = {
 /** Featured deals shown on the homepage */
 export const featuredDealIds = ['YD-01', 'YD-03', 'YD-09'];
 
+export const AMOUNT_FILTERS = [
+  { value: 'all', label: 'All amounts' },
+  { value: 'under-10', label: 'Under USD 10M', min: 0, max: 10 },
+  { value: '10-50', label: 'USD 10–50M', min: 10, max: 50 },
+  { value: '50-150', label: 'USD 50–150M', min: 50, max: 150 },
+  { value: '150-plus', label: 'USD 150M+', min: 150, max: Infinity },
+];
+
+/** Midpoint ticket size in USD millions for amount filtering. */
+export function getDealSizeMillions(size = '') {
+  const text = String(size).replace(/,/g, '');
+  const aed = text.match(/AED\s*([\d.]+)\s*M/i);
+  if (aed) return (parseFloat(aed[1]) / 3.67);
+
+  const eur = text.match(/EUR\s*([\d.]+)\s*M/i);
+  if (eur) return parseFloat(eur[1]) * 1.1;
+
+  const range = text.match(/(?:USD\s*)?~?([\d.]+)\s*(?:to|-)\s*([\d.]+)\s*M/i);
+  if (range) return (parseFloat(range[1]) + parseFloat(range[2])) / 2;
+
+  const single = text.match(/(?:USD\s*)?~?([\d.]+)\s*M\+?/i);
+  if (single) return parseFloat(single[1]);
+
+  return null;
+}
+
+export function getLocationFilterLabel(geography = '') {
+  const g = geography.toLowerCase();
+  if (g.includes('qatar')) return 'Qatar';
+  if (g.includes('botswana')) return 'Botswana';
+  if (g.includes('saudi')) return 'Saudi Arabia';
+  if (g.includes('uae')) return 'UAE';
+  if (g.includes('brazil') || g.includes('amazon')) return 'Brazil';
+  if (g.includes('zambia')) return 'Zambia';
+  if (g.includes('ghana')) return 'Ghana';
+  if (g.includes('mali')) return 'Mali';
+  if (g.includes('benin')) return 'Benin';
+  if (g.includes('georgia')) return 'Georgia';
+  if (g.includes('congo')) return 'Republic of Congo';
+  if (g.includes('united states') || /\busa\b/.test(g)) return 'United States';
+  if (g.includes('gcc')) return 'GCC';
+  if (g.includes('west africa')) return 'West Africa';
+  if (g.includes('east africa')) return 'East Africa';
+  if (g.includes('southern africa')) return 'Southern Africa';
+  if (g.includes('pan-africa') || g === 'africa' || g.startsWith('africa')) return 'Africa';
+  if (g.includes('latin') || g.includes('europe')) return 'Latin America / Europe';
+  if (g.includes('cross-border') || g.includes('offshore') || g.includes('global')) {
+    return 'Cross-Border / Global';
+  }
+  return geography.split('(')[0].trim() || geography;
+}
+
+export function getDealFilterOptions(dealList = deals) {
+  const sectors = [...new Set(dealList.map((d) => d.sector).filter(Boolean))].sort((a, b) =>
+    a.localeCompare(b)
+  );
+  const locations = [
+    ...new Set(dealList.map((d) => getLocationFilterLabel(d.geography)).filter(Boolean)),
+  ].sort((a, b) => a.localeCompare(b));
+
+  return { sectors, locations };
+}
+
+export function filterDeals(dealList, { sector = 'all', amount = 'all', location = 'all' } = {}) {
+  const amountRule = AMOUNT_FILTERS.find((item) => item.value === amount);
+
+  return dealList.filter((deal) => {
+    if (sector !== 'all' && deal.sector !== sector) return false;
+    if (location !== 'all' && getLocationFilterLabel(deal.geography) !== location) return false;
+    if (amount !== 'all' && amountRule) {
+      const millions = getDealSizeMillions(deal.size);
+      if (millions == null) return false;
+      if (millions < amountRule.min || millions >= amountRule.max) return false;
+    }
+    return true;
+  });
+}
+
 export const deals = [
   {
     id: 'YD-01',

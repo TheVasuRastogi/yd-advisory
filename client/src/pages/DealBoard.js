@@ -143,6 +143,7 @@ const DealBoard = () => {
       <DealBoardSection
         deals={deals}
         showActions={false}
+        enableFilters
         title="All active mandates"
         intro={[
           'Browse curated opportunities across valuation, credit, capital raising, project finance and M&A.',

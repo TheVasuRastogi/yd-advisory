@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -9,6 +9,9 @@ import {
   getDealInterestMail,
   getSubmitDealMail,
   getInvestorAccessMail,
+  getDealFilterOptions,
+  filterDeals,
+  AMOUNT_FILTERS,
 } from '../data/dealBoard';
 import { openMailto, handleInteractiveLink } from '../utils/linkHelpers';
 
@@ -101,6 +104,112 @@ const Actions = styled.div`
   @media (max-width: ${p => p.theme.breakpoints.lg}) {
     justify-content: flex-start;
   }
+`;
+
+const Filters = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  gap: 0.85rem;
+  align-items: end;
+  margin: 0 0 ${p => p.theme.spacing[8]};
+  padding: 1rem 1.1rem;
+  background: #fff;
+  border: 1px solid ${p => p.theme.colors.gray[200]};
+  border-radius: 14px;
+
+  @media (max-width: ${p => p.theme.breakpoints.lg}) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: ${p => p.theme.breakpoints.sm}) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const FilterField = styled.label`
+  display: grid;
+  gap: 0.4rem;
+  text-align: left;
+  min-width: 0;
+
+  span {
+    color: ${p => p.theme.colors.gray[500]};
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  select {
+    width: 100%;
+    appearance: none;
+    background: ${p => p.theme.colors.gray[50]}
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23475569' d='M1.4.6 6 5.2 10.6.6 12 2 6 8 0 2z'/%3E%3C/svg%3E")
+      no-repeat right 0.9rem center / 10px;
+    border: 1px solid ${p => p.theme.colors.gray[300]};
+    border-radius: 10px;
+    color: ${p => p.theme.colors.primary[900]};
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.3;
+    padding: 0.78rem 2.2rem 0.78rem 0.9rem;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-color: ${p => p.theme.colors.primary[500]};
+      box-shadow: 0 0 0 3px ${p => p.theme.colors.primary[100]};
+    }
+  }
+`;
+
+const ClearFilters = styled.button`
+  height: 2.85rem;
+  padding: 0 1rem;
+  border: 1px solid ${p => p.theme.colors.gray[300]};
+  border-radius: 10px;
+  background: #fff;
+  color: ${p => p.theme.colors.primary[800]};
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &:hover:not(:disabled) {
+    border-color: ${p => p.theme.colors.primary[400]};
+    background: ${p => p.theme.colors.primary[50]};
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  @media (max-width: ${p => p.theme.breakpoints.lg}) {
+    justify-self: start;
+  }
+`;
+
+const FilterMeta = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin: -0.35rem 0 ${p => p.theme.spacing[5]};
+  color: ${p => p.theme.colors.gray[500]};
+  font-size: 0.88rem;
+`;
+
+const EmptyState = styled.div`
+  padding: 2.5rem 1.25rem;
+  border: 1px dashed ${p => p.theme.colors.gray[300]};
+  border-radius: 14px;
+  background: #fff;
+  text-align: center;
+  color: ${p => p.theme.colors.gray[600]};
+  font-size: 0.98rem;
+  line-height: 1.55;
 `;
 
 const PrimaryAction = styled(Link)`
@@ -359,14 +468,34 @@ const DealBoardSection = ({
   deals: dealsProp,
   showActions = true,
   showDisclaimer = true,
+  enableFilters = false,
   exploreTo = '/deal-board',
   title = dealBoardMeta.title,
   intro = dealBoardMeta.intro,
 }) => {
-  const items = dealsProp || getFeaturedDeals();
+  const sourceDeals = dealsProp || getFeaturedDeals();
   const submitMail = getSubmitDealMail();
   const investorMail = getInvestorAccessMail();
   const centered = !showActions;
+  const [sector, setSector] = useState('all');
+  const [amount, setAmount] = useState('all');
+  const [location, setLocation] = useState('all');
+
+  const options = useMemo(() => getDealFilterOptions(sourceDeals), [sourceDeals]);
+  const items = useMemo(
+    () =>
+      enableFilters
+        ? filterDeals(sourceDeals, { sector, amount, location })
+        : sourceDeals,
+    [enableFilters, sourceDeals, sector, amount, location]
+  );
+  const filtersActive = sector !== 'all' || amount !== 'all' || location !== 'all';
+
+  const clearFilters = () => {
+    setSector('all');
+    setAmount('all');
+    setLocation('all');
+  };
 
   return (
     <Section aria-labelledby="deal-board-heading">
@@ -411,11 +540,84 @@ const DealBoardSection = ({
           )}
         </HeaderRow>
 
-        <Grid>
-          {items.map((deal, index) => (
-            <DealCard key={deal.id} deal={deal} index={index} />
-          ))}
-        </Grid>
+        {enableFilters && (
+          <>
+            <Filters role="search" aria-label="Filter deal board mandates">
+              <FilterField>
+                <span>Sector</span>
+                <select
+                  value={sector}
+                  onChange={(e) => setSector(e.target.value)}
+                  aria-label="Filter by sector"
+                >
+                  <option value="all">All sectors</option>
+                  {options.sectors.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </FilterField>
+
+              <FilterField>
+                <span>Amount</span>
+                <select
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  aria-label="Filter by amount"
+                >
+                  {AMOUNT_FILTERS.map((item) => (
+                    <option key={item.value} value={item.value}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </FilterField>
+
+              <FilterField>
+                <span>Location</span>
+                <select
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  aria-label="Filter by location"
+                >
+                  <option value="all">All locations</option>
+                  {options.locations.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </FilterField>
+
+              <ClearFilters
+                type="button"
+                onClick={clearFilters}
+                disabled={!filtersActive}
+              >
+                Clear
+              </ClearFilters>
+            </Filters>
+
+            <FilterMeta>
+              <span>
+                Showing {items.length} of {sourceDeals.length} mandates
+              </span>
+            </FilterMeta>
+          </>
+        )}
+
+        {items.length > 0 ? (
+          <Grid>
+            {items.map((deal, index) => (
+              <DealCard key={deal.id} deal={deal} index={index} />
+            ))}
+          </Grid>
+        ) : (
+          <EmptyState>
+            No mandates match these filters. Clear one or more filters to see more deals.
+          </EmptyState>
+        )}
 
         {showDisclaimer && (
           <FooterNote $centered={centered}>{dealBoardMeta.disclaimer}</FooterNote>
