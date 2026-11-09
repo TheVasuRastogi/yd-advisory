@@ -289,8 +289,12 @@ const DealCard = ({ deal, index }) => {
       <Description>{deal.description}</Description>
       <Meta>
         <MetaRow>
-          <dt>Category</dt>
-          <dd>{deal.category}</dd>
+          <dt>Location</dt>
+          <dd>{deal.geography}</dd>
+        </MetaRow>
+        <MetaRow>
+          <dt>Capital</dt>
+          <dd>{deal.size}</dd>
         </MetaRow>
         <MetaRow>
           <dt>Sector</dt>
