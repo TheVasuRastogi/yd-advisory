@@ -327,7 +327,7 @@ export const deals = [
     status: 'ACTIVE',
     description:
       'Independent platform providing short-term, collateralised, real-estate-backed financing to SMEs and individuals.',
-    geography: 'GCC',
+    geography: 'UAE',
     stage: 'Operating, scaling AUM',
     sector: 'Private Credit / Alternative Lending',
     size: 'USD 10 to 25M (indicative)',
