@@ -391,9 +391,10 @@ const Status = styled.span`
   align-items: center;
   width: fit-content;
   padding: 0.28rem 0.55rem;
-  border: 1px solid ${p => p.theme.colors.gray[300]};
+  border: 1px solid ${p => p.theme.colors.primary[300]};
   border-radius: 6px;
-  color: ${p => p.theme.colors.gray[600]};
+  background: ${p => p.theme.colors.primary[50]};
+  color: ${p => p.theme.colors.primary[700]};
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.06em;
