@@ -33,9 +33,10 @@ const TopBar = styled.div`
 `;
 
 const TopBarContent = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
+  gap: ${props => props.theme.spacing[4]};
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${props => props.theme.spacing[4]};
@@ -44,10 +45,19 @@ const TopBarContent = styled.div`
 const ContactInfo = styled.div`
   display: flex;
   gap: ${props => props.theme.spacing[6]};
+  justify-self: start;
   
   @media (max-width: ${props => props.theme.breakpoints.lg}) {
     gap: ${props => props.theme.spacing[4]};
   }
+`;
+
+const TopBarCenter = styled.div`
+  justify-self: center;
+  text-align: center;
+  font-weight: ${props => props.theme.fontWeights.semibold};
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 `;
 
 const ContactItem = styled.div`
@@ -63,6 +73,7 @@ const ContactItem = styled.div`
 const SocialLinks = styled.div`
   display: flex;
   gap: ${props => props.theme.spacing[3]};
+  justify-self: end;
   
   a {
     display: flex;
@@ -748,6 +759,7 @@ const Header = () => {
               </a>
             </ContactItem>
           </ContactInfo>
+          <TopBarCenter>YD Advisory L.L.C - FZ</TopBarCenter>
           <SocialLinks>
             <a href="https://www.linkedin.com/in/yashaswi-das/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
               <FiLinkedin />
