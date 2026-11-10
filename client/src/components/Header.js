@@ -320,6 +320,72 @@ const DropdownItem = styled(Link)`
   }
 `;
 
+const DropdownLabel = styled.div`
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  padding: ${props => props.theme.spacing[2]} ${props => props.theme.spacing[4]} ${props => props.theme.spacing[1]};
+  color: ${props => props.theme.colors.primary[700]};
+  font-weight: ${props => props.theme.fontWeights.bold};
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+`;
+
+const NestedDropdown = styled.div`
+  position: relative;
+`;
+
+const NestedTrigger = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${props => props.theme.spacing[3]};
+  min-height: 44px;
+  padding: ${props => props.theme.spacing[2]} ${props => props.theme.spacing[4]};
+  border: none;
+  background: ${props =>
+    props.$isOpen || props.$isActive
+      ? props.theme.colors.primary[50]
+      : 'transparent'};
+  color: ${props =>
+    props.$isOpen || props.$isActive
+      ? props.theme.colors.primary[700]
+      : props.theme.colors.gray[700]};
+  font-weight: ${props => props.theme.fontWeights.medium};
+  font-size: ${props => props.theme.fontSizes.base};
+  line-height: 1.2;
+  text-align: left;
+  cursor: pointer;
+  transition: all ${props => props.theme.transitions.fast};
+
+  &:hover {
+    background: ${props => props.theme.colors.primary[50]};
+    color: ${props => props.theme.colors.primary[600]};
+  }
+
+  svg {
+    flex-shrink: 0;
+    transform: rotate(-90deg);
+  }
+`;
+
+const NestedMenu = styled(motion.div)`
+  position: absolute;
+  top: -8px;
+  left: calc(100% + 8px);
+  min-width: 260px;
+  background: ${props => props.theme.colors.white};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  border: 1px solid ${props => props.theme.colors.gray[200]};
+  padding: ${props => props.theme.spacing[1]} 0;
+  z-index: 10001;
+  display: flex;
+  flex-direction: column;
+`;
+
 const CTAButton = styled(Link)`
   background: linear-gradient(135deg, ${props => props.theme.colors.primary[600]}, ${props => props.theme.colors.primary[700]});
   color: ${props => props.theme.colors.white};
@@ -637,9 +703,6 @@ const Header = () => {
       if (isResourcesDropdownOpen && !event.target.closest('[data-dropdown-container]')) {
         setIsResourcesDropdownOpen(false);
       }
-      if (isValuatorDropdownOpen && !event.target.closest('[data-dropdown-container]')) {
-        setIsValuatorDropdownOpen(false);
-      }
       if (isJoinUsDropdownOpen && !event.target.closest('[data-dropdown-container]')) {
         setIsJoinUsDropdownOpen(false);
       }
@@ -647,7 +710,7 @@ const Header = () => {
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isResourcesDropdownOpen, isValuatorDropdownOpen, isJoinUsDropdownOpen]);
+  }, [isResourcesDropdownOpen, isJoinUsDropdownOpen]);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -667,10 +730,6 @@ const Header = () => {
     setIsResourcesDropdownOpen(!isResourcesDropdownOpen);
   };
 
-  const toggleValuatorDropdown = () => {
-    setIsValuatorDropdownOpen(!isValuatorDropdownOpen);
-  };
-
   const toggleJoinUsDropdown = () => {
     setIsJoinUsDropdownOpen(!isJoinUsDropdownOpen);
   };
@@ -686,7 +745,13 @@ const Header = () => {
       return;
     }
     setIsResourcesDropdownOpen(false);
+    setIsValuatorDropdownOpen(false);
   };
+
+  const isValuatorActive =
+    location.pathname.startsWith('/calculator') ||
+    location.pathname.startsWith('/ip-valuation') ||
+    location.pathname === '/transparency';
 
   const toggleMobileResourcesDropdown = () => {
     setIsMobileResourcesDropdownOpen(!isMobileResourcesDropdownOpen);
@@ -696,21 +761,14 @@ const Header = () => {
     setIsMobileValuatorDropdownOpen(!isMobileValuatorDropdownOpen);
   };
 
-  const closeValuatorDropdown = (e) => {
-    const nextTarget = e?.relatedTarget;
-    const container = e?.currentTarget;
-    const isNode = typeof Node !== 'undefined' && nextTarget instanceof Node;
-    if (container && isNode && typeof container.contains === 'function' && container.contains(nextTarget)) {
-      return;
-    }
-    setIsValuatorDropdownOpen(false);
-  };
-
   const isResourcesActive =
     location.pathname.startsWith('/blog') ||
     location.pathname.startsWith('/templates') ||
     location.pathname.startsWith('/deal-desk') ||
-    location.pathname.startsWith('/deal-board');
+    location.pathname.startsWith('/calculator') ||
+    location.pathname.startsWith('/ip-valuation') ||
+    location.pathname === '/transparency';
+  const isDealBoardActive = location.pathname.startsWith('/deal-board');
   const isJoinUsActive = location.pathname.startsWith('/careers');
 
   // Open on hover (desktop)
@@ -836,57 +894,63 @@ const Header = () => {
                         >
                           YD Deal Desk
                         </DropdownItem>
-                        <DropdownItem
-                          to="/deal-board"
-                          className={location.pathname.startsWith('/deal-board') ? 'active' : ''}
+                        <NestedDropdown
+                          onMouseEnter={() => setIsValuatorDropdownOpen(true)}
+                          onMouseLeave={() => setIsValuatorDropdownOpen(false)}
                         >
-                          YD Deal Board
-                        </DropdownItem>
+                          <NestedTrigger
+                            type="button"
+                            $isOpen={isValuatorDropdownOpen}
+                            $isActive={isValuatorActive}
+                            onClick={() => setIsValuatorDropdownOpen((open) => !open)}
+                            aria-expanded={isValuatorDropdownOpen}
+                          >
+                            YD Valuator
+                            <FiChevronDown aria-hidden="true" />
+                          </NestedTrigger>
+                          <AnimatePresence>
+                            {isValuatorDropdownOpen && (
+                              <NestedMenu
+                                initial={{ opacity: 0, x: -6, scale: 0.98 }}
+                                animate={{ opacity: 1, x: 0, scale: 1 }}
+                                exit={{ opacity: 0, x: -6, scale: 0.98 }}
+                                transition={{ duration: 0.16, ease: 'easeOut' }}
+                              >
+                                <DropdownLabel>YD Valuator</DropdownLabel>
+                                <DropdownItem
+                                  to="/calculator"
+                                  className={location.pathname.startsWith('/calculator') ? 'active' : ''}
+                                >
+                                  Business Valuation Tool
+                                </DropdownItem>
+                                <DropdownItem
+                                  to="/ip-valuation"
+                                  className={location.pathname.startsWith('/ip-valuation') ? 'active' : ''}
+                                >
+                                  IP Valuation Tool
+                                </DropdownItem>
+                                <DropdownItem
+                                  to="/transparency"
+                                  className={location.pathname === '/transparency' ? 'active' : ''}
+                                >
+                                  Transparency
+                                </DropdownItem>
+                              </NestedMenu>
+                            )}
+                          </AnimatePresence>
+                        </NestedDropdown>
                       </DropdownMenu>
                     )}
                   </AnimatePresence>
                 </DropdownContainer>
               </NavItem>
               <NavItem>
-                <DropdownContainer data-dropdown-container onMouseEnter={() => setIsValuatorDropdownOpen(true)} onMouseLeave={(e) => closeValuatorDropdown(e)}>
-                  <DropdownButton 
-                    onClick={toggleValuatorDropdown}
-                    $isOpen={isValuatorDropdownOpen}
-                    className={location.pathname.startsWith('/calculator') || location.pathname.startsWith('/ip-valuation') || location.pathname === '/transparency' ? 'active' : ''}
-                  >
-                    YD Valuator
-                    <FiChevronDown />
-                  </DropdownButton>
-                  <AnimatePresence>
-                    {isValuatorDropdownOpen && (
-                      <DropdownMenu
-                        initial={{ opacity: 0, y: -8, scale: 0.98 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -8, scale: 0.98 }}
-                        transition={{ duration: 0.18, ease: 'easeOut' }}
-                      >
-                        <DropdownItem 
-                          to="/calculator" 
-                          className={location.pathname.startsWith('/calculator') ? 'active' : ''}
-                        >
-                          Business Valuation Tool
-                        </DropdownItem>
-                        <DropdownItem 
-                          to="/ip-valuation" 
-                          className={location.pathname.startsWith('/ip-valuation') ? 'active' : ''}
-                        >
-                          IP Valuation Tool
-                        </DropdownItem>
-                        <DropdownItem 
-                          to="/transparency" 
-                          className={location.pathname === '/transparency' ? 'active' : ''}
-                        >
-                          Transparency
-                        </DropdownItem>
-                      </DropdownMenu>
-                    )}
-                  </AnimatePresence>
-                </DropdownContainer>
+                <NavLink
+                  to="/deal-board"
+                  className={isDealBoardActive ? 'active' : ''}
+                >
+                  YD Deal Board
+                </NavLink>
               </NavItem>
               <NavItem>
                 <NavLink to="/team" className={location.pathname.startsWith('/team') ? 'active' : ''}>
@@ -1025,67 +1089,66 @@ const Header = () => {
                       </MobileDropdownItem>
                     </li>
                     <li>
-                      <MobileDropdownItem
-                        to="/deal-board"
-                        className={
-                          location.pathname.startsWith('/deal-board') ? 'active' : ''
-                        }
-                        onClick={() => setIsMobileMenuOpen(false)}
+                      <MobileDropdownButton
+                        type="button"
+                        onClick={toggleMobileValuatorDropdown}
+                        $isOpen={isMobileValuatorDropdownOpen}
+                        aria-expanded={isMobileValuatorDropdownOpen}
+                        aria-controls="mobile-valuator-panel"
+                        id="mobile-valuator-toggle"
+                        style={{ paddingLeft: '1.25rem' }}
                       >
-                        YD Deal Board
-                      </MobileDropdownItem>
+                        YD Valuator
+                        <FiChevronDown aria-hidden="true" />
+                      </MobileDropdownButton>
+                      <MobileDropdownPanel
+                        $isOpen={isMobileValuatorDropdownOpen}
+                        id="mobile-valuator-panel"
+                        role="region"
+                        aria-labelledby="mobile-valuator-toggle"
+                      >
+                        <MobileDropdownMenu>
+                          <li>
+                            <MobileDropdownItem
+                              to="/calculator"
+                              className={location.pathname.startsWith('/calculator') ? 'active' : ''}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              Business Valuation Tool
+                            </MobileDropdownItem>
+                          </li>
+                          <li>
+                            <MobileDropdownItem
+                              to="/ip-valuation"
+                              className={location.pathname.startsWith('/ip-valuation') ? 'active' : ''}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              IP Valuation Tool
+                            </MobileDropdownItem>
+                          </li>
+                          <li>
+                            <MobileDropdownItem
+                              to="/transparency"
+                              className={location.pathname === '/transparency' ? 'active' : ''}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              Transparency
+                            </MobileDropdownItem>
+                          </li>
+                        </MobileDropdownMenu>
+                      </MobileDropdownPanel>
                     </li>
                   </MobileDropdownMenu>
                 </MobileDropdownPanel>
               </MobileNavItem>
-              <MobileNavItem style={{ position: 'relative', zIndex: 1 }}>
-                <MobileDropdownButton
-                  type="button"
-                  onClick={toggleMobileValuatorDropdown}
-                  $isOpen={isMobileValuatorDropdownOpen}
-                  aria-expanded={isMobileValuatorDropdownOpen}
-                  aria-controls="mobile-valuator-panel"
-                  id="mobile-valuator-toggle"
+              <MobileNavItem>
+                <MobileNavLink
+                  to="/deal-board"
+                  className={isDealBoardActive ? 'active' : ''}
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  YD Valuator
-                  <FiChevronDown aria-hidden="true" />
-                </MobileDropdownButton>
-                <MobileDropdownPanel
-                  $isOpen={isMobileValuatorDropdownOpen}
-                  id="mobile-valuator-panel"
-                  role="region"
-                  aria-labelledby="mobile-valuator-toggle"
-                >
-                  <MobileDropdownMenu>
-                    <li>
-                      <MobileDropdownItem
-                        to="/calculator"
-                        className={location.pathname.startsWith('/calculator') ? 'active' : ''}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        Business Valuation Tool
-                      </MobileDropdownItem>
-                    </li>
-                    <li>
-                      <MobileDropdownItem
-                        to="/ip-valuation"
-                        className={location.pathname.startsWith('/ip-valuation') ? 'active' : ''}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        IP Valuation Tool
-                      </MobileDropdownItem>
-                    </li>
-                    <li>
-                      <MobileDropdownItem
-                        to="/transparency"
-                        className={location.pathname === '/transparency' ? 'active' : ''}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        Transparency
-                      </MobileDropdownItem>
-                    </li>
-                  </MobileDropdownMenu>
-                </MobileDropdownPanel>
+                  YD Deal Board
+                </MobileNavLink>
               </MobileNavItem>
               <MobileNavItem>
                 <MobileNavLink to="/team">Our team</MobileNavLink>

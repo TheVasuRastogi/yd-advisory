@@ -270,34 +270,125 @@ const Grid = styled.div`
 `;
 
 const Card = styled(motion.article)`
-  background: #fff;
-  border: 1px solid ${p => p.theme.colors.gray[200]};
+  position: relative;
+  isolation: isolate;
+  background: ${p => (p.$hasImage ? p.theme.colors.primary[900] : '#fff')};
+  border: 1px solid
+    ${p => (p.$hasImage ? 'rgba(255, 255, 255, 0.14)' : p.theme.colors.gray[200])};
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
-  padding: ${p => (p.$hasImage ? '0 0 1.35rem' : '1.5rem 1.4rem 1.35rem')};
+  padding: 1.5rem 1.4rem 1.35rem;
   display: flex;
   flex-direction: column;
   min-height: 100%;
   overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+    border-color: ${p =>
+      p.$hasImage ? 'rgba(255, 255, 255, 0.28)' : p.theme.colors.primary[300]};
+  }
+
+  &:hover .deal-card-image {
+    animation-play-state: paused;
+    transform: scale(1.14);
+    filter: saturate(1) brightness(0.82);
+  }
+
+  &:hover .deal-card-backdrop::after {
+    opacity: 0.86;
+  }
 `;
 
-const CardMedia = styled.div`
-  width: 100%;
-  aspect-ratio: 16 / 10;
+const CardBackdrop = styled(motion.div)`
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
   overflow: hidden;
-  background: ${p => p.theme.colors.gray[900]};
-  margin-bottom: 1rem;
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    transform: scale(1.05);
+    transform-origin: center center;
+    filter: saturate(0.9) brightness(0.72);
+    animation: dealKenBurns 18s ease-in-out infinite alternate;
+    transition: transform 0.7s ease, filter 0.7s ease;
+    will-change: transform;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 1;
+    background:
+      linear-gradient(
+        165deg,
+        rgba(19, 78, 74, 0.78) 0%,
+        rgba(15, 23, 42, 0.72) 42%,
+        rgba(15, 23, 42, 0.88) 100%
+      ),
+      linear-gradient(0deg, rgba(19, 78, 74, 0.28), rgba(19, 78, 74, 0.28));
+    transition: opacity 0.45s ease;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    z-index: 1;
+    background: linear-gradient(
+      115deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.14) 48%,
+      transparent 66%
+    );
+    transform: translateX(-45%);
+    animation: dealSheen 7.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes dealKenBurns {
+    0% {
+      transform: scale(1.05) translate3d(0, 0, 0);
+    }
+    100% {
+      transform: scale(1.14) translate3d(-2.5%, -1.5%, 0);
+    }
+  }
+
+  @keyframes dealSheen {
+    0%,
+    55% {
+      transform: translateX(-55%);
+      opacity: 0;
+    }
+    70% {
+      opacity: 0.55;
+    }
+    100% {
+      transform: translateX(55%);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    img,
+    &::before {
+      animation: none !important;
+    }
   }
 `;
 
-const CardBody = styled.div`
-  padding: ${p => (p.$hasImage ? '0 1.4rem' : '0')};
+const CardBody = styled(motion.div)`
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -305,7 +396,7 @@ const CardBody = styled.div`
 `;
 
 const DealId = styled.div`
-  color: ${p => p.theme.colors.primary[700]};
+  color: ${p => (p.$onImage ? 'rgba(204, 251, 241, 0.95)' : p.theme.colors.primary[700])};
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -315,11 +406,12 @@ const DealId = styled.div`
 
 const CardTitle = styled.h3`
   margin: 0 0 0.65rem;
-  color: ${p => p.theme.colors.primary[900]};
+  color: ${p => (p.$onImage ? '#fff' : p.theme.colors.primary[900])};
   font-size: 1.15rem;
   line-height: 1.35;
   font-weight: 700;
   min-height: 2.7em;
+  text-shadow: ${p => (p.$onImage ? '0 1px 10px rgba(0, 0, 0, 0.28)' : 'none')};
 `;
 
 const Status = styled.span`
@@ -327,9 +419,11 @@ const Status = styled.span`
   align-items: center;
   width: fit-content;
   padding: 0.28rem 0.55rem;
-  border: 1px solid ${p => p.theme.colors.gray[300]};
+  border: 1px solid
+    ${p => (p.$onImage ? 'rgba(255, 255, 255, 0.35)' : p.theme.colors.gray[300])};
   border-radius: 6px;
-  color: ${p => p.theme.colors.gray[600]};
+  background: ${p => (p.$onImage ? 'rgba(255, 255, 255, 0.12)' : 'transparent')};
+  color: ${p => (p.$onImage ? 'rgba(255, 255, 255, 0.92)' : p.theme.colors.gray[600])};
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -339,7 +433,7 @@ const Status = styled.span`
 
 const Description = styled.p`
   margin: 0 0 1rem;
-  color: ${p => p.theme.colors.gray[600]};
+  color: ${p => (p.$onImage ? 'rgba(241, 245, 249, 0.9)' : p.theme.colors.gray[600])};
   font-size: 0.95rem;
   line-height: 1.6;
 `;
@@ -358,13 +452,13 @@ const MetaRow = styled.div`
 
   dt {
     margin: 0;
-    color: ${p => p.theme.colors.gray[500]};
+    color: ${p => (p.$onImage ? 'rgba(226, 232, 240, 0.72)' : p.theme.colors.gray[500])};
     font-size: 0.82rem;
   }
 
   dd {
     margin: 0;
-    color: ${p => p.theme.colors.primary[900]};
+    color: ${p => (p.$onImage ? '#fff' : p.theme.colors.primary[900])};
     font-size: 0.88rem;
     font-weight: 600;
     line-height: 1.35;
@@ -374,7 +468,7 @@ const MetaRow = styled.div`
 const WhyList = styled.ul`
   margin: 1rem 0 0;
   padding-left: 1.1rem;
-  color: ${p => p.theme.colors.gray[600]};
+  color: ${p => (p.$onImage ? 'rgba(241, 245, 249, 0.88)' : p.theme.colors.gray[600])};
   font-size: 0.86rem;
   line-height: 1.45;
 
@@ -385,7 +479,7 @@ const WhyList = styled.ul`
 
 const CardNote = styled.p`
   margin: 0.7rem 0 0;
-  color: ${p => p.theme.colors.gray[500]};
+  color: ${p => (p.$onImage ? 'rgba(226, 232, 240, 0.7)' : p.theme.colors.gray[500])};
   font-size: 0.75rem;
   line-height: 1.4;
 `;
@@ -402,17 +496,19 @@ const InterestButton = styled.button`
   gap: 0.45rem;
   width: 100%;
   padding: 0.85rem 1rem;
-  border: none;
+  border: 1px solid
+    ${p => (p.$onImage ? 'rgba(255, 255, 255, 0.2)' : 'transparent')};
   border-radius: 10px;
-  background: ${p => p.theme.colors.primary[700]};
-  color: #fff;
+  background: ${p => (p.$onImage ? 'rgba(255, 255, 255, 0.94)' : p.theme.colors.primary[700])};
+  color: ${p => (p.$onImage ? p.theme.colors.primary[900] : '#fff')};
   font-weight: 600;
   font-size: 0.92rem;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
 
   &:hover {
-    background: ${p => p.theme.colors.primary[800]};
+    background: ${p => (p.$onImage ? '#fff' : p.theme.colors.primary[800])};
+    color: ${p => (p.$onImage ? p.theme.colors.primary[900] : '#fff')};
     transform: translateY(-1px);
   }
 `;
@@ -433,55 +529,73 @@ const openMail = (mail) => {
 const DealCard = ({ deal, index }) => {
   const mail = getDealInterestMail(deal);
   const hasImage = Boolean(deal.image);
+  const stagger = Math.min(index, 2) * 0.05;
+  const viewport = { once: true, amount: 0.18, margin: '40px 0px' };
 
   return (
     <Card
       $hasImage={hasImage}
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.05, margin: '80px 0px' }}
-      transition={{ duration: 0.18, delay: Math.min(index, 2) * 0.03, ease: 'easeOut' }}
+      viewport={viewport}
+      transition={{ duration: 0.28, delay: stagger, ease: 'easeOut' }}
     >
       {hasImage && (
-        <CardMedia>
-          <img src={deal.image} alt={deal.title} loading="lazy" />
-        </CardMedia>
+        <CardBackdrop
+          className="deal-card-backdrop"
+          aria-hidden="true"
+          initial={{ opacity: 0, scale: 1.16 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={viewport}
+          transition={{ duration: 0.55, delay: stagger + 0.04, ease: 'easeOut' }}
+        >
+          <img className="deal-card-image" src={deal.image} alt="" loading="lazy" />
+        </CardBackdrop>
       )}
-      <CardBody $hasImage={hasImage}>
-        <DealId>{deal.id}</DealId>
-        <CardTitle>{deal.title}</CardTitle>
-        <Status>{deal.status}</Status>
-        <Description>{deal.description}</Description>
+      <CardBody
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={viewport}
+        transition={{
+          duration: 0.4,
+          delay: stagger + (hasImage ? 0.32 : 0.1),
+          ease: 'easeOut',
+        }}
+      >
+        <DealId $onImage={hasImage}>{deal.id}</DealId>
+        <CardTitle $onImage={hasImage}>{deal.title}</CardTitle>
+        <Status $onImage={hasImage}>{deal.status}</Status>
+        <Description $onImage={hasImage}>{deal.description}</Description>
         <Meta>
-          <MetaRow>
+          <MetaRow $onImage={hasImage}>
             <dt>Location</dt>
             <dd>{deal.geography}</dd>
           </MetaRow>
-          <MetaRow>
+          <MetaRow $onImage={hasImage}>
             <dt>Stage</dt>
             <dd>{deal.stage}</dd>
           </MetaRow>
-          <MetaRow>
+          <MetaRow $onImage={hasImage}>
             <dt>Sector</dt>
             <dd>{deal.sector}</dd>
           </MetaRow>
-          <MetaRow>
+          <MetaRow $onImage={hasImage}>
             <dt>Capital</dt>
             <dd>{deal.size}</dd>
           </MetaRow>
-          <MetaRow>
+          <MetaRow $onImage={hasImage}>
             <dt>Instrument</dt>
             <dd>{deal.category}</dd>
           </MetaRow>
           {deal.useOfFunds ? (
-            <MetaRow>
+            <MetaRow $onImage={hasImage}>
               <dt>Use of funds</dt>
               <dd>{deal.useOfFunds}</dd>
             </MetaRow>
           ) : null}
         </Meta>
         {deal.whyInvestable?.length > 0 && (
-          <WhyList>
+          <WhyList $onImage={hasImage}>
             {deal.whyInvestable.map((item) => (
               <li key={item}>{item}</li>
             ))}
@@ -489,13 +603,14 @@ const DealCard = ({ deal, index }) => {
         )}
         <CardActions>
           <InterestButton
+            $onImage={hasImage}
             type="button"
             onClick={(e) => handleInteractiveLink(e, () => openMail(mail))}
             onKeyDown={(e) => handleInteractiveLink(e, () => openMail(mail))}
           >
             Register Interest <FiArrowRight />
           </InterestButton>
-          <CardNote>
+          <CardNote $onImage={hasImage}>
             Indicative terms shown; full data room available under NDA.
           </CardNote>
         </CardActions>
