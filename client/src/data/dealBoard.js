@@ -693,6 +693,7 @@ export const deals = [
     id: 'YD-33',
     title: 'Real-Estate Blockchain Platform: Kenya',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-33-proptech.jpg',
     description:
       "A blockchain-powered property and tenancy-registration platform for Kenya (modelled on Dubai's Ejari), digitising land titles, rental contracts and transactions, with a path to real-world-asset tokenisation. RAK-structured.",
     geography: 'Kenya (RAK-structured, UAE)',
