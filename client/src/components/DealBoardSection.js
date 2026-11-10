@@ -274,10 +274,34 @@ const Card = styled(motion.article)`
   border: 1px solid ${p => p.theme.colors.gray[200]};
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
-  padding: 1.5rem 1.4rem 1.35rem;
+  padding: ${p => (p.$hasImage ? '0 0 1.35rem' : '1.5rem 1.4rem 1.35rem')};
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  overflow: hidden;
+`;
+
+const CardMedia = styled.div`
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: ${p => p.theme.colors.gray[900]};
+  margin-bottom: 1rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+`;
+
+const CardBody = styled.div`
+  padding: ${p => (p.$hasImage ? '0 1.4rem' : '0')};
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0;
 `;
 
 const DealId = styled.div`
@@ -286,15 +310,16 @@ const DealId = styled.div`
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.65rem;
 `;
 
 const CardTitle = styled.h3`
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.65rem;
   color: ${p => p.theme.colors.primary[900]};
   font-size: 1.15rem;
   line-height: 1.35;
   font-weight: 700;
+  min-height: 2.7em;
 `;
 
 const Status = styled.span`
@@ -309,19 +334,18 @@ const Status = styled.span`
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin-bottom: 0.9rem;
+  margin-bottom: 0.85rem;
 `;
 
 const Description = styled.p`
-  margin: 0 0 1.25rem;
+  margin: 0 0 1rem;
   color: ${p => p.theme.colors.gray[600]};
   font-size: 0.95rem;
   line-height: 1.6;
-  flex: 1;
 `;
 
 const Meta = styled.dl`
-  margin: 0 0 1.25rem;
+  margin: 0;
   display: grid;
   gap: 0.65rem;
 `;
@@ -348,7 +372,7 @@ const MetaRow = styled.div`
 `;
 
 const WhyList = styled.ul`
-  margin: 0 0 1.1rem;
+  margin: 1rem 0 0;
   padding-left: 1.1rem;
   color: ${p => p.theme.colors.gray[600]};
   font-size: 0.86rem;
@@ -360,10 +384,15 @@ const WhyList = styled.ul`
 `;
 
 const CardNote = styled.p`
-  margin: 0.75rem 0 0;
+  margin: 0.7rem 0 0;
   color: ${p => p.theme.colors.gray[500]};
   font-size: 0.75rem;
   line-height: 1.4;
+`;
+
+const CardActions = styled.div`
+  margin-top: auto;
+  padding-top: 1.15rem;
 `;
 
 const InterestButton = styled.button`
@@ -403,63 +432,74 @@ const openMail = (mail) => {
 
 const DealCard = ({ deal, index }) => {
   const mail = getDealInterestMail(deal);
+  const hasImage = Boolean(deal.image);
 
   return (
     <Card
+      $hasImage={hasImage}
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.05, margin: '80px 0px' }}
       transition={{ duration: 0.18, delay: Math.min(index, 2) * 0.03, ease: 'easeOut' }}
     >
-      <DealId>{deal.id}</DealId>
-      <CardTitle>{deal.title}</CardTitle>
-      <Status>{deal.status}</Status>
-      <Description>{deal.description}</Description>
-      <Meta>
-        <MetaRow>
-          <dt>Location</dt>
-          <dd>{deal.geography}</dd>
-        </MetaRow>
-        <MetaRow>
-          <dt>Stage</dt>
-          <dd>{deal.stage}</dd>
-        </MetaRow>
-        <MetaRow>
-          <dt>Sector</dt>
-          <dd>{deal.sector}</dd>
-        </MetaRow>
-        <MetaRow>
-          <dt>Capital</dt>
-          <dd>{deal.size}</dd>
-        </MetaRow>
-        <MetaRow>
-          <dt>Instrument</dt>
-          <dd>{deal.category}</dd>
-        </MetaRow>
-        {deal.useOfFunds ? (
-          <MetaRow>
-            <dt>Use of funds</dt>
-            <dd>{deal.useOfFunds}</dd>
-          </MetaRow>
-        ) : null}
-      </Meta>
-      {deal.whyInvestable?.length > 0 && (
-        <WhyList>
-          {deal.whyInvestable.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </WhyList>
+      {hasImage && (
+        <CardMedia>
+          <img src={deal.image} alt={deal.title} loading="lazy" />
+        </CardMedia>
       )}
-      <InterestButton
-        type="button"
-        onClick={(e) => handleInteractiveLink(e, () => openMail(mail))}
-        onKeyDown={(e) => handleInteractiveLink(e, () => openMail(mail))}
-      >
-        Register Interest <FiArrowRight />
-      </InterestButton>
-      <CardNote>
-        Indicative terms shown; full data room available under NDA.
-      </CardNote>
+      <CardBody $hasImage={hasImage}>
+        <DealId>{deal.id}</DealId>
+        <CardTitle>{deal.title}</CardTitle>
+        <Status>{deal.status}</Status>
+        <Description>{deal.description}</Description>
+        <Meta>
+          <MetaRow>
+            <dt>Location</dt>
+            <dd>{deal.geography}</dd>
+          </MetaRow>
+          <MetaRow>
+            <dt>Stage</dt>
+            <dd>{deal.stage}</dd>
+          </MetaRow>
+          <MetaRow>
+            <dt>Sector</dt>
+            <dd>{deal.sector}</dd>
+          </MetaRow>
+          <MetaRow>
+            <dt>Capital</dt>
+            <dd>{deal.size}</dd>
+          </MetaRow>
+          <MetaRow>
+            <dt>Instrument</dt>
+            <dd>{deal.category}</dd>
+          </MetaRow>
+          {deal.useOfFunds ? (
+            <MetaRow>
+              <dt>Use of funds</dt>
+              <dd>{deal.useOfFunds}</dd>
+            </MetaRow>
+          ) : null}
+        </Meta>
+        {deal.whyInvestable?.length > 0 && (
+          <WhyList>
+            {deal.whyInvestable.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </WhyList>
+        )}
+        <CardActions>
+          <InterestButton
+            type="button"
+            onClick={(e) => handleInteractiveLink(e, () => openMail(mail))}
+            onKeyDown={(e) => handleInteractiveLink(e, () => openMail(mail))}
+          >
+            Register Interest <FiArrowRight />
+          </InterestButton>
+          <CardNote>
+            Indicative terms shown; full data room available under NDA.
+          </CardNote>
+        </CardActions>
+      </CardBody>
     </Card>
   );
 };

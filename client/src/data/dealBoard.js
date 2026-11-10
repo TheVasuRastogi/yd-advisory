@@ -149,6 +149,7 @@ export const deals = [
     id: 'YD-01',
     title: 'Regulated QAR Stablecoin Platform: Pre-Seed',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-01-stablecoin.jpg',
     description:
       'Qatar-based regulated stablecoin platform (QAR-pegged); QFC-licensed with a Qatar Central Bank sandbox application in progress, raising pre-seed capital as a bridge to a Series A.',
     geography: 'Qatar (QFC)',
@@ -165,6 +166,7 @@ export const deals = [
     id: 'YD-02',
     title: 'Diamondiferous Kimberlite Project: Botswana',
     status: 'EARLY-STAGE',
+    image: '/images/deal-board/yd-02-diamond.jpg',
     description:
       'A diamondiferous kimberlite in Botswana\'s Orapa field, held under an unencumbered prospecting licence, with grade and value now being independently confirmed.',
     geography: 'Botswana (Boteti District, Orapa field)',
@@ -181,6 +183,7 @@ export const deals = [
     id: 'YD-03',
     title: 'Renewable Energy: Growth Capital Raise',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-03-renewable.jpg',
     description:
       'Renewable Energy (Clean energy development) in UAE, raising growth capital with full execution support.',
     geography: 'United Arab Emirates',
@@ -197,6 +200,7 @@ export const deals = [
     id: 'YD-04',
     title: 'Clean Energy Infrastructure: Strategic Equity Raise',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-04-clean-energy.jpg',
     description:
       'Strategic Equity Raise mandate for a clean energy infrastructure opportunity in Africa.',
     geography: 'Africa',
@@ -213,6 +217,7 @@ export const deals = [
     id: 'YD-05',
     title: 'Solar Power: Project Finance',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-05-solar.jpg',
     description:
       'Project Finance mandate for a solar power opportunity in Zambia.',
     geography: 'Zambia',
@@ -229,6 +234,7 @@ export const deals = [
     id: 'YD-06',
     title: 'Natural Hydrogen: Sovereign PPP Platform',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-06-hydrogen.jpg',
     description:
       'Sovereign PPP Platform mandate for a natural hydrogen opportunity in West Africa.',
     geography: 'West Africa',
@@ -245,6 +251,7 @@ export const deals = [
     id: 'YD-07',
     title: 'REDD+ Nature-Based Carbon Platform',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-07-carbon.jpg',
     description:
       'Large-scale forest-conservation and reforestation carbon project generating credits across voluntary and regulated markets.',
     geography: 'Brazil (Amazon)',
@@ -261,6 +268,7 @@ export const deals = [
     id: 'YD-08',
     title: 'Integrated Agribusiness: Senior Secured Loan',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-08-agribusiness.jpg',
     description:
       'Soybean and corn cultivation, grain trading and logistics group seeking a senior secured term loan.',
     geography: 'Brazil',
@@ -277,6 +285,7 @@ export const deals = [
     id: 'YD-09',
     title: 'Payment-Processing Infrastructure: Islamic Facility',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-09-payments.jpg',
     description:
       'Established UAE payment-processing infrastructure serving banks, government and enterprise merchants.',
     geography: 'United Arab Emirates',
@@ -293,6 +302,7 @@ export const deals = [
     id: 'YD-10',
     title: 'Heavy-Equipment Leasing: Senior Secured Note',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-10-equipment.jpg',
     description:
       'Family-owned crane and aerial-platform leasing group; senior secured note via a European securitisation vehicle, listed for professional investors.',
     geography: 'Latin America / Europe',
@@ -309,6 +319,7 @@ export const deals = [
     id: 'YD-11',
     title: 'Payment-Processing Company: Acquisition Finance',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-11-payments.jpg',
     description:
       'Full acquisition of an established UAE payment-processing company serving banks, government and enterprise merchants.',
     geography: 'United Arab Emirates',
@@ -325,6 +336,7 @@ export const deals = [
     id: 'YD-12',
     title: 'GCC Private Credit Platform: Growth Capital',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-12-credit.jpg',
     description:
       'Independent platform providing short-term, collateralised, real-estate-backed financing to SMEs and individuals.',
     geography: 'UAE',
@@ -341,6 +353,7 @@ export const deals = [
     id: 'YD-13',
     title: 'Resource-Backed Sovereign Sukuk',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-13-sukuk.jpg',
     description:
       'West African sovereign raising development capital through a resource-backed Sukuk, targeting GCC and Islamic investors.',
     geography: 'West Africa',
@@ -357,6 +370,7 @@ export const deals = [
     id: 'YD-14',
     title: 'Digital-Lending Portfolio: Securitisation',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-14-lending.jpg',
     description:
       'Pan-African digital lender on mobile-money rails seeking portfolio financing via an asset-backed securitisation.',
     geography: 'Pan-Africa',
@@ -373,6 +387,7 @@ export const deals = [
     id: 'YD-15',
     title: 'Early-Stage Copper Project: Project Finance',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-15-copper.jpg',
     description:
       'Early-stage copper asset with gold and silver by-products seeking growth capital on a milestone-based structure.',
     geography: 'Southern Africa',
@@ -389,6 +404,7 @@ export const deals = [
     id: 'YD-16',
     title: 'Clinical-Stage Life Sciences: Pre-Listing Equity',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-16-life-sciences.jpg',
     description:
       'Pre-listing investment in a clinical-stage company merging with a listed developer ahead of a public listing.',
     geography: 'Cross-Border',
@@ -405,6 +421,7 @@ export const deals = [
     id: 'YD-17',
     title: 'Sustainable Housing Community: Pre-Development Capital',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-17-housing.jpg',
     description:
       'Mixed-income housing community with a state land body and housing agency on a land-for-development basis (GDV ~USD 50M).',
     geography: 'East Africa',
@@ -421,6 +438,7 @@ export const deals = [
     id: 'YD-18',
     title: 'Fintech Venture Capital Fund',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-18-fintech.jpg',
     description:
       'Regulated VC fund investing across payments, lending, blockchain and data from seed to Series A, with a co-investment allocation.',
     geography: 'Offshore (regulated)',
@@ -437,6 +455,7 @@ export const deals = [
     id: 'YD-19',
     title: 'Downstream Energy & Fuel Storage: Project Finance',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-19-energy-storage.jpg',
     description:
       'Project Finance / Credit Analysis mandate for a downstream energy & fuel storage opportunity in Brazil.',
     geography: 'Brazil',
@@ -453,6 +472,7 @@ export const deals = [
     id: 'YD-20',
     title: 'Gold Mining: Project Finance',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-20-gold.jpg',
     description:
       'Project Finance / Credit Guarantee mandate for a gold mining opportunity in Ghana.',
     geography: 'Ghana',
@@ -469,6 +489,7 @@ export const deals = [
     id: 'YD-21',
     title: 'Petrochemicals Trading: Working Capital & Bond',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-21-petrochemicals.jpg',
     description:
       'Working Capital & Bond mandate for a petrochemicals trading opportunity in UAE.',
     geography: 'United Arab Emirates',
@@ -485,6 +506,7 @@ export const deals = [
     id: 'YD-22',
     title: 'Oil & Gas Storage: Senior Secured Debt Raise',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-22-oil-gas-storage.jpg',
     description:
       'Senior Secured Debt Raise mandate for a oil & gas storage opportunity in UAE.',
     geography: 'United Arab Emirates',
@@ -501,6 +523,7 @@ export const deals = [
     id: 'YD-23',
     title: 'Gold Mining: Acquisition Finance (Buy-Side)',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-23-gold.jpg',
     description:
       'Acquisition Finance (Buy-Side) mandate for a gold mining opportunity in Africa.',
     geography: 'Africa',
@@ -517,6 +540,7 @@ export const deals = [
     id: 'YD-24',
     title: 'Dry-Bulk Shipping: Vessel Acquisition Finance',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-24-shipping.jpg',
     description:
       'Vessel Acquisition Finance mandate for a dry-bulk shipping opportunity in UAE & Global.',
     geography: 'United Arab Emirates & Global',
@@ -533,6 +557,7 @@ export const deals = [
     id: 'YD-25',
     title: 'Digital Identity & Govtech: BOT Concession',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-25-digital-identity.jpg',
     description:
       'BOT Concession / Project Finance mandate for a digital identity & govtech opportunity in Republic of Congo.',
     geography: 'Republic of Congo',
@@ -549,6 +574,7 @@ export const deals = [
     id: 'YD-26',
     title: 'Industrial Minerals: Growth Equity',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-26-minerals.jpg',
     description:
       'Growth Equity mandate for a industrial minerals opportunity in Mali.',
     geography: 'Mali',
@@ -565,6 +591,7 @@ export const deals = [
     id: 'YD-27',
     title: 'Sovereign Housing & Aquaculture: Project Bond',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-27-aquaculture.jpg',
     description:
       'Project Bond / Sukuk mandate for a sovereign housing & aquaculture opportunity in Georgia.',
     geography: 'Georgia',
@@ -581,6 +608,7 @@ export const deals = [
     id: 'YD-28',
     title: 'Healthcare Infrastructure: Infrastructure Fund Raise',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-28-healthcare.jpg',
     description:
       'Infrastructure Fund Raise mandate for a healthcare infrastructure opportunity in GCC & USA.',
     geography: 'GCC & USA',
@@ -597,6 +625,7 @@ export const deals = [
     id: 'YD-29',
     title: 'Hospitality & Tourism: Resort Project Finance',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-29-hospitality.jpg',
     description:
       'Resort Project Finance mandate for a hospitality & tourism opportunity in Benin.',
     geography: 'Benin',
@@ -611,24 +640,9 @@ export const deals = [
   },
   {
     id: 'YD-30',
-    title: 'Pre-IPO Equity',
-    status: 'ACTIVE',
-    description:
-      'Pre-IPO equity mandate for a late-stage opportunity in the United States.',
-    geography: 'United States',
-    stage: 'Pre-IPO',
-    sector: 'Pre-IPO Equity',
-    size: 'USD 10 to 50M (indicative)',
-    category: 'Pre-IPO Equity',
-    transactionType: 'Pre-IPO Equity',
-    useOfFunds: 'Pre-listing growth capital',
-    whyInvestable: ['Late-stage company with a defined listing path', 'Pre-IPO entry ahead of a public-market event'],
-    investorProtection: 'Shareholder rights; details under NDA',
-  },
-  {
-    id: 'YD-31',
     title: 'Technology (Fintech platform): Growth Capital Raise',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-30-technology.jpg',
     description:
       'Technology (Fintech platform) (Fintech platform) in Africa, raising growth capital with full execution support.',
     geography: 'Africa',
@@ -642,9 +656,10 @@ export const deals = [
     investorProtection: 'Equity with investor protections; under NDA',
   },
   {
-    id: 'YD-32',
+    id: 'YD-31',
     title: 'Manufacturing: Growth Capital Raise',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-31-manufacturing.jpg',
     description:
       'Manufacturing (Automation machinery) in Saudi Arabia, raising growth capital with full execution support.',
     geography: 'Saudi Arabia',
@@ -658,9 +673,10 @@ export const deals = [
     investorProtection: 'Equity / growth-capital terms; under NDA',
   },
   {
-    id: 'YD-33',
+    id: 'YD-32',
     title: 'Healthcare Products: Growth Capital Raise',
     status: 'ACTIVE',
+    image: '/images/deal-board/yd-32-healthcare-products.jpg',
     description:
       'Healthcare Products (Manufacturing & wholesale) in UAE & Africa, raising growth capital with full execution support.',
     geography: 'United Arab Emirates & Africa',
@@ -674,8 +690,8 @@ export const deals = [
     investorProtection: 'Equity with governance rights; under NDA',
   },
   {
-    id: 'YD-34',
-    title: 'Real-Estate Blockchain Platform — Kenya',
+    id: 'YD-33',
+    title: 'Real-Estate Blockchain Platform: Kenya',
     status: 'ACTIVE',
     description:
       "A blockchain-powered property and tenancy-registration platform for Kenya (modelled on Dubai's Ejari), digitising land titles, rental contracts and transactions, with a path to real-world-asset tokenisation. RAK-structured.",
