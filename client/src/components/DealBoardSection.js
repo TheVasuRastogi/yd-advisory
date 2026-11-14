@@ -679,7 +679,7 @@ const DealBoardSection = ({
                   onChange={(e) => setSector(e.target.value)}
                   aria-label="Filter by sector"
                 >
-                  <option value="all">All sectors</option>
+                  <option value="all">All Sectors</option>
                   {options.sectors.map((item) => (
                     <option key={item} value={item}>
                       {item}
@@ -689,11 +689,11 @@ const DealBoardSection = ({
               </FilterField>
 
               <FilterField>
-                <span>Amount</span>
+                <span>Deal Ticket Size</span>
                 <select
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  aria-label="Filter by amount"
+                  aria-label="Filter by deal ticket size"
                 >
                   {AMOUNT_FILTERS.map((item) => (
                     <option key={item.value} value={item.value}>
@@ -704,13 +704,13 @@ const DealBoardSection = ({
               </FilterField>
 
               <FilterField>
-                <span>Location</span>
+                <span>Regions</span>
                 <select
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  aria-label="Filter by location"
+                  aria-label="Filter by region"
                 >
-                  <option value="all">All locations</option>
+                  <option value="all">All Regions</option>
                   {options.locations.map((item) => (
                     <option key={item} value={item}>
                       {item}

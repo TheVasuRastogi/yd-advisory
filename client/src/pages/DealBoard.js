@@ -22,60 +22,69 @@ const Hero = styled.section`
   ${innerPageHeroBackground()}
   position: relative;
   color: ${p => p.theme.colors.white};
-  padding: ${p => p.theme.spacing[16]} 0 ${p => p.theme.spacing[14]};
+  padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+  text-align: center;
 `;
 
 const HeroInner = styled.div`
-  max-width: 900px;
+  max-width: 920px;
   margin: 0 auto;
   padding: 0 ${p => p.theme.spacing[4]};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const HeroEyebrow = styled.div`
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
   color: ${p => p.theme.colors.primary[200]};
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 `;
 
 const HeroTitle = styled.h1`
   margin: 0 0 1rem;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.15;
+  font-size: clamp(2.1rem, 4.2vw, 3.15rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
   color: ${p => p.theme.colors.white};
 `;
 
 const HeroIntro = styled.p`
-  margin: 0 0 1.5rem;
+  margin: 0 0 1.75rem;
   max-width: 720px;
-  color: rgba(255, 255, 255, 0.88);
-  font-size: 1.1rem;
-  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(1.02rem, 1.6vw, 1.15rem);
+  line-height: 1.7;
 `;
 
 const HeroActions = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  justify-content: center;
+  gap: 0.85rem;
 `;
 
 const HeroButton = styled.button`
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 0.9rem 1.25rem;
+  min-height: 3rem;
+  padding: 0.9rem 1.35rem;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 
   &:hover {
     background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.55);
     transform: translateY(-1px);
   }
 `;
@@ -88,6 +97,7 @@ const HeroPrimary = styled(HeroButton)`
   &:hover {
     background: ${p => p.theme.colors.primary[50]};
     color: ${p => p.theme.colors.primary[900]};
+    border-color: ${p => p.theme.colors.primary[50]};
   }
 `;
 

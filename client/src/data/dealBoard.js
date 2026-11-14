@@ -66,7 +66,7 @@ export const howDealBoardWorks = {
 export const featuredDealIds = ['YD-01', 'YD-03', 'YD-09'];
 
 export const AMOUNT_FILTERS = [
-  { value: 'all', label: 'All amounts' },
+  { value: 'all', label: 'All Deal Ticket Sizes' },
   { value: 'under-10', label: 'Under USD 10M', min: 0, max: 10 },
   { value: '10-50', label: 'USD 10–50M', min: 10, max: 50 },
   { value: '50-150', label: 'USD 50–150M', min: 50, max: 150 },
